@@ -119,10 +119,9 @@ public class Applicant {
     }
 
     public void addBenefits(Set<Benefit> benefits) {
-        for (Benefit benefit : benefits) {
+        for (Benefit benefit : benefits)
             addBenefit(benefit);
-            System.out.println("benefit id: + " + benefit.getId());
-        }
+
 
     }
     public double calculateAverageScore() {
