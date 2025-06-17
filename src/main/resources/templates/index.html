@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>dg</title>
+</head>
+
+<body>
+    <div th:replace="fragments/header"></div>
+
+    <form id="addApplicantForm" method="POST" action="/addApplicant">
+        <div class="table-wrapper">
+        <table>
+            <tr>
+                <td> <input type="text" name="firstName" placeholder="First name" required/> </td>
+            </tr>
+            <tr>
+                <td> <input type="text" name="lastName" placeholder="Second name" required/> </td>
+            </tr>
+            <tr>
+                <td> <input type="email" name="email" placeholder="Email" required/> </td>
+            </tr>
+            <tr>
+                <td> <input type="tel" pattern="^\+380\d{9}$" name="phoneNumber" placeholder= "+380XXXXXXXXX" required/> </td>
+            </tr>
+        </table>
+
+        <div th:if="${session.subjects != null}">
+
+                <table>
+                    <div th:each="subject : ${session.subjects}">
+                        <tr>
+                            <td>
+                                <label th:for="${'subject_' + subject.id}" th:text="${subject.name}"></label>
+                            </td>
+                            <td>
+                                <input type="number"
+                                       th:id="${'subject_' + subject.id}"
+                                       th:name="${'results[' + subject.id + ']'}"
+                                       min="0" max="200" required>
+                            </td>
+                        </tr>
+
+                    </div>
+                </table>
+        </div>
+
+        </div>
+        <button type="submit">Add Applicant</button>
+        <input type="hidden" name="specialtyId" th:value="${session.selectedSpecialtyId}" />
+    </form>
+
+
+
+    <form method="get" action="/selectSpecialty" id="specialtySelector">
+        <select name="specialtyId" onchange="this.form.submit()">
+            <option th:each="s : ${session.specialties}"
+                    th:value="${s.id}"
+                    th:text="${s.name}"
+                    th:selected="${s.id == session.selectedSpecialtyId}">
+            </option>
+        </select>
+    </form>
+
+    <form action="/selectBenefits" method="get">
+        <div th:each="benefit : ${session.allBenefits}">
+            <label>
+                <input type="checkbox"
+                       name="benefits"
+                       th:value="${benefit.id}"
+                       th:checked="${#lists.contains(session.selectedBenefitsIds, benefit.id)}"
+                       onchange="this.form.submit()" />
+                <span th:text="${benefit.name}"></span>
+            </label>
+        </div>
+    </form>
+
+    <form method="post" action="/deleteApplicant">
+        <div>
+            <input type="hidden" name="_method" value="delete"/>
+            <input type="number" name="id" placeholder="id" required>
+        </div>
+        <button type="submit">delete</button>
+    </form>
+
+    <form method="post" action="/updateApplicant">
+        <table>
+            <tr>
+                <th>
+                    <input type="number" name="id" placeholder="id" required/>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input type="text" name="firstName" placeholder="First name"/>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input type="text" name="lastName" placeholder="Second name"/>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input type="email" name="email" placeholder="Email"/>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input type="tel" pattern="^\+380\d{9}$" name="phoneNumber" placeholder= "+380XXXXXXXXX"/>
+                </th>
+            </tr>
+        </table>
+        <select name="statusType">
+            <option th:each="s : ${session.statusTypes}"
+                    th:value="${s.name()}"
+                    th:text="${s.toString()}">
+            </option>
+        </select>
+        <button type="submit">update</button>
+    </form>
+
+
+    <form method="post" action="/findApplicant">
+        <table>
+            <tr>
+                <th>
+                    <input type="number" name="id" placeholder="id"/>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input type="text" name="firstName" placeholder="First name"/>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input type="text" name="lastName" placeholder="Second name"/>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input type="email" name="email" placeholder="Email"/>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input type="tel" pattern="^\+380\d{9}$" name="phoneNumber" placeholder= "+380XXXXXXXXX"/>
+                </th>
+            </tr>
+        </table>
+        <button type="submit">find</button>
+    </form>
+
+
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Ім’я</th>
+            <th>Прізвище</th>
+            <th>Email</th>
+            <th>Телефон</th>
+            <th th:each="subject : ${session.subjects}" th:text="${subject.name}">Предмет</th>
+            <th>Середній бал</th>
+            <th>Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="a : ${session.applicants}">
+            <td th:text="${a.id}">Id</td>
+            <td th:text="${a.firstName}">Ім’я</td>
+            <td th:text="${a.lastName}">Прізвище</td>
+            <td th:text="${a.email}">Email</td>
+            <td th:text="${a.phoneNumber}">Телефон</td>
+
+            <td th:each="subject : ${session.subjects}">
+                <span th:text="${a.getResultBySubjectId(subject.id)}">-</span>
+            </td>
+
+            <td th:text="${#numbers.formatDecimal(a.calculateAverageScore(), 1, 2)}">Середній бал</td>
+            <td th:text="${a.status}">Статус</td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

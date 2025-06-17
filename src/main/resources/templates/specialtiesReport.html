@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div th:replace="fragments/header"></div>
+<div class="report-wrapper">
+    <div class="report-table" th:each="f : ${faculties}">
+        <table  border="1" >
+            <tr>
+                <th th:text="${f.name}" colspan="8">Факультет</th>
+            </tr>
+            <tr>
+                <th>Номер</th>
+                <th>Спеціальність</th>
+                <th>Бюджетних місць</th>
+                <th>Контрактних місць</th>
+                <th>Всього</th>
+            </tr>
+            <tr th:each="s : ${f.specialties}">
+                <td th:text="${s.number}">Номер</td>
+                <td th:text="${s.name}">Спеціальність</td>
+                <td th:text="${s.numberOfBudgetPlaces}">Бюджетних місць</td>
+                <td th:text="${s.numberOfContractPlaces}">Контрактних місць</td>
+                <td th:text="${s.numberOfContractPlaces + s.numberOfBudgetPlaces}">Всього</td>
+                <th th:each="subject : ${s.neededSubjects}" th:text="${subject.name}">Предмет</th>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

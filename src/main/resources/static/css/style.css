@@ -1,0 +1,27 @@
+
+
+.report-table th,
+.report-table td {
+
+    padding: 8px;
+}
+
+.report-table th[colspan] {
+    font-weight: bold;
+}
+
+.header-bar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    column-gap: 50px;
+    list-style-type: none;
+}
+
+.table-wrapper {
+    display: flex;
+}
+
+
+
+
