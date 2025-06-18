@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" action="/updateApplicant">
+    <table>
+        <tr>
+            <th>
+                <input type="number" name="id" placeholder="id" required/>
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <input type="text" name="firstName" placeholder="First name"/>
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <input type="text" name="lastName" placeholder="Second name"/>
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <input type="email" name="email" placeholder="Email"/>
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <input type="tel" pattern="^\+380\d{9}$" name="phoneNumber" placeholder= "+380XXXXXXXXX"/>
+            </th>
+        </tr>
+    </table>
+    <select name="statusType">
+        <option th:each="s : ${session.statusTypes}"
+                th:value="${s.name()}"
+                th:text="${s.toString()}">
+        </option>
+    </select>
+    <button type="submit">update</button>
+</form>
+</body>
+</html>

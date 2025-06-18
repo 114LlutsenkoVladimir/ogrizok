@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/selectBenefits" method="get">
+    <div th:each="benefit : ${session.allBenefits}">
+        <label>
+            <input type="checkbox"
+                   name="benefits"
+                   th:value="${benefit.id}"
+                   th:checked="${#lists.contains(session.selectedBenefitsIds, benefit.id)}"
+                   onchange="this.form.submit()" />
+            <span th:text="${benefit.name}"></span>
+        </label>
+    </div>
+</form>
+</body>
+</html>

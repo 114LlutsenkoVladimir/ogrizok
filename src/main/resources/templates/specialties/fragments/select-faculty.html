@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>git
+</head>
+<body>
+  <form th:action="@{selectFaculty}" method="get">
+    <select name="facultyId" onchange="this.form.submit()">
+      <option th:each="f : ${session.faculties}"
+              th:value="${f.id}"
+              th:text="${f.name}"
+              th:selected="${f.id == session.selectedFacultyId}">
+      </option>
+    </select>
+  </form>
+</body>
+</html>

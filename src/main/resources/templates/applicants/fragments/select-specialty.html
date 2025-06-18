@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="get" action="/selectSpecialty" id="specialtySelector">
+    <select name="specialtyId" onchange="this.form.submit()">
+        <option th:each="s : ${session.specialties}"
+                th:value="${s.id}"
+                th:text="${s.name}"
+                th:selected="${s.id == session.selectedSpecialtyId}">
+        </option>
+    </select>
+</form>
+</body>
+</html>

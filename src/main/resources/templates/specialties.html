@@ -8,22 +8,9 @@
 <body>
 <div th:replace="fragments/header"></div>
 
-<form th:action="@{updateSpecialty}" method="post">
-    <input type="number" name="id" placeholder="id" required>
-    <input type="number" name="budgetPlaces" placeholder="budget places">
-    <input type="number" name="contractPlaces" placeholder="contract places">
-    <button type="submit">update</button>
-</form>
 
-<form th:action="@{selectFaculty}" method="get">
-    <select name="facultyId" onchange="this.form.submit()">
-        <option th:each="f : ${session.faculties}"
-                th:value="${f.id}"
-                th:text="${f.name}"
-                th:selected="${f.id == session.selectedFacultyId}">
-        </option>
-    </select>
-</form>
+
+
 
 <form th:action="@{findSpecialty}" method="post">
     <input type="number" name="id" placeholder="id">
