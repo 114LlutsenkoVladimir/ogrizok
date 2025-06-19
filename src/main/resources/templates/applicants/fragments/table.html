@@ -5,35 +5,29 @@
     <title>Title</title>
 </head>
 <body>
-    <table border="1">
-      <thead>
-      <tr>
-        <th>Id</th>
-        <th>Ім’я</th>
-        <th>Прізвище</th>
-        <th>Email</th>
-        <th>Телефон</th>
-        <th th:each="subject : ${session.subjects}" th:text="${subject.name}">Предмет</th>
-        <th>Середній бал</th>
-        <th>Статус</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="a : ${session.applicants}">
-        <td th:text="${a.id}">Id</td>
-        <td th:text="${a.firstName}">Ім’я</td>
-        <td th:text="${a.lastName}">Прізвище</td>
-        <td th:text="${a.email}">Email</td>
-        <td th:text="${a.phoneNumber}">Телефон</td>
+<div th:each="entry : ${report}">
+  <h2 th:text="${entry.key}">Специальность</h2>
 
-        <td th:each="subject : ${session.subjects}">
-          <span th:text="${a.getResultBySubjectId(subject.id)}">-</span>
-        </td>
-
-        <td th:text="${#numbers.formatDecimal(a.calculateAverageScore(), 1, 2)}">Середній бал</td>
-        <td th:text="${a.status}">Статус</td>
-      </tr>
-      </tbody>
-    </table>
+  <table>
+    <thead>
+    <tr>
+      <th>ФИО</th>
+      <th>Телефон</th>
+      <th>Email</th>
+      <th th:each="subject : ${subjectBySpecialties[entry.key]}"
+          th:text="${subject}">Предмет</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="applicant : ${entry.value}">
+      <td th:text="${applicant.lastName + ' ' + applicant.firstName}">ФИО</td>
+      <td th:text="${applicant.phoneNumber}">Телефон</td>
+      <td th:text="${applicant.email}">Email</td>
+      <td th:each="subject : ${subjectBySpecialties[entry.key]}"
+          th:text="${applicant.subjectAndScore[subject.toString()]} ?: '-'">балл</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 </body>
 </html>

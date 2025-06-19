@@ -2,7 +2,6 @@ package com.example.universityadmissionscommittee.controller;
 
 import com.example.universityadmissionscommittee.data.Specialty;
 import com.example.universityadmissionscommittee.data.Subject;
-import com.example.universityadmissionscommittee.service.ReportService;
 import com.example.universityadmissionscommittee.service.SpecialtyService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;

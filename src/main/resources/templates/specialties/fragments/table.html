@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Звіт по спеціальностях</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<h1>Звіт по спеціальностях за факультетами</h1>
+
+<div th:each="entry : ${specialtiesByFaculty}">
+    <h2 th:text="${entry.key}">Факультет</h2>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Назва спеціальності</th>
+            <th>Код спеціальності</th>
+            <th>Бюджетні місця</th>
+            <th>Контрактні місця</th>
+            <th>Всього місць</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="specialty : ${entry.value}">
+            <td th:text="${specialty.id}">1</td>
+            <td th:text="${specialty.name}">Інформатика</td>
+            <td th:text="${specialty.number}">122</td>
+            <td th:text="${specialty.numberOfBudgetPlaces}">30</td>
+            <td th:text="${specialty.numberOfContractPlaces}">50</td>
+            <td th:text="${specialty.sumOfPlaces}">80</td>
+        </tr>
+        </tbody>
+    </table>
+    <br/>
+</div>
+
+</body>
+</html>
+
+</body>
+</html>

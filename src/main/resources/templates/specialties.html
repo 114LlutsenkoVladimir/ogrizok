@@ -10,35 +10,5 @@
 
 
 
-
-
-<form th:action="@{findSpecialty}" method="post">
-    <input type="number" name="id" placeholder="id">
-    <input type="text" name="name" placeholder="name">
-    <button type="submit">find</button>
-</form>
-
-<table border="1">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Номер</th>
-        <th>Назва</th>
-        <th>Факультет</th>
-        <th>Бюджетних місць</th>
-        <th>Контрактних місць</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="s : ${session.specialties}">
-        <td th:text="${s.id}">Id</td>
-        <td th:text="${s.number}">Номер</td>
-        <td th:text="${s.name}">Назва</td>
-        <td th:text="${s.faculty.name}">Факультет</td>
-        <td th:text="${s.numberOfBudgetPlaces}">Бюджетних місць</td>
-        <td th:text="${s.numberOfContractPlaces}">Контрактних місць</td>
-    </tr>
-    </tbody>
-</table>
 </body>
 </html>

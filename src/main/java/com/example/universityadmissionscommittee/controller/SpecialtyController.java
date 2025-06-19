@@ -2,6 +2,7 @@ package com.example.universityadmissionscommittee.controller;
 
 import com.example.universityadmissionscommittee.data.Faculty;
 import com.example.universityadmissionscommittee.data.Specialty;
+import com.example.universityadmissionscommittee.dto.SpecialtyReportDto;
 import com.example.universityadmissionscommittee.service.FacultyService;
 import com.example.universityadmissionscommittee.service.SpecialtyService;
 import jakarta.servlet.http.HttpSession;
@@ -26,13 +27,13 @@ public class SpecialtyController {
 
     @GetMapping("/")
     public String showForm(HttpSession session) {
-        session.setAttribute("specialties", specialtyService.findAll());
+        session.setAttribute("specialtiesByFaculty",
+                specialtyService.getSpecialtiesByOneFaculty("Медицина"));
         session.setAttribute("faculties", facultyService.findAll());
         session.setAttribute("selectedFacultyId", 1L);
         updateTable(session);
         return "specialties";
     }
-
 
     @PostMapping("/updateSpecialty")
     public String updateSpecialty(@RequestParam Long id,
@@ -77,7 +78,10 @@ public class SpecialtyController {
 
     public void updateTable(HttpSession session) {
         Faculty faculty = facultyService.findById((Long)session.getAttribute("selectedFacultyId"));
-        List<Specialty> specialties = specialtyService.filterByFaculty(specialtyService.findAll(), faculty);
-        session.setAttribute("specialties", specialties);
+        Map<String, List<SpecialtyReportDto>> specialties =
+                specialtyService.getSpecialtiesByOneFaculty(
+                        faculty.getName()
+                );
+        session.setAttribute("specialtiesByFaculty", specialties);
     }
 }

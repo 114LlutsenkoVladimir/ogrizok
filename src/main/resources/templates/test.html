@@ -8,30 +8,7 @@
 <div th:replace="fragments/header"></div>
 <h1>Отчет по специальностям</h1>
 
-<div th:each="entry : ${report}">
-    <h2 th:text="${entry.key}">Специальность</h2>
 
-    <table>
-        <thead>
-        <tr>
-            <th>ФИО</th>
-            <th>Телефон</th>
-            <th>Email</th>
-            <th th:each="subject : ${subjectBySpecialties[entry.key]}"
-                th:text="${subject}">Предмет</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="applicant : ${entry.value}">
-            <td th:text="${applicant.lastName + ' ' + applicant.firstName}">ФИО</td>
-            <td th:text="${applicant.phoneNumber}">Телефон</td>
-            <td th:text="${applicant.email}">Email</td>
-            <td th:each="subject : ${subjectBySpecialties[entry.key]}"
-                th:text="${applicant.subjectAndScore[subject.toString()]} ?: '-'">балл</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
 
 </body>
 </html>

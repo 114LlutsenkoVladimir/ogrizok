@@ -42,7 +42,17 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
         );
     }
 
-    public List<SpecialtyReportDto> specialtiesByFacultiesData(List<String> facultyNames) {
-        return repository.specialtiesByFacultiesData(facultyNames);
+    public Map<String, List<SpecialtyReportDto>> getSpecialtiesByFaculties(List<String> facultyNames) {
+        List<SpecialtyReportDto> specialties = specialtyService.specialtiesByFacultiesData(facultyNames);
+        return specialties.stream()
+                .collect(Collectors.groupingBy(SpecialtyReportDto::getFacultyName));
+    }
+
+    public Map<String, List<SpecialtyReportDto>> getSpecialtiesByOneFaculty(String facultyName) {
+        return getSpecialtiesByFaculties(new ArrayList<>(List.of(facultyName)));
+    }
+
+    public Map<String, List<SpecialtyReportDto>> getSpecialtiesByFacultiesReport() {
+        return getSpecialtiesByFaculties(specialtyService.findAll().stream().map(Specialty::getName).toList());
     }
 }
