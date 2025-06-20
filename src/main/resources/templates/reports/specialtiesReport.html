@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <div th:replace="fragments/header"></div>
+    <h1>Отчет по специальностям</h1>
+    <div th:replace="specialties/fragments/table"></div>
+</body>
+</html>

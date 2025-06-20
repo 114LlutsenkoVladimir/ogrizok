@@ -36,9 +36,13 @@ public class Applicant {
     )
     private Set<Benefit> benefits = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "specialty_id")
-    private Specialty specialty;
+    @ManyToMany
+    @JoinTable(
+            name = "specialty_for_applicant",
+            joinColumns = @JoinColumn(name = "applicant_id"),
+            inverseJoinColumns = @JoinColumn(name = "specialty_id")
+    )
+    private Set<Specialty> specialties = new HashSet<>();
 
 
     @Enumerated(EnumType.STRING)
@@ -101,10 +105,6 @@ public class Applicant {
         return benefits;
     }
 
-    public Specialty getSpecialty() {
-        return specialty;
-    }
-
     public ApplicantStatus getStatusType() {
         return statusType;
     }
@@ -162,8 +162,8 @@ public class Applicant {
         this.examResults = examResults;
     }
 
-    public void setSpecialty(Specialty specialty) {
-        this.specialty = specialty;
+    public void addSpecialty(Specialty specialty) {
+        this.specialties.add(specialty);
     }
 
     public void setStatusType(ApplicantStatus statusType) {
