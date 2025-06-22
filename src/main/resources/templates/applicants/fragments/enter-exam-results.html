@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="/enterExamResults">
+        <span>Экзамены и результаты:</span><br/>
+        <div th:each="subject : ${allSubjects}">
+            <span th:text="${subject.name}"></span>:
+            <input th:attr="name=${'subjectAndScore[' + subject.id + ']'}"
+                   type="number" />
+        </div>
+        <button type="submit">add exam results</button>
+    </form>
+
+</body>
+</html>

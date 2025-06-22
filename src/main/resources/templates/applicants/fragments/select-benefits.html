@@ -5,17 +5,14 @@
     <title>Title</title>
 </head>
 <body>
-<form action="/selectBenefits" method="get">
-    <div th:each="benefit : ${session.allBenefits}">
-        <label>
-            <input type="checkbox"
-                   name="benefits"
-                   th:value="${benefit.id}"
-                   th:checked="${#lists.contains(session.selectedBenefitsIds, benefit.id)}"
-                   onchange="this.form.submit()" />
-            <span th:text="${benefit.name}"></span>
-        </label>
+    <div>
+        <span>Льготы:</span><br/>
+        <div th:each="b : ${allBenefits}">
+            <input th:attr="name=${'benefitIds'}"
+                   th:value="${b.id}"
+                   type="checkbox" />
+            <span th:text="${b.name}"></span><br/>
+        </div>
     </div>
-</form>
 </body>
 </html>

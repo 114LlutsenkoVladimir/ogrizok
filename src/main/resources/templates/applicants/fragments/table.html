@@ -10,13 +10,13 @@
 
   <table>
     <thead>
-    <tr>
-      <th>ФИО</th>
-      <th>Телефон</th>
-      <th>Email</th>
-      <th th:each="subject : ${subjectBySpecialties[entry.key]}"
-          th:text="${subject}">Предмет</th>
-    </tr>
+      <tr>
+        <th>ФИО</th>
+        <th>Телефон</th>
+        <th>Email</th>
+        <th th:each="subject : ${subjectBySpecialties[entry.key]}"
+            th:text="${subject}">Предмет</th>
+      </tr>
     </thead>
     <tbody>
     <tr th:each="applicant : ${entry.value}">

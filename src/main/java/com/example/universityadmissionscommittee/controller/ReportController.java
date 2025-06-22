@@ -2,6 +2,7 @@ package com.example.universityadmissionscommittee.controller;
 
 import com.example.universityadmissionscommittee.data.Specialty;
 import com.example.universityadmissionscommittee.data.Subject;
+import com.example.universityadmissionscommittee.service.ApplicantService;
 import com.example.universityadmissionscommittee.service.FacultyService;
 import com.example.universityadmissionscommittee.service.SpecialtyService;
 import org.springframework.stereotype.Controller;
@@ -19,16 +20,16 @@ import java.util.stream.Collectors;
 public class ReportController {
 
     private FacultyService facultyService;
-
-    private ReportService reportService;
-
     private SpecialtyService specialtyService;
 
-    public ReportController(FacultyService facultyService, ReportService
-            reportService, SpecialtyService specialtyService) {
+    private ApplicantService applicantService;
+
+    public ReportController(FacultyService facultyService,
+                            SpecialtyService specialtyService,
+                            ApplicantService applicantService) {
         this.facultyService = facultyService;
-        this.reportService = reportService;
         this.specialtyService = specialtyService;
+        this.applicantService = applicantService;
     }
 
     @GetMapping("/")
@@ -45,7 +46,7 @@ public class ReportController {
     @RequestMapping("/applicantsReport")
     public String applicantsReport(Model model) {
         model.addAttribute("report",
-                reportService.getApplicantsBySpecialtiesReport());
+                applicantService.getApplicantsBySpecialtiesReport());
 
         Map<String, List<String>> subjectBySpecialties = new HashMap<>();
         List<Specialty> specialties = specialtyService.findAll();

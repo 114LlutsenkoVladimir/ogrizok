@@ -3,6 +3,7 @@ package com.example.universityadmissionscommittee.controller;
 import com.example.universityadmissionscommittee.data.*;
 import com.example.universityadmissionscommittee.data.enums.ApplicantStatus;
 import com.example.universityadmissionscommittee.data.enums.SpecialtyType;
+import com.example.universityadmissionscommittee.dto.ApplicantCreateDto;
 import com.example.universityadmissionscommittee.service.ApplicantService;
 import com.example.universityadmissionscommittee.service.BenefitService;
 import com.example.universityadmissionscommittee.service.SpecialtyService;
@@ -21,9 +22,7 @@ public class ApplicantController {
     private ApplicantService applicantService;
     private SpecialtyService specialtyService;
     private SubjectService subjectService;
-
     private BenefitService benefitService;
-
     public ApplicantController(ApplicantService applicantService,
                                SpecialtyService specialtyService,
                                SubjectService subjectService,
@@ -48,45 +47,31 @@ public class ApplicantController {
     }
 
 
-    @GetMapping("/new")
-    public String showApplicantForm(@RequestParam(required = false) Long specialtyId, Model model) {
-
-        model.addAttribute("specialties", specialtyService.findAll());
-        model.addAttribute("applicants", applicantService.findAll());
-        if (specialtyId != null) {
-            Specialty specialty = specialtyService.findById(specialtyId);
-            model.addAttribute("subjects", specialty.getNeededSubjects());
-            model.addAttribute("selectedSpecialtyId", specialtyId);
-        }
-
-        return "index";
-    }
-
     @PostMapping("/addApplicant")
-    public String addApplicant(@ModelAttribute Applicant applicant,
+    public String addApplicant(@ModelAttribute ApplicantCreateDto dto,
                                HttpSession session) {
 
-        Specialty specialty = specialtyService.findById((Long) session.getAttribute("selectedSpecialtyId"));
-        applicant.linkSpecialty(specialty);
+        Applicant applicant = new Applicant(
+                dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPhoneNumber()
+        );
 
-        Map<Long, Integer> enteredResults = (Map<Long, Integer>) session.getAttribute("enteredResults");
+        dto.getBenefitIds().forEach(
+                id -> applicant.addBenefit(benefitService.findById(id))
+        );
 
-        enteredResults.forEach((key, value) -> {
-            ExamResult examResult = new ExamResult(value);
-            examResult.linkSubject(subjectService.findById(key));
-            applicant.linkExamResult(examResult);
+        dto.getSpecialtyIds().forEach(
+                id -> applicant.addSpecialty(specialtyService.findById(id))
+        );
+
+        dto.getSubjectAndScore().forEach((subjectId, score) -> {
+                ExamResult examResult =
+                        new ExamResult(applicant, subjectService.findById(subjectId), score);
+                applicant.linkExamResult(examResult);
         });
 
-        List<?> rawIds = (List<?>) session.getAttribute("selectedBenefitsIds");
-        List<Long> benefitsIds = rawIds.stream()
-                .map(id -> Long.valueOf(id.toString()))
-                .toList();
-
-        Set<Benefit> benefits = benefitsIds.stream().map( i -> benefitService.findById(i)).collect(Collectors.toSet());
-        applicant.addBenefits(benefits);
         applicantService.save(applicant);
         updateTable(session);
-        return "index";
+        return "page-for-applicant";
     }
 
     private void updateTable(HttpSession session) {

@@ -5,14 +5,14 @@
     <title>Title</title>
 </head>
 <body>
-<form method="get" action="/selectSpecialty" id="specialtySelector">
-    <select name="specialtyId" onchange="this.form.submit()">
-        <option th:each="s : ${session.specialties}"
-                th:value="${s.id}"
-                th:text="${s.name}"
-                th:selected="${s.id == session.selectedSpecialtyId}">
-        </option>
-    </select>
-</form>
+<div>
+    <span>Льготы:</span><br/>
+    <div th:each="b : ${allSpecialties}">
+        <input th:attr="name=${'specialtiesIds'}"
+               th:value="${s.id}"
+               type="checkbox" />
+        <span th:text="${s.name}"></span><br/>
+    </div>
+</div>
 </body>
 </html>

@@ -60,14 +60,7 @@ public class Applicant {
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-
     }
-
-    public void linkSpecialty(Specialty specialty) {
-        this.specialty = specialty;
-    }
-
-
     public void addBenefit(Benefit benefit) {
         benefits.add(benefit);
     }

@@ -22,30 +22,14 @@
                 <td> <input type="tel" pattern="^\+380\d{9}$" name="phoneNumber" placeholder= "+380XXXXXXXXX" required/> </td>
             </tr>
         </table>
-
-        <div th:if="${session.subjects != null}">
-
-            <table>
-                <div th:each="subject : ${session.subjects}">
-                    <tr>
-                        <td>
-                            <label th:for="${'subject_' + subject.id}" th:text="${subject.name}"></label>
-                        </td>
-                        <td>
-                            <input type="number"
-                                   th:id="${'subject_' + subject.id}"
-                                   th:name="${'results[' + subject.id + ']'}"
-                                   min="0" max="200" required>
-                        </td>
-                    </tr>
-
-                </div>
-            </table>
-        </div>
-
     </div>
+
+    <div th:replace="applicants/fragments/enter-exam-results"></div>
+    <div th:replace="applicants/fragments/select-benefits"></div>
+    <div th:replace="applicants/fragments/select-specialty"></div>
+
     <button type="submit">Add Applicant</button>
-    <input type="hidden" name="specialtyId" th:value="${session.selectedSpecialtyId}" />
+
 </form>
 </body>
 </html>
