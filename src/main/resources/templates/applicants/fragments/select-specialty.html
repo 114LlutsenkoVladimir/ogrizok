@@ -5,14 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-<div>
-    <span>Льготы:</span><br/>
-    <div th:each="b : ${allSpecialties}">
-        <input th:attr="name=${'specialtiesIds'}"
-               th:value="${s.id}"
-               type="checkbox" />
-        <span th:text="${s.name}"></span><br/>
-    </div>
-</div>
+<div id="available-specialties"></div>
 </body>
 </html>

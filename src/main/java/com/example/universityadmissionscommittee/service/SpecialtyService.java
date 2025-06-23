@@ -3,15 +3,14 @@ package com.example.universityadmissionscommittee.service;
 
 import com.example.universityadmissionscommittee.data.Faculty;
 import com.example.universityadmissionscommittee.data.Specialty;
+import com.example.universityadmissionscommittee.data.Subject;
 import com.example.universityadmissionscommittee.data.enums.SpecialtyType;
+import com.example.universityadmissionscommittee.dto.SpecialtyIdAndNameDto;
 import com.example.universityadmissionscommittee.dto.SpecialtyReportDto;
 import com.example.universityadmissionscommittee.repository.SpecialtyRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,7 +42,7 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
     }
 
     public Map<String, List<SpecialtyReportDto>> getSpecialtiesByFaculties(List<String> facultyNames) {
-        List<SpecialtyReportDto> specialties = specialtyService.specialtiesByFacultiesData(facultyNames);
+        List<SpecialtyReportDto> specialties = repository.specialtiesByFacultiesData(facultyNames);
         return specialties.stream()
                 .collect(Collectors.groupingBy(SpecialtyReportDto::getFacultyName));
     }
@@ -53,6 +52,15 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
     }
 
     public Map<String, List<SpecialtyReportDto>> getSpecialtiesByFacultiesReport() {
-        return getSpecialtiesByFaculties(specialtyService.findAll().stream().map(Specialty::getName).toList());
+        return getSpecialtiesByFaculties(repository.findAll().stream().map(Specialty::getName).toList());
+    }
+
+    public List<SpecialtyIdAndNameDto> findAvailableForSubjects(List<Long> subjectIds) {
+        return findAll().stream().filter(
+                s -> subjectIds.contains(
+                        s.getNeededSubjects().stream().map(Subject::getId).toList())
+        ).map(s -> new SpecialtyIdAndNameDto(s.getId(), s.getName()))
+                .toList();
+
     }
 }
