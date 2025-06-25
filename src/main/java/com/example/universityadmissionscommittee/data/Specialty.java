@@ -37,7 +37,7 @@ public class Specialty {
     private Set<Subject> neededSubjects = new HashSet<>();
 
 
-    @OneToMany(mappedBy = "specialty")
+    @ManyToMany(mappedBy = "specialties")
     private Set<Applicant> applicants = new HashSet<>();
 
     @Enumerated(EnumType.STRING)

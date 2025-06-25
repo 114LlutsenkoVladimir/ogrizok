@@ -16,10 +16,14 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
 
     private final ExamResultRepository examResultRepository;
 
+    private final SpecialtyService specialtyService;
+
     protected ApplicantService(ApplicantRepository repository,
-                               ExamResultRepository examResultRepository) {
+                               ExamResultRepository examResultRepository,
+                               SpecialtyService specialtyService) {
         super(repository);
         this.examResultRepository = examResultRepository;
+        this.specialtyService = specialtyService;
     }
 
     @Override
@@ -31,11 +35,6 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
     }
 
 
-    public List<Applicant> getSortedApplicantListWithSpecialty(Specialty specialty) {
-        return findAll().stream().filter(
-                i -> i.getSpecialty().equals(specialty)
-        ).sorted(Comparator.comparingDouble(Applicant::calculateAverageScore).reversed()).toList();
-    }
 
     public Applicant findByEmail(String email) {
         return repository.findByEmail(email).orElseThrow(

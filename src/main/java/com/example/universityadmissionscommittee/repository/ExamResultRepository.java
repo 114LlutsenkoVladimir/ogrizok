@@ -16,7 +16,7 @@ public interface ExamResultRepository extends JpaRepository<ExamResult, Long> {
         from ExamResult e
         join e.applicant a
         join e.subject s
-        join a.specialty sp
+        join a.specialties sp
     """)
     List<ExamRowDto> examRowData();
 

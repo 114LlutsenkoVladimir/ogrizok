@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<div th:each="entry : ${report}">
+<div th:each="entry : ${session.report}">
   <h2 th:text="${entry.key}">Специальность</h2>
 
   <table>
@@ -14,7 +14,7 @@
         <th>ФИО</th>
         <th>Телефон</th>
         <th>Email</th>
-        <th th:each="subject : ${subjectBySpecialties[entry.key]}"
+        <th th:each="subject : ${session.subjectBySpecialties[entry.key]}"
             th:text="${subject}">Предмет</th>
       </tr>
     </thead>

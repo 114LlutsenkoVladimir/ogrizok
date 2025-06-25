@@ -6,8 +6,8 @@
 </head>
 <body>
     <div>
-        <span>Льготы:</span><br/>
-        <div th:each="b : ${allBenefits}">
+        <span>Льготы:</span><br>
+        <div th:each="b : ${session.allBenefits}">
             <input th:attr="name=${'benefitIds'}"
                    th:value="${b.id}"
                    type="checkbox" />
