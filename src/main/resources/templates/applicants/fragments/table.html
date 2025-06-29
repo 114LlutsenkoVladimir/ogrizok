@@ -23,7 +23,7 @@
       <td th:text="${applicant.lastName + ' ' + applicant.firstName}">ФИО</td>
       <td th:text="${applicant.phoneNumber}">Телефон</td>
       <td th:text="${applicant.email}">Email</td>
-      <td th:each="subject : ${subjectBySpecialties[entry.key]}"
+      <td th:each="subject : ${session.subjectBySpecialties[entry.key]}"
           th:text="${applicant.subjectAndScore[subject.toString()]} ?: '-'">балл</td>
     </tr>
     </tbody>

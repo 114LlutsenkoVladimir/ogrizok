@@ -1,10 +1,10 @@
 package com.example.universityadmissionscommittee.service;
 
-import com.example.universityadmissionscommittee.data.Applicant;
-import com.example.universityadmissionscommittee.data.Benefit;
-import com.example.universityadmissionscommittee.data.Specialty;
+import com.example.universityadmissionscommittee.data.*;
+import com.example.universityadmissionscommittee.dto.ApplicantCreateDto;
 import com.example.universityadmissionscommittee.dto.ApplicantReportDto;
 import com.example.universityadmissionscommittee.dto.ExamRowDto;
+import com.example.universityadmissionscommittee.exception.applicant.ApplicantCreationException;
 import com.example.universityadmissionscommittee.repository.ApplicantRepository;
 import com.example.universityadmissionscommittee.repository.ExamResultRepository;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,20 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
 
     private final SpecialtyService specialtyService;
 
+    private final BenefitService benefitService;
+
+    private final SubjectService subjectService;
+
     protected ApplicantService(ApplicantRepository repository,
                                ExamResultRepository examResultRepository,
-                               SpecialtyService specialtyService) {
+                               SpecialtyService specialtyService,
+                               BenefitService benefitService,
+                               SubjectService subjectService) {
         super(repository);
         this.examResultRepository = examResultRepository;
         this.specialtyService = specialtyService;
+        this.benefitService = benefitService;
+        this.subjectService = subjectService;
     }
 
     @Override
@@ -91,5 +99,37 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
                 .stream().map(Specialty::getName).toList());
     }
 
+    public void createApplicantFromDto(ApplicantCreateDto dto) {
+
+        if (repository.existsByPhoneNumber(dto.getPhoneNumber()))
+            throw new ApplicantCreationException("Такий номер телефона вже зайнятий");
+
+        if (repository.existsByEmail(dto.getEmail()))
+            throw new ApplicantCreationException("Така пошта вже зайнята");
+
+        if (dto.getSpecialtyIds().isEmpty())
+            throw new ApplicantCreationException("Оберіть хоча б 1 спеціальність");
+
+        Applicant applicant = new Applicant(
+                dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPhoneNumber()
+        );
+
+        dto.getBenefitIds().forEach(
+                id -> applicant.addBenefit(benefitService.findById(id))
+        );
+
+        dto.getSpecialtyIds().forEach(id -> applicant.addSpecialty(specialtyService.findById(id)));
+
+
+        dto.getSubjectAndScore().entrySet().stream()
+                .filter(e -> e.getValue() != null && e.getKey() != null)
+                .forEach((entry) -> {
+                    ExamResult examResult =
+                            new ExamResult(applicant, subjectService.findById(entry.getKey()), entry.getValue());
+                    applicant.linkExamResult(examResult);
+                });
+
+        save(applicant);
+    }
 
 }

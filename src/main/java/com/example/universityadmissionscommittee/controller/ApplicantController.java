@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 //@RequestMapping("/applicants")
@@ -35,12 +36,11 @@ public class ApplicantController {
     public String index(HttpSession session) {
         session.setAttribute("specialties", specialtyService.findAll());
         Specialty specialty = specialtyService.findById(1L);
-        session.setAttribute("subjects", specialty.getNeededSubjects());
+        session.setAttribute("allSubjects", subjectService.findAll());
         session.setAttribute("selectedSpecialtyId", 1L);
-        updateTable(session);
+//        updateTable(session);
         session.setAttribute("allBenefits", benefitService.findAll());
         session.setAttribute("selectedBenefitsIds", new ArrayList<>());
-        session.setAttribute("statusTypes", ApplicantStatus.values());
         return "applicants/page-for-applicant";
     }
 
@@ -49,26 +49,8 @@ public class ApplicantController {
     public String addApplicant(@ModelAttribute ApplicantCreateDto dto,
                                HttpSession session) {
 
-        Applicant applicant = new Applicant(
-                dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPhoneNumber()
-        );
-
-        dto.getBenefitIds().forEach(
-                id -> applicant.addBenefit(benefitService.findById(id))
-        );
-
-        dto.getSpecialtyIds().forEach(
-                id -> applicant.addSpecialty(specialtyService.findById(id))
-        );
-
-        dto.getSubjectAndScore().forEach((subjectId, score) -> {
-                ExamResult examResult =
-                        new ExamResult(applicant, subjectService.findById(subjectId), score);
-                applicant.linkExamResult(examResult);
-        });
-
-        applicantService.save(applicant);
-        updateTable(session);
+        applicantService.createApplicantFromDto(dto);
+//        updateTable(session);
         return "applicants/page-for-applicant";
     }
 
@@ -77,9 +59,19 @@ public class ApplicantController {
         Specialty specialty = specialtyService.findById(id);
         session.setAttribute("report",
                 applicantService.getApplicantsByOneSpecialty(specialty.getName()));
+
+        Map<String, List<String>> subjectBySpecialties = new HashMap<>();
+        List<Specialty> specialties = specialtyService.findAll();
+
+        for (Specialty s : specialties) {
+            subjectBySpecialties.put(s.getName(),
+                    s.getNeededSubjects().stream().map(Subject::getName).collect(Collectors.toList()));
+        }
+        session.setAttribute("subjectBySpecialties", subjectBySpecialties);
+
     }
 
-    @GetMapping("/selectSpecialty")
+    @GetMapping("/selectSpecialtyForTable")
     public String selectSpecialty(@RequestParam Long specialtyId, HttpSession session) {
         session.setAttribute("selectedSpecialtyId", specialtyId);
         Specialty specialty = specialtyService.findById(specialtyId);
@@ -95,15 +87,6 @@ public class ApplicantController {
         return "applicants/page-for-applicant";
     }
 
-
-    @GetMapping("/selectBenefits")
-    public String processSelectedBenefits(@RequestParam(required = false) List<Long> benefits,
-                                          HttpSession session) {
-        if(benefits== null)
-            benefits = new ArrayList<>();
-        session.setAttribute("selectedBenefitsIds", benefits);
-        return "applicants/page-for-applicant";
-    }
 
     @PostMapping("/availableSpecialties")
     @ResponseBody

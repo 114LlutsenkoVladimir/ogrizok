@@ -1,0 +1,19 @@
+<link rel="stylesheet" th:href="@{/css/error-popup-style.css}">
+
+<div th:if="${errorMessage}" id="error-modal" class="modal">
+    <div class="modal-content">
+        <img src="/images/incel.png" alt="!" class="icon-img">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+</div>
+
+<script>
+    function closeModal() {
+        const modal = document.getElementById("error-modal");
+        if (modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>

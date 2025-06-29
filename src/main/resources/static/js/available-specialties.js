@@ -1,6 +1,4 @@
-const btn = document.getElementById('checkSpecialties');
-btn.addEventListener('click', async () => {
-    // 1️⃣ Собираем ID предметов, у которых есть значение
+async function checkAvailableSpecialties() {
     const subjectIds = [];
     document.querySelectorAll('.exam-result').forEach(el => {
         const value = el.value.trim();
@@ -9,37 +7,52 @@ btn.addEventListener('click', async () => {
             subjectIds.push(Number(subjectId));
         }
     });
-    if (subjectIds.length === 0) {
-        alert("Введите хотя бы один результат экзамена");
-        return;
-    }
 
-    // 2️⃣ Отправляем только список subjectId
-    const response = await fetch("/availableSpecialties", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(subjectIds)
-    });
-    if (!response.ok) {
-        alert("Не удалось получить список доступных специальностей");
-        return;
-    }
-
-    const availableSpecialties = await response.json();
-
-    // 3️⃣ Отображаем результат
     const container = document.getElementById("available-specialties");
     container.innerHTML = "";
 
-    if (availableSpecialties.length === 0) {
-        container.innerHTML = "<p>Нет доступных специальностей для введённых результатов</p>";
-    } else {
-        const ul = document.createElement("ul");
-        availableSpecialties.forEach(spec => {
-            const li = document.createElement("li");
-            li.textContent = spec.name;
-            ul.appendChild(li);
-        });
-        container.appendChild(ul);
+    if (subjectIds.length === 0) {
+        return;
     }
+
+    try {
+        const response = await fetch("/availableSpecialties", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(subjectIds)
+        });
+
+        if (!response.ok) {
+            container.innerHTML = "<p style='color:red'>Ошибка загрузки</p>";
+            return;
+        }
+
+        const specialties = await response.json();
+
+        if (specialties.length === 0) {
+            container.innerHTML = "<p>Нет подходящих специальностей</p>";
+        } else {
+            specialties.forEach(spec => {
+                const label = document.createElement("label");
+
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.name = "specialtyIds"; // важно!
+                checkbox.value = spec.id;
+
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(" " + spec.name));
+                container.appendChild(label);
+                container.appendChild(document.createElement("br"));
+            });
+        }
+    } catch (err) {
+        container.innerHTML = "<p style='color:red'>Сетевая ошибка</p>";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".exam-result").forEach(input => {
+        input.addEventListener("input", checkAvailableSpecialties);
+    });
 });

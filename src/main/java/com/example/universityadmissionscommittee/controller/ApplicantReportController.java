@@ -48,9 +48,6 @@ public class ApplicantReportController {
         for (Specialty s : specialties) {
             subjectBySpecialties.put(s.getName(),
                     s.getNeededSubjects().stream().map(Subject::getName).collect(Collectors.toList()));
-            for (Subject subject : s.getNeededSubjects()) {
-                System.out.println(subject.getName());
-            }
         }
         model.addAttribute("subjectBySpecialties", subjectBySpecialties);
         return "test";

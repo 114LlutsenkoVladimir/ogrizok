@@ -56,11 +56,11 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
     }
 
     public List<SpecialtyIdAndNameDto> findAvailableForSubjects(List<Long> subjectIds) {
-        return findAll().stream().filter(
-                s -> subjectIds.contains(
-                        s.getNeededSubjects().stream().map(Subject::getId).toList())
-        ).map(s -> new SpecialtyIdAndNameDto(s.getId(), s.getName()))
+        return findAll().stream()
+                .filter(s -> s.getNeededSubjects().stream()
+                        .map(Subject::getId)
+                        .allMatch(subjectIds::contains))
+                .map(s -> new SpecialtyIdAndNameDto(s.getId(), s.getName()))
                 .toList();
-
     }
 }

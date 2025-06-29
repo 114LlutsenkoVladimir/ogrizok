@@ -36,7 +36,7 @@ public class Applicant {
     )
     private Set<Benefit> benefits = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "specialty_for_applicant",
             joinColumns = @JoinColumn(name = "applicant_id"),
@@ -157,6 +157,7 @@ public class Applicant {
 
     public void addSpecialty(Specialty specialty) {
         this.specialties.add(specialty);
+        specialty.getApplicants().add(this);
     }
 
     public void setStatusType(ApplicantStatus statusType) {
