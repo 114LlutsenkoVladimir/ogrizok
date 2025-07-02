@@ -1,8 +1,10 @@
 package com.example.universityadmissionscommittee.controller;
 
+
 import com.example.universityadmissionscommittee.data.*;
 import com.example.universityadmissionscommittee.data.enums.ApplicantStatus;
 import com.example.universityadmissionscommittee.dto.ApplicantCreateDto;
+import com.example.universityadmissionscommittee.dto.ApplicantReportDto;
 import com.example.universityadmissionscommittee.dto.SpecialtyIdAndNameDto;
 import com.example.universityadmissionscommittee.service.ApplicantService;
 import com.example.universityadmissionscommittee.service.BenefitService;
@@ -10,6 +12,7 @@ import com.example.universityadmissionscommittee.service.SpecialtyService;
 import com.example.universityadmissionscommittee.service.SubjectService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -139,6 +142,15 @@ public class ApplicantController {
         }
         session.setAttribute("applicants", applicants);
         return "applicants/page-for-applicant";
+    }
+
+
+    @GetMapping("/filterApplicantsBySpecialty")
+    public String filterApplicants(@RequestParam String specialtyName, Model model) {
+        Map<String, List<ApplicantReportDto>> applicants
+                = applicantService.getApplicantsByOneSpecialty(specialtyName);
+        model.addAttribute("report", applicants);
+        return "applicants/fragments/select-specialty-for-table :: fragment";
     }
 
 

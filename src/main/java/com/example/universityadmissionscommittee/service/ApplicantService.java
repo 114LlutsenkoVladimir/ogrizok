@@ -4,7 +4,6 @@ import com.example.universityadmissionscommittee.data.*;
 import com.example.universityadmissionscommittee.dto.ApplicantCreateDto;
 import com.example.universityadmissionscommittee.dto.ApplicantReportDto;
 import com.example.universityadmissionscommittee.dto.ExamRowDto;
-import com.example.universityadmissionscommittee.exception.applicant.ApplicantCreationException;
 import com.example.universityadmissionscommittee.repository.ApplicantRepository;
 import com.example.universityadmissionscommittee.repository.ExamResultRepository;
 import org.springframework.stereotype.Service;
@@ -102,13 +101,13 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
     public void createApplicantFromDto(ApplicantCreateDto dto) {
 
         if (repository.existsByPhoneNumber(dto.getPhoneNumber()))
-            throw new ApplicantCreationException("Такий номер телефона вже зайнятий");
+            throw new RuntimeException("Такий номер телефона вже зайнятий");
 
         if (repository.existsByEmail(dto.getEmail()))
-            throw new ApplicantCreationException("Така пошта вже зайнята");
+            throw new RuntimeException("Така пошта вже зайнята");
 
         if (dto.getSpecialtyIds().isEmpty())
-            throw new ApplicantCreationException("Оберіть хоча б 1 спеціальність");
+            throw new RuntimeException("Оберіть хоча б 1 спеціальність");
 
         Applicant applicant = new Applicant(
                 dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPhoneNumber()
