@@ -1,18 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Экзамены</title>
-</head>
-<body>
-<span>Экзамены и результаты:</span><br/>
-<div th:each="subject : ${session.allSubjects}">
-    <span th:text="${subject.name}"></span>:
-    <input
-            type="number"
-            class="exam-result"
-            th:name="${'subjectAndScore[' + subject.id + ']'}"
-            th:data-subject-id="${subject.id}" />
+<div>
+    <span>Экзамены и результаты:</span><br>
+    <div id="subject-scores-container"></div>
 </div>
-</body>
-</html>

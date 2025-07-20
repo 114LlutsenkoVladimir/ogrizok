@@ -1,19 +1,11 @@
-<link rel="stylesheet" th:href="@{/css/error-popup-style.css}">
+<link rel="stylesheet" href="/css/error-popup-style.css" />
 
-<div th:if="${errorMessage}" id="error-modal" class="modal">
+<div id="error-modal" class="modal" style="display:none">
     <div class="modal-content">
         <img src="/images/incel.png" alt="!" class="icon-img">
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        <p th:text="${errorMessage}"></p>
+        <span id="error-close-btn" class="close-btn" role="button">&times;</span>
+        <p id="error-message-text">Произошла ошибка</p>
     </div>
-
 </div>
 
-<script>
-    function closeModal() {
-        const modal = document.getElementById("error-modal");
-        if (modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
+<script type="module" src="/js/errorPopup/errorPopup.js"></script>

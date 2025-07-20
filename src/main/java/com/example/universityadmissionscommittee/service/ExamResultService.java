@@ -2,7 +2,7 @@ package com.example.universityadmissionscommittee.service;
 
 import com.example.universityadmissionscommittee.data.ExamResult;
 import com.example.universityadmissionscommittee.dto.ExamRowDto;
-import com.example.universityadmissionscommittee.repository.ExamResultRepository;
+import com.example.universityadmissionscommittee.repository.examResult.ExamResultRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,5 +13,10 @@ public class ExamResultService  extends AbstractCrudService<ExamResult, Long, Ex
         super(repository);
     }
 
-    public List<ExamRowDto> getExamRowData() {return repository.examRowData(); }
+    public List<ExamRowDto> getExamRowData(List<Long> specialtyIds) {return repository.examRowData(specialtyIds); }
+
+    public List<ExamRowDto> findExamRowsByApplicantId(Long applicantId) {
+
+        return repository.findExamRowsByApplicantId(applicantId);
+    }
 }

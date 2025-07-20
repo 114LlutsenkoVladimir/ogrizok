@@ -1,5 +1,6 @@
 package com.example.universityadmissionscommittee.data;
 
+import com.example.universityadmissionscommittee.dto.ExamRowDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Setter;
@@ -9,11 +10,11 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "exam_result")
+
 public class ExamResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
 
     @ManyToOne
     @JoinColumn(name = "applicant_id")

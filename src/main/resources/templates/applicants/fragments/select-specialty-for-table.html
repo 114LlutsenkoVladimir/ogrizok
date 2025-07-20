@@ -1,10 +1,1 @@
-<div th:fragment="fragment">
-    <label for="filter-specialty">Фильтр по специальности:</label>
-    <select id="filter-specialty">
-        <option value="">-- Все --</option>
-        <option th:each="s : ${session.specialties}"
-                th:value="${s.name}"
-                th:text="${s.name}">
-        </option>
-    </select>
-</div>
+<select id="specialty-select"></select>

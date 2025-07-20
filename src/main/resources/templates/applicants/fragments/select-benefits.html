@@ -1,18 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <div>
-        <span>Льготы:</span><br>
-        <div th:each="b : ${session.allBenefits}">
-            <input th:attr="name=${'benefitIds'}"
-                   th:value="${b.id}"
-                   type="checkbox" />
-            <span th:text="${b.name}"></span><br/>
-        </div>
-    </div>
-</body>
-</html>
+<div>
+    <span>Льготы:</span><br>
+    <div id="benefitIds"></div>
+</div>
+

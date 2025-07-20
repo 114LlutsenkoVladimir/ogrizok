@@ -1,25 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-<form id="addApplicantForm" method="POST" action="/addApplicant">
+<div id="addApplicantForm">
     <div class="table-wrapper">
         <table>
             <tr>
-                <td> <input type="text" name="firstName" placeholder="First name" required/> </td>
+                <td> <input type="text" id="firstName" placeholder="First name" required/> </td>
             </tr>
             <tr>
-                <td> <input type="text" name="lastName" placeholder="Second name" required/> </td>
+                <td> <input type="text" id ="lastName" placeholder="Second name" required/> </td>
             </tr>
             <tr>
-                <td> <input type="email" name="email" placeholder="Email" required/> </td>
+                <td> <input type="email" id ="email" placeholder="Email" required/> </td>
             </tr>
             <tr>
-                <td> <input type="tel" pattern="^\+380\d{9}$" name="phoneNumber" placeholder= "+380XXXXXXXXX" required/> </td>
+                <td> <input type="tel" pattern="^\+380\d{9}$" id ="phoneNumber" placeholder= "+380XXXXXXXXX" required/> </td>
             </tr>
         </table>
     </div>
@@ -28,9 +20,5 @@
     <div th:replace="applicants/fragments/select-benefits"></div>
     <div th:replace="applicants/fragments/select-specialty"></div>
 
-    <button type="submit">Add Applicant</button>
-
-    <script src="/js/available-specialties.js"></script>
-</form>
-</body>
-</html>
+    <button type="submit" id="submit-btn">Add Applicant</button>
+</div>

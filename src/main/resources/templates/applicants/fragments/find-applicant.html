@@ -1,25 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <form method="post" action="/findApplicant">
+<div th:fragment="findApplicantFragment">
+  <form method="get" action="/findApplicant">
       <table>
         <tr>
           <th>
             <input type="number" name="id" placeholder="id"/>
-          </th>
-        </tr>
-        <tr>
-          <th>
-            <input type="text" name="firstName" placeholder="First name"/>
-          </th>
-        </tr>
-        <tr>
-          <th>
-            <input type="text" name="lastName" placeholder="Second name"/>
           </th>
         </tr>
         <tr>
@@ -35,5 +19,4 @@
       </table>
       <button type="submit">find</button>
     </form>
-</body>
-</html>
+</div>

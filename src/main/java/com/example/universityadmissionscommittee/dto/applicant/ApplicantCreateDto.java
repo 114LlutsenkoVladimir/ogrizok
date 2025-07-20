@@ -1,4 +1,4 @@
-package com.example.universityadmissionscommittee.dto;
+package com.example.universityadmissionscommittee.dto.applicant;
 
 import java.util.ArrayList;
 import java.util.HashMap;

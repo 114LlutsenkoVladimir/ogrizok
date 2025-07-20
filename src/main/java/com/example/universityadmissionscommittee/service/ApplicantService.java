@@ -1,11 +1,13 @@
 package com.example.universityadmissionscommittee.service;
 
 import com.example.universityadmissionscommittee.data.*;
-import com.example.universityadmissionscommittee.dto.ApplicantCreateDto;
-import com.example.universityadmissionscommittee.dto.ApplicantReportDto;
+import com.example.universityadmissionscommittee.dto.applicant.ApplicantCreateDto;
+import com.example.universityadmissionscommittee.dto.applicant.ApplicantReportGrouped;
 import com.example.universityadmissionscommittee.dto.ExamRowDto;
+import com.example.universityadmissionscommittee.exception.applicant.ApplicantCreationException;
+import com.example.universityadmissionscommittee.exception.applicant.ApplicantNotFoundException;
 import com.example.universityadmissionscommittee.repository.ApplicantRepository;
-import com.example.universityadmissionscommittee.repository.ExamResultRepository;
+import com.example.universityadmissionscommittee.repository.examResult.ExamResultRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -34,6 +36,15 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
     }
 
     @Override
+    public Applicant findById(Long id) {
+        try {
+            return super.findById(id);
+        } catch (NoSuchElementException ex) {
+            throw new ApplicantNotFoundException();
+        }
+    }
+
+    @Override
     public void deleteById(Long id) {
         Applicant applicant = findById(id);
         examResultRepository.deleteAll(applicant.getExamResults());
@@ -55,59 +66,38 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
         );
     }
 
-    public Map<String, List<ApplicantReportDto>> getApplicantsBySpecialties(List<String> specialtyNames) {
-
-        List<ExamRowDto> examRows = examResultRepository.examRowData();
-        Map<String, List<ApplicantReportDto>> report = new HashMap<>();
-
-
-        for (String specialtyName : specialtyNames)
-            report.putIfAbsent(specialtyName, new ArrayList<>());
-
-
-        for (ExamRowDto row : examRows) {
-
-            String specialtyName = row.getSpecialtyName();
-            List<ApplicantReportDto> applicants = report.get(specialtyName);
-
-            ApplicantReportDto applicant = applicants.stream().filter(
-                            a -> a.getApplicantId().equals(row.getApplicantId())).findFirst()
-                    .orElseGet( () -> {
-                        ApplicantReportDto newApplicant = new ApplicantReportDto(row.getApplicantId(),
-                                row.getFirstName(), row.getLastName(),
-                                row.getPhoneNumber(), row.getEmail(),
-                                row.getSpecialtyName()
-
-                        );
-                        applicants.add(newApplicant);
-                        return newApplicant;
-                    });
-
-            applicant.addExamResult(row.getSubjectName(), row.getScore());
-
-        }
-        return report;
+    public ApplicantReportGrouped getApplicantsBySpecialties(List<Long> specialtyIds) {
+        List<ExamRowDto> examRows = examResultRepository.examRowData(specialtyIds);
+        return new ApplicantReportGrouped(examRows);
     }
 
-    public Map<String, List<ApplicantReportDto>> getApplicantsByOneSpecialty(String specialtyName) {
-        return getApplicantsBySpecialties(new ArrayList<>(List.of(specialtyName)));
+    public ApplicantReportGrouped getApplicantsByOneSpecialty(Long specialtyId) {
+        return getApplicantsBySpecialties(new ArrayList<>(List.of(specialtyId)));
     }
 
-    public Map<String, List<ApplicantReportDto>> getApplicantsBySpecialtiesReport() {
+    public ApplicantReportGrouped getApplicantsBySpecialtiesReport() {
         return getApplicantsBySpecialties(specialtyService.findAll()
-                .stream().map(Specialty::getName).toList());
+                .stream().map(Specialty::getId).toList());
     }
 
-    public void createApplicantFromDto(ApplicantCreateDto dto) {
+    public ApplicantReportGrouped findApplicantById(Long applicantId) {
+        List<ExamRowDto> examRows = examResultRepository.findExamRowsByApplicantId(applicantId);
+        ApplicantReportGrouped applicantsGrouped = new ApplicantReportGrouped(examRows);
+        if(applicantsGrouped.getReport().isEmpty())
+            throw new ApplicantNotFoundException();
+        return applicantsGrouped;
+    }
+
+    public Applicant createApplicantFromDto(ApplicantCreateDto dto) {
 
         if (repository.existsByPhoneNumber(dto.getPhoneNumber()))
-            throw new RuntimeException("Такий номер телефона вже зайнятий");
+            throw new ApplicantCreationException("Такий номер телефона вже зайнятий");
 
         if (repository.existsByEmail(dto.getEmail()))
-            throw new RuntimeException("Така пошта вже зайнята");
+            throw new ApplicantCreationException("Така пошта вже зайнята");
 
         if (dto.getSpecialtyIds().isEmpty())
-            throw new RuntimeException("Оберіть хоча б 1 спеціальність");
+            throw new ApplicantCreationException("Оберіть хоча б 1 спеціальність");
 
         Applicant applicant = new Applicant(
                 dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPhoneNumber()
@@ -128,7 +118,7 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
                     applicant.linkExamResult(examResult);
                 });
 
-        save(applicant);
+        return save(applicant);
     }
 
 }

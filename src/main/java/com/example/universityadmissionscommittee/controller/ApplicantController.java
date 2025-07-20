@@ -3,22 +3,22 @@ package com.example.universityadmissionscommittee.controller;
 
 import com.example.universityadmissionscommittee.data.*;
 import com.example.universityadmissionscommittee.data.enums.ApplicantStatus;
-import com.example.universityadmissionscommittee.dto.ApplicantCreateDto;
-import com.example.universityadmissionscommittee.dto.ApplicantReportDto;
+import com.example.universityadmissionscommittee.dto.applicant.ApplicantCreateDto;
+import com.example.universityadmissionscommittee.dto.applicant.ApplicantInitDto;
+import com.example.universityadmissionscommittee.dto.applicant.ApplicantReportGrouped;
 import com.example.universityadmissionscommittee.dto.SpecialtyIdAndNameDto;
 import com.example.universityadmissionscommittee.service.ApplicantService;
 import com.example.universityadmissionscommittee.service.BenefitService;
 import com.example.universityadmissionscommittee.service.SpecialtyService;
 import com.example.universityadmissionscommittee.service.SubjectService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-@Controller
+@RestController
 //@RequestMapping("/applicants")
 public class ApplicantController {
     private ApplicantService applicantService;
@@ -35,70 +35,41 @@ public class ApplicantController {
         this.benefitService = benefitService;
     }
 
-    @GetMapping("/")
-    public String index(HttpSession session) {
-        session.setAttribute("specialties", specialtyService.findAll());
-        Specialty specialty = specialtyService.findById(1L);
-        session.setAttribute("allSubjects", subjectService.findAll());
-        session.setAttribute("selectedSpecialtyId", 1L);
-//        updateTable(session);
-        session.setAttribute("allBenefits", benefitService.findAll());
-        session.setAttribute("selectedBenefitsIds", new ArrayList<>());
-        return "applicants/page-for-applicant";
-    }
-
-
     @PostMapping("/addApplicant")
-    public String addApplicant(@ModelAttribute ApplicantCreateDto dto,
-                               HttpSession session) {
-
-        applicantService.createApplicantFromDto(dto);
-//        updateTable(session);
-        return "applicants/page-for-applicant";
+    public ApplicantReportGrouped addApplicant(@RequestBody ApplicantCreateDto dto) {
+        Applicant applicant = applicantService.createApplicantFromDto(dto);
+        Long id = applicant.getId();
+        return applicantService.findApplicantById(id);
     }
 
-    private void updateTable(HttpSession session) {
-        Long id = (Long) session.getAttribute("selectedSpecialtyId");
-        Specialty specialty = specialtyService.findById(id);
-        session.setAttribute("report",
-                applicantService.getApplicantsByOneSpecialty(specialty.getName()));
-
-        Map<String, List<String>> subjectBySpecialties = new HashMap<>();
-        List<Specialty> specialties = specialtyService.findAll();
-
-        for (Specialty s : specialties) {
-            subjectBySpecialties.put(s.getName(),
-                    s.getNeededSubjects().stream().map(Subject::getName).collect(Collectors.toList()));
-        }
-        session.setAttribute("subjectBySpecialties", subjectBySpecialties);
-
+    @GetMapping("/initializeApplicantPage")
+    private ApplicantInitDto initialize() {
+        return new ApplicantInitDto(
+                benefitService.findAll(),
+                subjectService.findAll(),
+                specialtyService.findAll()
+        );
     }
 
-    @GetMapping("/selectSpecialtyForTable")
-    public String selectSpecialty(@RequestParam Long specialtyId, HttpSession session) {
-        session.setAttribute("selectedSpecialtyId", specialtyId);
-        Specialty specialty = specialtyService.findById(specialtyId);
-        session.setAttribute("subjects", specialty.getNeededSubjects());
-        updateTable(session);
-        return "applicants/page-for-applicant";
+    private ApplicantReportGrouped updateTable(Long specialtyId) {
+        return applicantService.getApplicantsByOneSpecialty(specialtyId);
     }
 
-    @DeleteMapping("/deleteApplicant")
-    public String deleteApplicantById(@RequestParam Long id, HttpSession session) {
+
+    @DeleteMapping("/deleteApplicant/{id}")
+    public ResponseEntity<Void> deleteApplicantById(@PathVariable Long id) {
         applicantService.deleteById(id);
-        updateTable(session);
-        return "applicants/page-for-applicant";
+        return ResponseEntity.noContent().build();
     }
 
 
     @PostMapping("/availableSpecialties")
-    @ResponseBody
     public List<SpecialtyIdAndNameDto> availableSpecialties(@RequestBody List<Long> subjectIds) {
         return specialtyService.findAvailableForSubjects(subjectIds);
     }
 
     @PostMapping("/updateApplicant")
-    public String updateApplicant(@RequestParam Long id,
+    public Applicant updateApplicant(@RequestParam Long id,
                                   @RequestParam(required = false) String firstName,
                                   @RequestParam(required = false) String lastName,
                                   @RequestParam(required = false) String email,
@@ -117,40 +88,23 @@ public class ApplicantController {
             applicant.setPhoneNumber(phoneNumber);
         applicant.setStatusType(statusType);
         applicant.setStatus(statusType.toString());
-        applicantService.save(applicant);
-        updateTable(session);
-        return "applicants/page-for-applicant";
+        return applicantService.save(applicant);
     }
 
-    @PostMapping("/findApplicant")
-    public String findApplicant(@RequestParam(required = false) Optional<Long> id,
+    @GetMapping("/findApplicant")
+    public ApplicantReportGrouped findApplicant(@RequestParam(required = false) Optional<Long> id,
                                 @RequestParam(required = false) String email,
                                 @RequestParam(required = false) String phoneNumber,
-                                HttpSession session) {
+                                Model model) {
 
-        List<Applicant> applicants = new ArrayList<>();
-
-        try {
-            if(id.isPresent())
-                applicants.add(applicantService.findById(id.get()));
-            else if (!email.isEmpty())
-                applicants.add(applicantService.findByEmail(email));
-            else if (!phoneNumber.isEmpty())
-                applicants.add(applicantService.findByPhoneNumber(phoneNumber));
-        } catch (NoSuchElementException e) {
-            System.out.println(e.getMessage());
-        }
-        session.setAttribute("applicants", applicants);
-        return "applicants/page-for-applicant";
+        ApplicantReportGrouped report = applicantService.findApplicantById(id.get());
+        return report;
     }
 
 
-    @GetMapping("/filterApplicantsBySpecialty")
-    public String filterApplicants(@RequestParam String specialtyName, Model model) {
-        Map<String, List<ApplicantReportDto>> applicants
-                = applicantService.getApplicantsByOneSpecialty(specialtyName);
-        model.addAttribute("report", applicants);
-        return "applicants/fragments/select-specialty-for-table :: fragment";
+    @GetMapping("/filterApplicantsBySpecialty/{specialtyId}")
+    public ApplicantReportGrouped filterApplicants(@PathVariable Long specialtyId) {
+        return updateTable(specialtyId);
     }
 
 
