@@ -1,6 +1,5 @@
 package com.example.universityadmissionscommittee.controller;
 
-
 import com.example.universityadmissionscommittee.data.*;
 import com.example.universityadmissionscommittee.data.enums.ApplicantStatus;
 import com.example.universityadmissionscommittee.dto.applicant.ApplicantCreateDto;
@@ -25,6 +24,7 @@ public class ApplicantController {
     private SpecialtyService specialtyService;
     private SubjectService subjectService;
     private BenefitService benefitService;
+
     public ApplicantController(ApplicantService applicantService,
                                SpecialtyService specialtyService,
                                SubjectService subjectService,
@@ -45,9 +45,9 @@ public class ApplicantController {
     @GetMapping("/initializeApplicantPage")
     private ApplicantInitDto initialize() {
         return new ApplicantInitDto(
-                benefitService.findAll(),
-                subjectService.findAll(),
-                specialtyService.findAll()
+                benefitService.allIdAndName(),
+                subjectService.allIdAndName(),
+                specialtyService.allIdAndName()
         );
     }
 

@@ -1,14 +1,13 @@
-import { setupSpecialtyChecker } from "../specialty/listener.js";
-import {handleDelete, handleSubmit} from "./handlers.js";
+import {getApplicantInitDto} from "./api.js";
+import {initialize} from "./init.js";
+import {setupSpecialtyChecker} from "../specialty/listener.js";
 
 
-
-
-document.getElementById("submit-btn").addEventListener("click", handleSubmit);
-
-document.getElementById("deleteApplicantForm")
-    .querySelector("button").addEventListener("click", handleDelete);
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    const initMap = await getApplicantInitDto();
+    await initialize(initMap);
     setupSpecialtyChecker();
 });
+
+
+

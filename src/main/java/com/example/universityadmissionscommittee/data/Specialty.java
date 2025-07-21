@@ -40,21 +40,14 @@ public class Specialty {
     @ManyToMany(mappedBy = "specialties")
     private Set<Applicant> applicants = new HashSet<>();
 
-    @Enumerated(EnumType.STRING)
-    @Column(unique = true)
-    SpecialtyType specialtyType;
-
 
 
     public Specialty(int number, Faculty faculty,
-                     int numberOfBudgetPlaces, int numberOfContractPlaces,
-                     SpecialtyType specialtyType) {
+                     int numberOfBudgetPlaces, int numberOfContractPlaces) {
         this.number = number;
         this.faculty = faculty;
         this.numberOfBudgetPlaces = numberOfBudgetPlaces;
         this.numberOfContractPlaces = numberOfContractPlaces;
-        this.specialtyType = specialtyType;
-        name = specialtyType.toString();
     }
 
     protected Specialty() {}
@@ -117,9 +110,7 @@ public class Specialty {
         this.neededSubjects = neededSubjects;
     }
 
-    public SpecialtyType getSpecialtyType() {
-        return specialtyType;
-    }
+
 
     public Set<Applicant> getApplicants() {
         return applicants;
@@ -130,7 +121,5 @@ public class Specialty {
                 .sorted(Comparator.comparing(Applicant::calculateAverageScore).reversed())
                 .collect(Collectors.toList());
     }
-    public void setSpecialtyType(SpecialtyType specialtyType) {
-        this.specialtyType = specialtyType;
-    }
+
 }

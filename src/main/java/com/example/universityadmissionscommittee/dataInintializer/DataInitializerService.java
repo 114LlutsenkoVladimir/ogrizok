@@ -90,27 +90,27 @@ public class DataInitializerService {
         List<Specialty> specialties = new ArrayList<>(List.of(
                 new Specialty(121,
                         facultyService.findByFacultyType(FacultyType.COMPUTER_SCIENCE_FACULTY),
-                10, 20, SpecialtyType.COMPUTER_SCIENCE),
+                10, 20),
 
                 new Specialty(122,
                         facultyService.findByFacultyType(FacultyType.COMPUTER_SCIENCE_FACULTY),
-                20, 20, SpecialtyType.CYBERSECURITY),
+                20, 20),
 
                 new Specialty(221,
                         facultyService.findByFacultyType(FacultyType.LAW_FACULTY),
-                10, 15, SpecialtyType.LAW),
+                10, 15),
 
                 new Specialty(222,
                         facultyService.findByFacultyType(FacultyType.LAW_FACULTY),
-                        10, 20, SpecialtyType.INTERNATIONAL_LAW),
+                        10, 20),
 
                 new Specialty(321,
                         facultyService.findByFacultyType(FacultyType.MEDICAL_FACULTY),
-                        20, 20, SpecialtyType.MEDICINE),
+                        20, 20),
 
                 new Specialty(322,
                         facultyService.findByFacultyType(FacultyType.MEDICAL_FACULTY),
-                        14, 14, SpecialtyType.PHARMACY)
+                        14, 14)
         ));
 
         for (Specialty sp : specialties) {

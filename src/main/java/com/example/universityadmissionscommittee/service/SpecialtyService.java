@@ -1,10 +1,12 @@
 package com.example.universityadmissionscommittee.service;
 
 
+import com.example.universityadmissionscommittee.data.Benefit;
 import com.example.universityadmissionscommittee.data.Faculty;
 import com.example.universityadmissionscommittee.data.Specialty;
 import com.example.universityadmissionscommittee.data.Subject;
 import com.example.universityadmissionscommittee.data.enums.SpecialtyType;
+import com.example.universityadmissionscommittee.dto.BenefitIdAndName;
 import com.example.universityadmissionscommittee.dto.SpecialtyIdAndNameDto;
 import com.example.universityadmissionscommittee.dto.SpecialtyReportDto;
 import com.example.universityadmissionscommittee.repository.SpecialtyRepository;
@@ -62,5 +64,14 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
                         .allMatch(subjectIds::contains))
                 .map(s -> new SpecialtyIdAndNameDto(s.getId(), s.getName()))
                 .toList();
+    }
+
+    public List<SpecialtyIdAndNameDto> toIdAndNameDto(List<Specialty> specialties) {
+        return specialties.stream()
+                .map(s -> new SpecialtyIdAndNameDto(s.getId(), s.getName())).toList();
+    }
+
+    public List<SpecialtyIdAndNameDto> allIdAndName() {
+        return toIdAndNameDto(findAll());
     }
 }

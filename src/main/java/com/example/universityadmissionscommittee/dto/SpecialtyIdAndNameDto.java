@@ -1,9 +1,9 @@
 package com.example.universityadmissionscommittee.dto;
 
 public class SpecialtyIdAndNameDto {
-    Long id;
+    private Long id;
 
-    String name;
+    private String name;
 
     public SpecialtyIdAndNameDto(Long id, String name) {
         this.id = id;

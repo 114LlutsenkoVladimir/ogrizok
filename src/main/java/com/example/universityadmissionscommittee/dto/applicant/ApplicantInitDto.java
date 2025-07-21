@@ -3,33 +3,27 @@ package com.example.universityadmissionscommittee.dto.applicant;
 import com.example.universityadmissionscommittee.data.Benefit;
 import com.example.universityadmissionscommittee.data.Specialty;
 import com.example.universityadmissionscommittee.data.Subject;
+import com.example.universityadmissionscommittee.dto.BenefitIdAndName;
+import com.example.universityadmissionscommittee.dto.SpecialtyIdAndNameDto;
+import com.example.universityadmissionscommittee.dto.SubjectIdAndNameDto;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ApplicantInitDto {
-
-    List<Benefit> allBenefits = new ArrayList<>();
-    List<Subject> allSubjects = new ArrayList<>();
-    List<Specialty> allSpecialties = new ArrayList<>();
-
-    public ApplicantInitDto(List<Benefit> allBenefits,
-                            List<Subject> allSubjects,
-                            List<Specialty> allSpecialties) {
+public record ApplicantInitDto(
+        @JsonProperty("allBenefits") List<BenefitIdAndName> allBenefits,
+        @JsonProperty("allSubjects") List<SubjectIdAndNameDto> allSubjects,
+        @JsonProperty("allSpecialties") List<SpecialtyIdAndNameDto> allSpecialties
+) {
+    @JsonCreator
+    public ApplicantInitDto(
+            @JsonProperty("allBenefits") List<BenefitIdAndName> allBenefits,
+            @JsonProperty("allSubjects") List<SubjectIdAndNameDto> allSubjects,
+            @JsonProperty("allSpecialties") List<SpecialtyIdAndNameDto> allSpecialties
+    ) {
         this.allBenefits = allBenefits;
         this.allSubjects = allSubjects;
         this.allSpecialties = allSpecialties;
-    }
-
-    public List<Benefit> getAllBenefits() {
-        return allBenefits;
-    }
-
-    public List<Subject> getAllSubjects() {
-        return allSubjects;
-    }
-
-    public List<Specialty> getAllSpecialties() {
-        return allSpecialties;
     }
 }
