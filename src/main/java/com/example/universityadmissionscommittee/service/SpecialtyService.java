@@ -7,6 +7,7 @@ import com.example.universityadmissionscommittee.data.Subject;
 import com.example.universityadmissionscommittee.data.enums.SpecialtyType;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyIdAndNameDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportDto;
+import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportGrouped;
 import com.example.universityadmissionscommittee.repository.specialty.SpecialtyRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,6 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
         super(repository);
     }
 
-    public Specialty findBySpecialtyType(SpecialtyType specialtyType) {
-        return repository.findBySpecialtyType(specialtyType).orElseThrow(
-                () -> new IllegalStateException("specialty not found"));
-    }
 
     public List<Specialty> filterByFaculty(List<Specialty> specialties, Faculty faculty) {
         return specialties.stream()
@@ -30,28 +27,26 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
                 .collect(Collectors.toList());
     }
 
-    public Specialty findByName(String name) {
-        return repository.findByName(name).orElseThrow(
-                NoSuchElementException::new
-        );
-    }
     public Specialty findById(Long id) {
         return repository.findById(id).orElseThrow(
                 NoSuchElementException::new
         );
     }
 
-    public Map<String, List<SpecialtyReportDto>> getSpecialtiesByFaculties(List<Long> facultyIds) {
+    public SpecialtyReportGrouped findSpecialtyReportDtoById(Long specialtyId) {
+        SpecialtyReportDto specialty = repository.findSpecialtyReportDtoById(specialtyId);
+        return new SpecialtyReportGrouped(new ArrayList<>(List.of(specialty)));
+    }
+    public SpecialtyReportGrouped getSpecialtiesByFaculties(List<Long> facultyIds) {
         List<SpecialtyReportDto> specialties = repository.specialtiesByFacultiesData(facultyIds);
-        return specialties.stream()
-                .collect(Collectors.groupingBy(SpecialtyReportDto::getFacultyName));
+        return new SpecialtyReportGrouped(specialties);
     }
 
-    public Map<String, List<SpecialtyReportDto>> getSpecialtiesByOneFaculty(Long facultyId) {
+    public SpecialtyReportGrouped getSpecialtiesByOneFaculty(Long facultyId) {
         return getSpecialtiesByFaculties(new ArrayList<>(List.of(facultyId)));
     }
 
-    public Map<String, List<SpecialtyReportDto>> getSpecialtiesByFacultiesReport() {
+    public SpecialtyReportGrouped getSpecialtiesByFacultiesReport() {
         return getSpecialtiesByFaculties(repository.findAll().stream().map(Specialty::getId).toList());
     }
 

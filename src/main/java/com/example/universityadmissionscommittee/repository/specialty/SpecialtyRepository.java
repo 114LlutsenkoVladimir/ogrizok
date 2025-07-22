@@ -21,4 +21,17 @@ public interface SpecialtyRepository extends JpaRepository<Specialty, Long> {
         WHERE f.id IN : facultyIds
     """)
     List<SpecialtyReportDto> specialtiesByFacultiesData(@Param("facultyIds") List<Long> facultyIds);
+
+
+    @Query("""
+        SELECT new com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportDto(
+            s.id, s.name, s.number, f.id, f.name,
+            s.numberOfBudgetPlaces, s.numberOfContractPlaces,
+            s.numberOfBudgetPlaces + s.numberOfContractPlaces
+        )
+        FROM Specialty s
+        JOIN s.faculty f
+        WHERE s.id = :specialtyId
+    """)
+    SpecialtyReportDto findSpecialtyReportDtoById(@Param("specialtyId") Long specialtyId);
 }
