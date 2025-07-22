@@ -1,12 +1,8 @@
-package com.example.universityadmissionscommittee.dto;
-
-import com.example.universityadmissionscommittee.data.Faculty;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+package com.example.universityadmissionscommittee.dto.specialty;
 
 public class SpecialtyReportDto {
     private Long id;
+    private Long facultyId;
     private String name;
     private Integer number;
     private String  facultyName;
@@ -15,13 +11,16 @@ public class SpecialtyReportDto {
     private Integer sumOfPlaces;
 
     public SpecialtyReportDto(Long id, String name,
-                              Integer number, String facultyName,
+                              Integer number,
+                              Long facultyId,
+                              String facultyName,
                               Integer numberOfBudgetPlaces,
                               Integer numberOfContractPlaces,
                               Integer sumOfPlaces) {
         this.id = id;
         this.name = name;
         this.number = number;
+        this.facultyId = facultyId;
         this.facultyName = facultyName;
         this.numberOfBudgetPlaces = numberOfBudgetPlaces;
         this.numberOfContractPlaces = numberOfContractPlaces;
@@ -40,6 +39,7 @@ public class SpecialtyReportDto {
         return number;
     }
 
+    public Long getFacultyId() {return facultyId;}
     public String getFacultyName() {
         return facultyName;
     }

@@ -42,8 +42,11 @@ public class Specialty {
 
 
 
-    public Specialty(int number, Faculty faculty,
-                     int numberOfBudgetPlaces, int numberOfContractPlaces) {
+    public Specialty(String name,
+                     int number, Faculty faculty,
+                     int numberOfBudgetPlaces,
+                     int numberOfContractPlaces) {
+        this.name = name;
         this.number = number;
         this.faculty = faculty;
         this.numberOfBudgetPlaces = numberOfBudgetPlaces;

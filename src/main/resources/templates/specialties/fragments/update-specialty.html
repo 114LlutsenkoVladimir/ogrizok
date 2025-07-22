@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <form th:action="@{updateSpecialty}" method="post">
-        <input type="number" name="id" placeholder="id" required>
-        <input type="number" name="budgetPlaces" placeholder="budget places">
-        <input type="number" name="contractPlaces" placeholder="contract places">
-        <button type="submit">update</button>
-    </form>
-</body>
-</html>
+<div class="specialty-update">
+    <input type="number" id="specialtyId" placeholder="id" required />
+    <input type="number" id="budgetPlaces" placeholder="budget places" />
+    <input type="number" id="contractPlaces" placeholder="contract places" />
+    <button id="updateSpecialtyBtn">Update</button>
+</div>

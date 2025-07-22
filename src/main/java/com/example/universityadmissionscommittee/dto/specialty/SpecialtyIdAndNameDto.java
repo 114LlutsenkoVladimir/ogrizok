@@ -1,4 +1,4 @@
-package com.example.universityadmissionscommittee.dto;
+package com.example.universityadmissionscommittee.dto.specialty;
 
 public class SpecialtyIdAndNameDto {
     private Long id;

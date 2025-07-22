@@ -5,7 +5,7 @@ import com.example.universityadmissionscommittee.data.enums.ApplicantStatus;
 import com.example.universityadmissionscommittee.dto.applicant.ApplicantCreateDto;
 import com.example.universityadmissionscommittee.dto.applicant.ApplicantInitDto;
 import com.example.universityadmissionscommittee.dto.applicant.ApplicantReportGrouped;
-import com.example.universityadmissionscommittee.dto.SpecialtyIdAndNameDto;
+import com.example.universityadmissionscommittee.dto.specialty.SpecialtyIdAndNameDto;
 import com.example.universityadmissionscommittee.service.ApplicantService;
 import com.example.universityadmissionscommittee.service.BenefitService;
 import com.example.universityadmissionscommittee.service.SpecialtyService;

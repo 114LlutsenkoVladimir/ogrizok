@@ -1,15 +1,13 @@
 package com.example.universityadmissionscommittee.service;
 
 
-import com.example.universityadmissionscommittee.data.Benefit;
 import com.example.universityadmissionscommittee.data.Faculty;
 import com.example.universityadmissionscommittee.data.Specialty;
 import com.example.universityadmissionscommittee.data.Subject;
 import com.example.universityadmissionscommittee.data.enums.SpecialtyType;
-import com.example.universityadmissionscommittee.dto.BenefitIdAndName;
-import com.example.universityadmissionscommittee.dto.SpecialtyIdAndNameDto;
-import com.example.universityadmissionscommittee.dto.SpecialtyReportDto;
-import com.example.universityadmissionscommittee.repository.SpecialtyRepository;
+import com.example.universityadmissionscommittee.dto.specialty.SpecialtyIdAndNameDto;
+import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportDto;
+import com.example.universityadmissionscommittee.repository.specialty.SpecialtyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -43,18 +41,18 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
         );
     }
 
-    public Map<String, List<SpecialtyReportDto>> getSpecialtiesByFaculties(List<String> facultyNames) {
-        List<SpecialtyReportDto> specialties = repository.specialtiesByFacultiesData(facultyNames);
+    public Map<String, List<SpecialtyReportDto>> getSpecialtiesByFaculties(List<Long> facultyIds) {
+        List<SpecialtyReportDto> specialties = repository.specialtiesByFacultiesData(facultyIds);
         return specialties.stream()
                 .collect(Collectors.groupingBy(SpecialtyReportDto::getFacultyName));
     }
 
-    public Map<String, List<SpecialtyReportDto>> getSpecialtiesByOneFaculty(String facultyName) {
-        return getSpecialtiesByFaculties(new ArrayList<>(List.of(facultyName)));
+    public Map<String, List<SpecialtyReportDto>> getSpecialtiesByOneFaculty(Long facultyId) {
+        return getSpecialtiesByFaculties(new ArrayList<>(List.of(facultyId)));
     }
 
     public Map<String, List<SpecialtyReportDto>> getSpecialtiesByFacultiesReport() {
-        return getSpecialtiesByFaculties(repository.findAll().stream().map(Specialty::getName).toList());
+        return getSpecialtiesByFaculties(repository.findAll().stream().map(Specialty::getId).toList());
     }
 
     public List<SpecialtyIdAndNameDto> findAvailableForSubjects(List<Long> subjectIds) {
