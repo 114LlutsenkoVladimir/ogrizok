@@ -1,7 +1,7 @@
 import {buildDto} from "./buildDto.js";
 import {deleteApplicant, sendApplicant} from "./api.js";
 import {renderTable} from "./renderApplicantTable.js";
-import {clearDeleteForm, clearSendForm} from "./clearForm.js";
+import {clearDeleteForm, clearSendForm} from "./clearApplicantForm.js";
 import {showError} from "../errorPopup/errorPopup.js";
 
 export async function handleSubmit() {

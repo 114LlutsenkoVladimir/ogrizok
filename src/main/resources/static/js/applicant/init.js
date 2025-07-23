@@ -1,4 +1,4 @@
-import {setupSpecialtyChecker} from "../specialty/listener.js";
+import {setupSpecialtyChecker} from "./listener.js";
 import {handleDelete, handleSubmit} from "./handlers.js";
 
 export async function initialize(initMap) {

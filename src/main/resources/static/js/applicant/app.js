@@ -1,6 +1,6 @@
 import {getApplicantInitDto} from "./api.js";
 import {initialize} from "./init.js";
-import {setupSpecialtyChecker} from "../specialty/listener.js";
+import {setupSpecialtyChecker} from "./listener.js";
 
 
 document.addEventListener('DOMContentLoaded', async () => {

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SpecialtyReportGrouped {
+
     Map<Long, String> facultyNames = new HashMap<>();
 
     Map<Long, List<SpecialtyReportDto>> report = new HashMap<>();
