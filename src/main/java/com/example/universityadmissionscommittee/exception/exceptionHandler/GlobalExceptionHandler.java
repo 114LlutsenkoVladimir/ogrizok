@@ -1,6 +1,7 @@
 package com.example.universityadmissionscommittee.exception.exceptionHandler;
 
 
+import com.example.universityadmissionscommittee.exception.SpecialtyNotFoundException;
 import com.example.universityadmissionscommittee.exception.applicant.ApplicantCreationException;
 import com.example.universityadmissionscommittee.exception.applicant.ApplicantNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,5 +34,12 @@ public class GlobalExceptionHandler {
     public Map<String, String> handleGeneric(Exception ex) {
         return Map.of("message", ex.getMessage());
     }
+
+    @ExceptionHandler(SpecialtyNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleSpecialtyNotFoundException(SpecialtyNotFoundException ex) {
+        return Map.of("message", ex.getMessage());
+    }
+
 }
 

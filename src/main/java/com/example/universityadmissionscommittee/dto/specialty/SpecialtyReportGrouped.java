@@ -1,4 +1,6 @@
 package com.example.universityadmissionscommittee.dto.specialty;
+import com.example.universityadmissionscommittee.exception.SpecialtyNotFoundException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +18,9 @@ public class SpecialtyReportGrouped {
 
     private void buildReport(List<SpecialtyReportDto> dtos) {
 
-        facultyNames = dtos.stream()
-                .collect(Collectors.toMap(
-                        SpecialtyReportDto::getFacultyId,
-                        SpecialtyReportDto::getFacultyName
-                ));
+        for (SpecialtyReportDto dto : dtos) {
+            facultyNames.putIfAbsent(dto.getFacultyId(), dto.getFacultyName());
+        }
 
         report = dtos.stream().collect(Collectors.groupingBy(SpecialtyReportDto::getFacultyId));
     }

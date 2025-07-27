@@ -21,13 +21,9 @@ public class Faculty {
     @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<Specialty> specialties = new HashSet<>();
 
-    @Enumerated(EnumType.STRING)
-    @Column(unique = true)
-    FacultyType facultyType;
 
-    public Faculty(FacultyType facultyType) {
-        this.facultyType = facultyType;
-        name = facultyType.toString();
+    public Faculty(String facultyName) {
+        name = facultyName;
     }
 
     protected Faculty() {}
@@ -48,16 +44,6 @@ public class Faculty {
         return specialties;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Faculty faculty = (Faculty) o;
-        return Objects.equals(id, faculty.id) && facultyType == faculty.facultyType;
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, facultyType);
-    }
+
 }

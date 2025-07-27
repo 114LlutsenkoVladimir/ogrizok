@@ -43,4 +43,9 @@ public class PageController {
                 applicantService.getApplicantsByOneSpecialty(1L));
         return "applicants/page-for-applicant";
     }
+
+    @GetMapping("/specialties/")
+    public String specialtyPage() {
+        return "specialties/committee-page";
+    }
 }

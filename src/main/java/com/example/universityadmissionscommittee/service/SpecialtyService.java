@@ -8,6 +8,7 @@ import com.example.universityadmissionscommittee.data.enums.SpecialtyType;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyIdAndNameDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportGrouped;
+import com.example.universityadmissionscommittee.exception.SpecialtyNotFoundException;
 import com.example.universityadmissionscommittee.repository.specialty.SpecialtyRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +30,12 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
 
     public Specialty findById(Long id) {
         return repository.findById(id).orElseThrow(
-                NoSuchElementException::new
+                SpecialtyNotFoundException::new
         );
     }
 
     public SpecialtyReportGrouped findSpecialtyReportDtoById(Long specialtyId) {
+        findById(specialtyId);
         SpecialtyReportDto specialty = repository.findSpecialtyReportDtoById(specialtyId);
         return new SpecialtyReportGrouped(new ArrayList<>(List.of(specialty)));
     }

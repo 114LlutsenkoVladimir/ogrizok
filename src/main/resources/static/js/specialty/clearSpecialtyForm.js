@@ -1,4 +1,4 @@
-import {clearForm} from "../utils/clearForm";
+import {clearForm} from "../utils/clearForm.js";
 
 export function clearFindSpecialtyForm() {
     clearForm("find-specialty");

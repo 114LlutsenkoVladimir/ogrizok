@@ -1,22 +1,22 @@
-import {getFilteredSpecialtyList, getSpecialtyDtosBySpecialtyId} from "./api";
-import {renderTable} from "./renderSpecialtyTable";
-import {showError} from "../errorPopup/errorPopup";
-import {clearFindSpecialtyForm} from "./clearSpecialtyForm";
+import {getFilteredSpecialtyList, getSpecialtyDtosBySpecialtyId} from "./api.js";
+import {renderTable} from "./renderSpecialtyTable.js";
+import {showError} from "../errorPopup/errorPopup.js";
+import {clearFindSpecialtyForm} from "./clearSpecialtyForm.js";
 
-export function handleFilterSpecialtyTable() {
+export async function handleFilterSpecialtyTable() {
     try {
         const facultyId = document.getElementById("facultySelect").value
-        const report = getFilteredSpecialtyList(facultyId)
+        const report = await getFilteredSpecialtyList(facultyId)
         renderTable(report)
     } catch (error) {
         showError(error.message)
     }
 }
 
-export function handleFindSpecialty() {
+export async function handleFindSpecialty() {
     try {
-        const specialtyId = document.getElementById("specialtyId").value
-        const report = getSpecialtyDtosBySpecialtyId(specialtyId)
+        const specialtyId = document.getElementById("findSpecialtyId").value
+        const report = await getSpecialtyDtosBySpecialtyId(specialtyId)
         renderTable(report)
         clearFindSpecialtyForm()
     } catch (error) {

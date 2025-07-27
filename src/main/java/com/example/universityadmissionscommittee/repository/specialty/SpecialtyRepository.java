@@ -18,7 +18,7 @@ public interface SpecialtyRepository extends JpaRepository<Specialty, Long> {
         )
         FROM Specialty s
         JOIN s.faculty f
-        WHERE f.id IN : facultyIds
+        WHERE f.id IN :facultyIds
     """)
     List<SpecialtyReportDto> specialtiesByFacultiesData(@Param("facultyIds") List<Long> facultyIds);
 

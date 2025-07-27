@@ -1,5 +1,6 @@
 package com.example.universityadmissionscommittee.controller;
 
+import com.example.universityadmissionscommittee.dto.specialty.SpecialtyInitDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportGrouped;
 import com.example.universityadmissionscommittee.service.FacultyService;
 import com.example.universityadmissionscommittee.service.SpecialtyService;
@@ -20,10 +21,9 @@ public class SpecialtyController {
         this.facultyService = facultyService;
     }
 
-    @GetMapping("/")
-    public String showForm(HttpSession session) {
-
-        return "specialties";
+    @GetMapping("/initializeSpecialtyPage")
+    public SpecialtyInitDto initialize() {
+        return new SpecialtyInitDto(facultyService.allIdAndName());
     }
 
     @PostMapping("/updateSpecialty/{id}")
