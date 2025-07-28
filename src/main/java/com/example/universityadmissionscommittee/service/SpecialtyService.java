@@ -33,7 +33,8 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
                                       Optional<Integer> contractPlaces) {
         Specialty specialty = findById(id);
         budgetPlaces.ifPresent(specialty::setNumberOfBudgetPlaces);
-        contractPlaces.ifPresent(specialty::setNumberOfBudgetPlaces);
+        contractPlaces.ifPresent(specialty::setNumberOfContractPlaces);
+        repository.save(specialty);
     }
 
     public SpecialtyReportGrouped findSpecialtyReportDtoById(Long specialtyId, String name, Integer number) {

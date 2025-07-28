@@ -4,7 +4,6 @@ import com.example.universityadmissionscommittee.dto.specialty.SpecialtyInitDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportGrouped;
 import com.example.universityadmissionscommittee.service.FacultyService;
 import com.example.universityadmissionscommittee.service.SpecialtyService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -31,10 +30,10 @@ public class SpecialtyController {
     @GetMapping("/updateSpecialtyPlaces")
     public SpecialtyReportGrouped updateSpecialty(
             @RequestParam Long id,
-            @RequestParam(required = false) Optional<Integer> numberOfBudgetPlaces,
-            @RequestParam(required = false) Optional<Integer> numberOfContractPlaces) {
+            @RequestParam(required = false) Optional<Integer> budgetPlaces,
+            @RequestParam(required = false) Optional<Integer> contractPlaces) {
 
-        specialtyService.updateSpecialtyPlaces(id, numberOfBudgetPlaces, numberOfContractPlaces);
+        specialtyService.updateSpecialtyPlaces(id, budgetPlaces, contractPlaces);
         return specialtyService.findSpecialtyReportDtoById(id, null, null);
     }
 
