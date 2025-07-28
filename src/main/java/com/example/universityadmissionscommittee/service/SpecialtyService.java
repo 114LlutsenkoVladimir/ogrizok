@@ -22,23 +22,29 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
     }
 
 
-    public List<Specialty> filterByFaculty(List<Specialty> specialties, Faculty faculty) {
-        return specialties.stream()
-                .filter(s -> s.getFaculty().equals(faculty))
-                .collect(Collectors.toList());
-    }
-
     public Specialty findById(Long id) {
         return repository.findById(id).orElseThrow(
                 SpecialtyNotFoundException::new
         );
     }
 
-    public SpecialtyReportGrouped findSpecialtyReportDtoById(Long specialtyId) {
-        findById(specialtyId);
-        SpecialtyReportDto specialty = repository.findSpecialtyReportDtoById(specialtyId);
-        return new SpecialtyReportGrouped(new ArrayList<>(List.of(specialty)));
+    public void updateSpecialtyPlaces(Long id,
+                                      Optional<Integer> budgetPlaces,
+                                      Optional<Integer> contractPlaces) {
+        Specialty specialty = findById(id);
+        budgetPlaces.ifPresent(specialty::setNumberOfBudgetPlaces);
+        contractPlaces.ifPresent(specialty::setNumberOfBudgetPlaces);
     }
+
+    public SpecialtyReportGrouped findSpecialtyReportDtoById(Long specialtyId, String name, Integer number) {
+        Optional<SpecialtyReportDto> specialty =
+                repository.findSpecialtyReportDtoByFilters(specialtyId, name, number);
+        if(specialty.isEmpty())
+            throw new SpecialtyNotFoundException();
+
+        return new SpecialtyReportGrouped(new ArrayList<>(List.of(specialty.get())));
+    }
+
     public SpecialtyReportGrouped getSpecialtiesByFaculties(List<Long> facultyIds) {
         List<SpecialtyReportDto> specialties = repository.specialtiesByFacultiesData(facultyIds);
         return new SpecialtyReportGrouped(specialties);

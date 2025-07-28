@@ -7,6 +7,8 @@ import com.example.universityadmissionscommittee.service.SpecialtyService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/specialties")
 public class SpecialtyController {
@@ -26,9 +28,14 @@ public class SpecialtyController {
         return new SpecialtyInitDto(facultyService.allIdAndName());
     }
 
-    @PostMapping("/updateSpecialty/{id}")
-    public String updateSpecialty(@PathVariable Long id) {
-        return "specialties";
+    @GetMapping("/updateSpecialtyPlaces")
+    public SpecialtyReportGrouped updateSpecialty(
+            @RequestParam Long id,
+            @RequestParam(required = false) Optional<Integer> numberOfBudgetPlaces,
+            @RequestParam(required = false) Optional<Integer> numberOfContractPlaces) {
+
+        specialtyService.updateSpecialtyPlaces(id, numberOfBudgetPlaces, numberOfContractPlaces);
+        return specialtyService.findSpecialtyReportDtoById(id, null, null);
     }
 
     @GetMapping("/filterSpecialtiesByFaculty/{facultyId}")
@@ -36,9 +43,12 @@ public class SpecialtyController {
         return updateTable(facultyId);
     }
 
-    @GetMapping("/findSpecialty/{id}")
-    public SpecialtyReportGrouped findSpecialty(@PathVariable Long id) {
-        return specialtyService.findSpecialtyReportDtoById(id);
+    @GetMapping("/findSpecialty")
+    public SpecialtyReportGrouped findSpecialty(
+            @RequestParam(required = false) Long id,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Integer number) {
+        return specialtyService.findSpecialtyReportDtoById(id, name, number);
     }
 
     public SpecialtyReportGrouped updateTable(Long facultyId) {

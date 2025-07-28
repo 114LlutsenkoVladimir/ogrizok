@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SpecialtyRepository extends JpaRepository<Specialty, Long> {
 
@@ -31,7 +32,13 @@ public interface SpecialtyRepository extends JpaRepository<Specialty, Long> {
         )
         FROM Specialty s
         JOIN s.faculty f
-        WHERE s.id = :specialtyId
+        WHERE (:id IS NULL OR s.id = :id)
+          AND (:name IS NULL OR LOWER(s.name) = LOWER(:name))
+          AND (:number IS NULL OR s.number = :number)
     """)
-    SpecialtyReportDto findSpecialtyReportDtoById(@Param("specialtyId") Long specialtyId);
+    Optional<SpecialtyReportDto> findSpecialtyReportDtoByFilters(
+            @Param("id") Long id,
+            @Param("name") String name,
+            @Param("number") Integer number
+    );
 }

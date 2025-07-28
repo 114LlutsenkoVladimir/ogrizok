@@ -92,11 +92,11 @@ public class ApplicantController {
     }
 
     @GetMapping("/findApplicant")
-    public ApplicantReportGrouped findApplicant(@RequestParam(required = false) Optional<Long> id,
-                                @RequestParam(required = false) String email,
-                                @RequestParam(required = false) String phoneNumber,
-                                Model model) {
-
+    public ApplicantReportGrouped findApplicant(
+            @RequestParam(required = false) Optional<Long> id,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String phoneNumber
+    ) {
         ApplicantReportGrouped report = applicantService.findApplicantById(id.get());
         return report;
     }

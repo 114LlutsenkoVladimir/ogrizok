@@ -13,6 +13,9 @@ public class SpecialtyReportGrouped {
     Map<Long, List<SpecialtyReportDto>> report = new HashMap<>();
 
     public SpecialtyReportGrouped(List<SpecialtyReportDto> dtos) {
+        if (dtos == null || dtos.isEmpty())
+            throw new SpecialtyNotFoundException();
+
         buildReport(dtos);
     }
 

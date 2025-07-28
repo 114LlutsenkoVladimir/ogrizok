@@ -8,8 +8,19 @@ export async function getFilteredSpecialtyList(facultyId) {
     return await response.json()
 }
 
-export async function getSpecialtyDtosBySpecialtyId(id) {
-    const response = await fetch(`/specialties/findSpecialty/${id}`)
+export async function getSpecialtyDtosBySpecialtyId(paramsToStr) {
+    const url = "/specialties/findSpecialty?" + paramsToStr
+    const response = await fetch(url)
+    if(!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message)
+    }
+    return await response.json()
+}
+
+export async function updateSpecialtyPlaces(paramsToStr) {
+    const url = "/specialties/updateSpecialtyPlaces?" + paramsToStr
+    const response = await fetch(url)
     if(!response.ok) {
         const err = await response.json();
         throw new Error(err.message)
@@ -18,6 +29,7 @@ export async function getSpecialtyDtosBySpecialtyId(id) {
 }
 
 export async function getSpecialtyInitDto() {
+
     const response = await fetch(`/specialties/initializeSpecialtyPage`)
     if(!response.ok) {
         const err = await response.json();
@@ -25,3 +37,4 @@ export async function getSpecialtyInitDto() {
     }
     return await response.json()
 }
+
