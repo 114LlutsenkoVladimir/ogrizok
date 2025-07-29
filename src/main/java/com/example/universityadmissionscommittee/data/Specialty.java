@@ -37,8 +37,8 @@ public class Specialty {
     private Set<Subject> neededSubjects = new HashSet<>();
 
 
-    @ManyToMany(mappedBy = "specialties")
-    private Set<Applicant> applicants = new HashSet<>();
+    @OneToMany(mappedBy = "specialty")
+    private Set<SpecialtyForApplicant> applicants = new HashSet<>();
 
 
 
@@ -113,16 +113,8 @@ public class Specialty {
         this.neededSubjects = neededSubjects;
     }
 
-
-
-    public Set<Applicant> getApplicants() {
+    public Set<SpecialtyForApplicant> getApplicants() {
         return applicants;
-    }
-
-    public List<Applicant> getSortedApplicantList() {
-        return applicants.stream()
-                .sorted(Comparator.comparing(Applicant::calculateAverageScore).reversed())
-                .collect(Collectors.toList());
     }
 
 }

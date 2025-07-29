@@ -1,6 +1,7 @@
 package com.example.universityadmissionscommittee.data;
 
 import com.example.universityadmissionscommittee.data.enums.ApplicantStatus;
+import com.example.universityadmissionscommittee.dto.specialty.SpecialtyForApplicantId;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -36,21 +37,8 @@ public class Applicant {
     )
     private Set<Benefit> benefits = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "specialty_for_applicant",
-            joinColumns = @JoinColumn(name = "applicant_id"),
-            inverseJoinColumns = @JoinColumn(name = "specialty_id")
-    )
-    private Set<Specialty> specialties = new HashSet<>();
-
-
-    @Enumerated(EnumType.STRING)
-    private ApplicantStatus statusType = ApplicantStatus.PENDING;
-
-
-    @Column(name = "status")
-    private String status = statusType.toString();
+    @OneToMany(mappedBy = "applicant")
+    private Set<SpecialtyForApplicant> specialties = new HashSet<>();
 
     protected Applicant() {}
 
@@ -97,16 +85,6 @@ public class Applicant {
     public Set<Benefit> getBenefits() {
         return benefits;
     }
-
-    public ApplicantStatus getStatusType() {
-        return statusType;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-
     public void setBenefits(Set<Benefit> benefits) {
         this.benefits = benefits;
     }
@@ -114,8 +92,6 @@ public class Applicant {
     public void addBenefits(Set<Benefit> benefits) {
         for (Benefit benefit : benefits)
             addBenefit(benefit);
-
-
     }
     public double calculateAverageScore() {
         double sum = 0;
@@ -155,16 +131,8 @@ public class Applicant {
         this.examResults = examResults;
     }
 
-    public void addSpecialty(Specialty specialty) {
+    public void addSpecialty(SpecialtyForApplicant specialty) {
         this.specialties.add(specialty);
-        specialty.getApplicants().add(this);
-    }
-
-    public void setStatusType(ApplicantStatus statusType) {
-        this.statusType = statusType;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+        specialty.setApplicant(this);
     }
 }

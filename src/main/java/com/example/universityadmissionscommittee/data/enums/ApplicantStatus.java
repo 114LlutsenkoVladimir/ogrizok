@@ -1,10 +1,9 @@
 package com.example.universityadmissionscommittee.data.enums;
 
 public enum ApplicantStatus {
-    ACCEPTED_CONTRACT("Прийнятий на контракт"),
-    ACCEPTED_BUDGET("Прийнятий на бюджет"),
-    PENDING("Очікує рішення"),
-    REJECTED("Не прийнятий");
+    ACCEPTED_CONTRACT("Прийнято на контракт"),
+    ACCEPTED_BUDGET("Прийнято на бюджет"),
+    PENDING("Невизначено");
 
     private String name;
 
