@@ -9,7 +9,7 @@ public class ApplicantCreateDto {
     private String lastName;
     private String phoneNumber;
     private String email;
-    private List<Long> specialtyIds = new ArrayList<>();
+    private HashMap<Long, Integer>  specialtyAndPriority = new HashMap<>();
     private List<Long> benefitIds = new ArrayList<>();
     private HashMap<Long, Integer> subjectAndScore = new HashMap<>();
     public ApplicantCreateDto(String firstName, String lastName,
@@ -23,9 +23,11 @@ public class ApplicantCreateDto {
     public void addSubjectAndScore(Long subjectId, Integer score) {
         subjectAndScore.put(subjectId, score);
     }
-    public void addSpecialtyId(Long id) {
-        specialtyIds.add(id);
+
+    public void addSpecialtyAndPriority(Long id, Integer priority) {
+        specialtyAndPriority.put(id, priority);
     }
+
     public void addBenefit(Long id) {
         benefitIds.add(id);
     }
@@ -46,10 +48,9 @@ public class ApplicantCreateDto {
         return email;
     }
 
-    public List<Long> getSpecialtyIds() {
-        return specialtyIds;
+    public HashMap<Long, Integer> getSpecialtyAndPriority() {
+        return specialtyAndPriority;
     }
-
     public HashMap<Long, Integer> getSubjectAndScore() {
         return subjectAndScore;
     }
@@ -74,8 +75,8 @@ public class ApplicantCreateDto {
         this.email = email;
     }
 
-    public void setSpecialtyIds(List<Long> specialtyIds) {
-        this.specialtyIds = specialtyIds;
+    public void setSpecialtyAndPriority(HashMap<Long, Integer> specialtyAndPriority) {
+        this.specialtyAndPriority = specialtyAndPriority;
     }
 
     public void setBenefitIds(List<Long> benefitIds) {

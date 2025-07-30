@@ -8,7 +8,7 @@ public class ApplicantReportGrouped {
     private Map<Long, String> specialtyNames = new HashMap<>();
     private Map<Long, String> subjectNames = new HashMap<>();
     private Map<Long, List<Long>> subjectIdsBySpecialty = new HashMap<>();
-    private LinkedHashMap<Long, List<ApplicantReportDto>> report = new LinkedHashMap<>();
+    private LinkedHashMap<Long, List<ApplicantReportDtoWithAverageScore>> report = new LinkedHashMap<>();
 
 
     public ApplicantReportGrouped(List<ExamRowDto> examRows) {
@@ -21,6 +21,10 @@ public class ApplicantReportGrouped {
         for (ExamRowDto row : examRows) {
             Long specialtyId = row.getSpecialtyId();
             Long subjectId = row.getSubjectId();
+
+            Long benefitId = row.getBenefitId();
+            String benefitName = row.getBenefitName();
+            Integer benefitPoints = row.getBenefitPoints();
 
             // 1. specialty name
             specialtyNames.putIfAbsent(specialtyId, row.getSpecialtyName());
@@ -47,13 +51,16 @@ public class ApplicantReportGrouped {
                                     row.getFirstName(),
                                     row.getLastName(),
                                     row.getPhoneNumber(),
-                                    row.getEmail()
+                                    row.getEmail(),
+                                    row.getPriority(),
+                                    row.getStatus()
                             );
                             applicants.add(newApplicant);
                             return newApplicant;
                         });
 
                 applicant.addExamResult(subjectId, row.getScore());
+                applicant.addBenefit(benefitId, benefitName, benefitPoints);
             } else {
                 // Обеспечить, что даже если нет заявителей, специальность появится в report с пустым списком
                 report.putIfAbsent(specialtyId, new ArrayList<>());

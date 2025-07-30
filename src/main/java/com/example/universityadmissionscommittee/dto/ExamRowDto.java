@@ -11,6 +11,11 @@ public class ExamRowDto {
     private Long subjectId;
     private String subjectName;
     private Integer score;
+    private Integer priority;
+    private String status;
+    private Long benefitId;
+    private String benefitName;
+    private Integer benefitPoints;
 
     public ExamRowDto(Long applicantId, String firstName,
                       String lastName, String phoneNumber,
@@ -19,7 +24,11 @@ public class ExamRowDto {
                       String specialtyName,
                       Long subjectId,
                       String subjectName,
-                      Integer score) {
+                      Integer score, Integer priority,
+                      String status,
+                      Long benefitId,
+                      String benefitName,
+                      Integer benefitPoints) {
         this.applicantId = applicantId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,6 +39,11 @@ public class ExamRowDto {
         this.subjectId = subjectId;
         this.subjectName = subjectName;
         this.score = score;
+        this.priority = priority;
+        this.status = status;
+        this.benefitId = benefitId;
+        this.benefitName = benefitName;
+        this.benefitPoints = benefitPoints;
 
     }
 
@@ -64,10 +78,28 @@ public class ExamRowDto {
     public Long getSpecialtyId() {
         return specialtyId;
     }
+
     public Long getSubjectId() {
         return subjectId;
     }
+
     public String getSpecialtyName() {
         return specialtyName;
+    }
+
+    public Integer getPriority() { return priority; }
+
+    public String getStatus() { return status; }
+
+    public Long getBenefitId() {
+        return benefitId;
+    }
+
+    public String getBenefitName() {
+        return benefitName;
+    }
+
+    public Integer getBenefitPoints() {
+        return benefitPoints;
     }
 }

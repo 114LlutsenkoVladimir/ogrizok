@@ -27,7 +27,9 @@ public class ExamResultRepositoryImpl implements ExamResultRepositoryCustom {
             sp.name AS specialty_name,
             s.id AS subject_id,
             s.name AS subject_name,
-            e.result AS result
+            e.result AS result,
+            asp.priority as priority,
+            asp.appplicant_status as appplicant_status
         FROM specialty sp
         JOIN subject_for_specialty sfs ON sfs.specialty_id = sp.id
         JOIN subject s ON s.id = sfs.subject_id

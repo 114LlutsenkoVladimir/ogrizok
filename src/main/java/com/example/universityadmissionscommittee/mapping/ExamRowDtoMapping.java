@@ -17,7 +17,9 @@ import jakarta.persistence.*;
                         @ColumnResult(name = "specialty_name", type = String.class),
                         @ColumnResult(name = "subject_id", type = Long.class),
                         @ColumnResult(name = "subject_name", type = String.class),
-                        @ColumnResult(name = "result", type = Integer.class)
+                        @ColumnResult(name = "result", type = Integer.class),
+                        @ColumnResult(name = "applicant_status", type = String.class),
+                        @ColumnResult(name = "priority", type = Integer.class)
                 }
         )
 )
