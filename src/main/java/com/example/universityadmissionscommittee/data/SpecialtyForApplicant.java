@@ -1,29 +1,35 @@
 package com.example.universityadmissionscommittee.data;
 
 import com.example.universityadmissionscommittee.data.enums.ApplicantStatus;
+import com.example.universityadmissionscommittee.dto.specialty.SpecialtyForApplicantId;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name="specialty_for_apllicant")
 
 public class SpecialtyForApplicant {
+    @EmbeddedId
+    private SpecialtyForApplicantId id;
+
     @ManyToOne
-    @Column(name = "specialty_id")
+    @JoinColumn(name = "specialty_id", insertable = false, updatable = false)
     private Specialty specialty;
     @ManyToOne
-    @Column(name = "applicant_id")
+    @JoinColumn(name = "applicant_id", insertable = false, updatable = false)
     private Applicant applicant;
+
     @Column(name = "priority")
     private Integer priority;
+
     @Column(name = "applicant_status")
     @Convert(converter = ApplicantStatusConverter.class)
     private ApplicantStatus applicantStatus = ApplicantStatus.PENDING;
 
+    protected SpecialtyForApplicant() {}
+
     public SpecialtyForApplicant(Specialty specialty,
-                                 Applicant applicant,
                                  Integer priority) {
         this.specialty = specialty;
-        this.applicant = applicant;
         this.priority = priority;
     }
 

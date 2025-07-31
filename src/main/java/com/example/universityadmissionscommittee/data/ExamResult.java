@@ -25,7 +25,7 @@ public class ExamResult {
     Subject subject;
 
     @Column(name = "result")
-    int result;
+    Integer result;
 
     public ExamResult(Applicant applicant, Subject subject, int result) {
         this.applicant = applicant;

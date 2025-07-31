@@ -21,12 +21,19 @@ public interface ExamResultRepository extends JpaRepository<ExamResult, Long>, E
                 sp.name,
                 s.id,
                 s.name,
-                e.result
+                e.result,
+                spf.priority,
+                spf.applicantStatus,
+                b.id,
+                b.name,
+                b.additionalPoints
             )
             from ExamResult e
             join e.applicant a
             join e.subject s
-            join a.specialties sp
+            join a.specialties spf
+            join spf.specialty sp
+            join a.benefits b
             WHERE a.id = :applicantId
     """)
     List<ExamRowDto> findExamRowsByApplicantId(@Param("applicantId") Long id);

@@ -27,9 +27,12 @@ public class ExamResultRepositoryImpl implements ExamResultRepositoryCustom {
             sp.name AS specialty_name,
             s.id AS subject_id,
             s.name AS subject_name,
-            e.result AS result,
-            asp.priority as priority,
-            asp.appplicant_status as appplicant_status
+            e.result,
+            asp.priority,
+            asp.applicant_status,
+            b.id as benefit_id,
+            b.name as benefit_name,
+            b.additional_points as benefit_points
         FROM specialty sp
         JOIN subject_for_specialty sfs ON sfs.specialty_id = sp.id
         JOIN subject s ON s.id = sfs.subject_id
@@ -37,6 +40,8 @@ public class ExamResultRepositoryImpl implements ExamResultRepositoryCustom {
         LEFT JOIN specialty_for_applicant asp ON asp.specialty_id = sp.id
         LEFT JOIN applicant a ON a.id = asp.applicant_id
         LEFT JOIN exam_result e ON e.applicant_id = a.id AND e.subject_id = s.id
+        LEFT JOIN benefit_for_applicant bfa ON a.id = bfa.applicant_id
+        LEFT JOIN benefit b ON b.id = bfa.benefit_id
     
         WHERE sp.id IN (?1)
         ORDER BY sp.id, a.id, s.id

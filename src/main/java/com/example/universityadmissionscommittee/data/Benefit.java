@@ -20,7 +20,7 @@ public class Benefit {
     private String name;
 
     @Column(name = "additional_points")
-    private int additionalPoints;
+    private Integer additionalPoints;
 
     @Enumerated(EnumType.STRING)
     @Column(unique = true)

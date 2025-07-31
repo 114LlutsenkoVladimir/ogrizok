@@ -96,7 +96,7 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
         if (repository.existsByEmail(dto.getEmail()))
             throw new ApplicantCreationException("Така пошта вже зайнята");
 
-        if (dto.getSpecialtyIds().isEmpty())
+        if (dto.getSpecialtyAndPriority().isEmpty())
             throw new ApplicantCreationException("Оберіть хоча б 1 спеціальність");
 
         Applicant applicant = new Applicant(
@@ -107,7 +107,11 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
                 id -> applicant.addBenefit(benefitService.findById(id))
         );
 
-        dto.getSpecialtyIds().forEach(id -> applicant.addSpecialty(specialtyService.findById(id)));
+        dto.getSpecialtyAndPriority().forEach((id, priority) -> {
+            Specialty specialty = specialtyService.findById(id);
+            SpecialtyForApplicant specialtyForApplicant = new SpecialtyForApplicant(specialty, priority);
+            applicant.addSpecialty(specialtyForApplicant);
+        });
 
 
         dto.getSubjectAndScore().entrySet().stream()

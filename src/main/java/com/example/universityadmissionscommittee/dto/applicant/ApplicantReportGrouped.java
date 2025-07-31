@@ -1,6 +1,7 @@
 package com.example.universityadmissionscommittee.dto.applicant;
 
 import com.example.universityadmissionscommittee.dto.ExamRowDto;
+import com.example.universityadmissionscommittee.service.CalculateAverageScoreService;
 
 import java.util.*;
 
@@ -39,10 +40,10 @@ public class ApplicantReportGrouped {
 
             // 4. report rows — добавлять только если есть заявитель
             if (row.getApplicantId() != null) {
-                List<ApplicantReportDto> applicants = report.computeIfAbsent(
+                List<ApplicantReportDtoWithAverageScore> applicants = report.computeIfAbsent(
                         specialtyId, k -> new ArrayList<>());
 
-                ApplicantReportDto applicant = applicants.stream()
+                ApplicantReportDtoWithAverageScore applicant = applicants.stream()
                         .filter(a -> Objects.equals(a.getApplicantId(), row.getApplicantId()))
                         .findFirst()
                         .orElseGet(() -> {
@@ -55,12 +56,15 @@ public class ApplicantReportGrouped {
                                     row.getPriority(),
                                     row.getStatus()
                             );
-                            applicants.add(newApplicant);
-                            return newApplicant;
+                            ApplicantReportDtoWithAverageScore newApplicantWithScore =
+                                    new ApplicantReportDtoWithAverageScore(newApplicant,
+                                            CalculateAverageScoreService.calculate(newApplicant));
+                            applicants.add(newApplicantWithScore);
+                            return newApplicantWithScore;
                         });
 
-                applicant.addExamResult(subjectId, row.getScore());
-                applicant.addBenefit(benefitId, benefitName, benefitPoints);
+                applicant.getBase().addExamResult(subjectId, row.getScore());
+                applicant.getBase().addBenefit(benefitId, benefitName, benefitPoints);
             } else {
                 // Обеспечить, что даже если нет заявителей, специальность появится в report с пустым списком
                 report.putIfAbsent(specialtyId, new ArrayList<>());
@@ -85,7 +89,7 @@ public class ApplicantReportGrouped {
         return subjectIdsBySpecialty;
     }
 
-    public LinkedHashMap<Long, List<ApplicantReportDto>> getReport() {
+    public LinkedHashMap<Long, List<ApplicantReportDtoWithAverageScore>> getReport() {
         return report;
     }
 }

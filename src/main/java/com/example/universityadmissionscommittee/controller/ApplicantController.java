@@ -86,8 +86,8 @@ public class ApplicantController {
             applicant.setEmail(email);
         if(!phoneNumber.isEmpty())
             applicant.setPhoneNumber(phoneNumber);
-        applicant.setStatusType(statusType);
-        applicant.setStatus(statusType.toString());
+//        applicant.setStatusType(statusType);
+//        applicant.setStatus(statusType.toString());
         return applicantService.save(applicant);
     }
 

@@ -1,8 +1,8 @@
 export function renderTable(report) {
     const container = document.getElementById("table-container");
-    container.innerHTML = ""; // очистить всё
-
+    container.innerHTML = "";
     for (const [specialtyId, applicants] of Object.entries(report.report)) {
+
         const title = document.createElement("h2");
         title.textContent = report.specialtyNames[specialtyId];
         container.appendChild(title);

@@ -1,5 +1,7 @@
 package com.example.universityadmissionscommittee.dto;
 
+import com.example.universityadmissionscommittee.data.enums.ApplicantStatus;
+
 public class ExamRowDto {
     private Long applicantId;
     private String firstName;
@@ -12,7 +14,7 @@ public class ExamRowDto {
     private String subjectName;
     private Integer score;
     private Integer priority;
-    private String status;
+    private ApplicantStatus status;
     private Long benefitId;
     private String benefitName;
     private Integer benefitPoints;
@@ -25,7 +27,7 @@ public class ExamRowDto {
                       Long subjectId,
                       String subjectName,
                       Integer score, Integer priority,
-                      String status,
+                      ApplicantStatus status,
                       Long benefitId,
                       String benefitName,
                       Integer benefitPoints) {
@@ -89,7 +91,7 @@ public class ExamRowDto {
 
     public Integer getPriority() { return priority; }
 
-    public String getStatus() { return status; }
+    public String getStatus() {  return status != null ? status.toString() : null; }
 
     public Long getBenefitId() {
         return benefitId;

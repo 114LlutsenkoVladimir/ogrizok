@@ -18,8 +18,12 @@ import jakarta.persistence.*;
                         @ColumnResult(name = "subject_id", type = Long.class),
                         @ColumnResult(name = "subject_name", type = String.class),
                         @ColumnResult(name = "result", type = Integer.class),
-                        @ColumnResult(name = "applicant_status", type = String.class),
-                        @ColumnResult(name = "priority", type = Integer.class)
+                        @ColumnResult(name = "priority", type = Integer.class),
+                        @ColumnResult(name = "applicant_status", type = com.example.universityadmissionscommittee
+                                .data.enums.ApplicantStatus.class),
+                        @ColumnResult(name = "benefit_id", type = Long.class),
+                        @ColumnResult(name = "benefit_name", type = String.class),
+                        @ColumnResult(name = "benefit_points", type = Integer.class)
                 }
         )
 )

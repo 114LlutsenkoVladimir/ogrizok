@@ -85,6 +85,7 @@ public class Applicant {
     public Set<Benefit> getBenefits() {
         return benefits;
     }
+
     public void setBenefits(Set<Benefit> benefits) {
         this.benefits = benefits;
     }
@@ -92,16 +93,6 @@ public class Applicant {
     public void addBenefits(Set<Benefit> benefits) {
         for (Benefit benefit : benefits)
             addBenefit(benefit);
-    }
-    public double calculateAverageScore() {
-        double sum = 0;
-        for (ExamResult examResult : examResults)
-            sum += examResult.getResult();
-
-        sum /= examResults.size();
-        for (Benefit benefit : benefits)
-            sum += benefit.getAdditionalPoints();
-        return sum;
     }
 
     public int getResultBySubjectId(Long subjectId) {
