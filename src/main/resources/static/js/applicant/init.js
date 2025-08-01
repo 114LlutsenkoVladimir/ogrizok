@@ -1,5 +1,5 @@
 import {setupSpecialtyChecker} from "./listener.js";
-import {handleDelete, handleSubmit} from "./handlers.js";
+import {handleDelete, handleSpecialtySelection, handleSubmit} from "./handlers.js";
 
 export async function initialize(initMap) {
     initBenefits(initMap.allBenefits)
@@ -65,5 +65,11 @@ function initSpecialtySelect(specialties) {
         option.value = specialty.id;
         option.textContent = specialty.name;
         select.appendChild(option);
+    });
+}
+
+export function attachSpecialtyListeners() {
+    document.querySelectorAll('#specialties input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', handleSpecialtySelection);
     });
 }

@@ -1,8 +1,9 @@
-import {buildDto} from "./buildDto.js";
+import {buildDto, getSelectedSpecialtiesFromDOM } from "./buildDto.js";
 import {deleteApplicant, sendApplicant} from "./api.js";
 import {renderTable} from "./renderApplicantTable.js";
 import {clearDeleteForm, clearSendForm} from "./clearApplicantForm.js";
 import {showError} from "../errorPopup/errorPopup.js";
+import {renderPriorities} from "./render.js";
 
 export async function handleSubmit() {
     try {
@@ -24,3 +25,14 @@ export async function handleDelete() {
         showError(error.message);
     }
 }
+
+
+export function handleSpecialtySelection() {
+    try {
+        const selected = getSelectedSpecialtiesFromDOM();
+        renderPriorities(selected);
+    } catch (error) {
+        showError(error.message);
+    }
+}
+

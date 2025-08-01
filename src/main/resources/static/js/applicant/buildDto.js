@@ -4,7 +4,7 @@ export function buildDto() {
         lastName: getVal("lastName"),
         email: getVal("email"),
         phoneNumber: getVal("phoneNumber"),
-        specialtyIds: getCheckedValues("specialtyIds"),
+        specialtyIds: getSelectedSpecialtiesFromDOM(),
         benefitIds: getCheckedValues("benefitIds"),
         subjectAndScore: getSubjectsWithScores()
     };
@@ -18,6 +18,7 @@ function getCheckedValues(name) {
     return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`))
         .map(cb => parseInt(cb.value));
 }
+
 function getSubjectsWithScores() {
     const inputs = document.querySelectorAll(".exam-result");
     const map = {};
@@ -30,3 +31,16 @@ function getSubjectsWithScores() {
     });
     return map;
 }
+
+export function getSelectedSpecialtiesFromDOM() {
+    const selected = [];
+    document.querySelectorAll('#specialties input[type="checkbox"]:checked')
+        .forEach((checkbox, index) => {
+        selected.push({
+            id: parseInt(checkbox.dataset.id),
+            priority: index + 1
+        });
+    });
+    return selected;
+}
+
