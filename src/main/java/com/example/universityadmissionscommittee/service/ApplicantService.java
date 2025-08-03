@@ -103,13 +103,15 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
                 dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPhoneNumber()
         );
 
+        save(applicant);
+        
         dto.getBenefitIds().forEach(
                 id -> applicant.addBenefit(benefitService.findById(id))
         );
 
         dto.getSpecialtyAndPriority().forEach((id, priority) -> {
             Specialty specialty = specialtyService.findById(id);
-            SpecialtyForApplicant specialtyForApplicant = new SpecialtyForApplicant(specialty, priority);
+            SpecialtyForApplicant specialtyForApplicant = new SpecialtyForApplicant(applicant, specialty, priority);
             applicant.addSpecialty(specialtyForApplicant);
         });
 
@@ -121,7 +123,6 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
                             new ExamResult(applicant, subjectService.findById(entry.getKey()), entry.getValue());
                     applicant.linkExamResult(examResult);
                 });
-
         return save(applicant);
     }
 

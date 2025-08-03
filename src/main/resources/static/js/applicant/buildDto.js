@@ -4,7 +4,7 @@ export function buildDto() {
         lastName: getVal("lastName"),
         email: getVal("email"),
         phoneNumber: getVal("phoneNumber"),
-        specialtyIds: getSelectedSpecialtiesFromDOM(),
+        specialtyAndPriority: getSelectedSpecialtiesFromDOM(),
         benefitIds: getCheckedValues("benefitIds"),
         subjectAndScore: getSubjectsWithScores()
     };
@@ -23,7 +23,7 @@ function getSubjectsWithScores() {
     const inputs = document.querySelectorAll(".exam-result");
     const map = {};
     inputs.forEach(input => {
-        const subjectId = parseInt(input.dataset.subjectId); // например <input data-subject-id="3" ...>
+        const subjectId = parseInt(input.dataset.subjectId);
         const score = parseInt(input.value);
         if (!isNaN(subjectId) && !isNaN(score)) {
             map[subjectId] = score;
@@ -33,14 +33,15 @@ function getSubjectsWithScores() {
 }
 
 export function getSelectedSpecialtiesFromDOM() {
-    const selected = [];
-    document.querySelectorAll('#specialties input[type="checkbox"]:checked')
+    const selected = {};
+    document.querySelectorAll('#available-specialties input[type="checkbox"]:checked')
         .forEach((checkbox, index) => {
-        selected.push({
-            id: parseInt(checkbox.dataset.id),
-            priority: index + 1
-        });
+        const id = parseInt(checkbox.dataset.id)
+        const priority = index + 1;
+        selected[id] = priority
     });
+
+    console.log(selected);
     return selected;
 }
 

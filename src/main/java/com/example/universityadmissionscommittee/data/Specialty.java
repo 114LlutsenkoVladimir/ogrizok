@@ -1,14 +1,9 @@
 package com.example.universityadmissionscommittee.data;
 
-import com.example.universityadmissionscommittee.data.enums.SpecialtyType;
-import jakarta.persistence.*;
-import lombok.Getter;
 
-import java.util.Comparator;
+import jakarta.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "specialty")
@@ -37,7 +32,7 @@ public class Specialty {
     private Set<Subject> neededSubjects = new HashSet<>();
 
 
-    @OneToMany(mappedBy = "specialty")
+    @OneToMany(mappedBy = "specialty", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SpecialtyForApplicant> applicants = new HashSet<>();
 
 

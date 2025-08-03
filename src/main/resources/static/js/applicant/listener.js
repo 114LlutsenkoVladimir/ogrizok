@@ -1,6 +1,6 @@
 import { getEnteredSubjectIds } from "./subjectCollector.js";
 import { fetchAvailableSpecialties } from "./fetchAvailableSpecialties.js";
-import { renderSpecialties, renderSpecialtyError } from "./render.js";
+import { renderSpecialties} from "./render.js";
 
 export function setupSpecialtyChecker() {
     document.addEventListener("input", async (event) => {
@@ -17,7 +17,7 @@ export function setupSpecialtyChecker() {
             const specialties = await fetchAvailableSpecialties(subjectIds);
             renderSpecialties(specialties);
         } catch (e) {
-            renderSpecialtyError(e.message);
+            console.log(e.message);
         }
     });
 }

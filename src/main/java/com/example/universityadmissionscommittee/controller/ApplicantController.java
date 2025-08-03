@@ -39,6 +39,7 @@ public class ApplicantController {
     public ApplicantReportGrouped addApplicant(@RequestBody ApplicantCreateDto dto) {
         Applicant applicant = applicantService.createApplicantFromDto(dto);
         Long id = applicant.getId();
+        System.out.println("=================================================================" + id);
         return applicantService.findApplicantById(id);
     }
 

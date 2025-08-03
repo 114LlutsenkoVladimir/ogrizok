@@ -69,7 +69,7 @@ function initSpecialtySelect(specialties) {
 }
 
 export function attachSpecialtyListeners() {
-    document.querySelectorAll('#specialties input[type="checkbox"]').forEach(checkbox => {
+    document.querySelectorAll('#available-specialties input[type="checkbox"]').forEach(checkbox => {
         checkbox.addEventListener('change', handleSpecialtySelection);
     });
 }

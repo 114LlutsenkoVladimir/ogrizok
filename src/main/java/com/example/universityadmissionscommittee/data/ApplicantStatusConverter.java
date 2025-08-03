@@ -9,7 +9,7 @@ public class ApplicantStatusConverter implements AttributeConverter<ApplicantSta
 
     @Override
     public String convertToDatabaseColumn(ApplicantStatus status) {
-        return status == null ? null : status.name();
+        return status == null ? null : status.toString();
     }
 
     @Override

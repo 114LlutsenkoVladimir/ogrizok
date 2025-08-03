@@ -1,21 +1,20 @@
 package com.example.universityadmissionscommittee.data;
 
 import com.example.universityadmissionscommittee.data.enums.ApplicantStatus;
-import com.example.universityadmissionscommittee.dto.specialty.SpecialtyForApplicantId;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="specialty_for_apllicant")
-
+@Table(name="specialty_for_applicant")
 public class SpecialtyForApplicant {
-    @EmbeddedId
-    private SpecialtyForApplicantId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "specialty_id", insertable = false, updatable = false)
+    @JoinColumn(name = "specialty_id")
     private Specialty specialty;
     @ManyToOne
-    @JoinColumn(name = "applicant_id", insertable = false, updatable = false)
+    @JoinColumn(name = "applicant_id")
     private Applicant applicant;
 
     @Column(name = "priority")
@@ -27,10 +26,16 @@ public class SpecialtyForApplicant {
 
     protected SpecialtyForApplicant() {}
 
-    public SpecialtyForApplicant(Specialty specialty,
+    public SpecialtyForApplicant(Applicant applicant,
+                                 Specialty specialty,
                                  Integer priority) {
+        this.applicant = applicant;
         this.specialty = specialty;
         this.priority = priority;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Specialty getSpecialty() {

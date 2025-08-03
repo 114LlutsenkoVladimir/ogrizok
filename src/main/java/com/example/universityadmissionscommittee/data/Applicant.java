@@ -1,11 +1,7 @@
 package com.example.universityadmissionscommittee.data;
 
-import com.example.universityadmissionscommittee.data.enums.ApplicantStatus;
-import com.example.universityadmissionscommittee.dto.specialty.SpecialtyForApplicantId;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -37,7 +33,7 @@ public class Applicant {
     )
     private Set<Benefit> benefits = new HashSet<>();
 
-    @OneToMany(mappedBy = "applicant")
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SpecialtyForApplicant> specialties = new HashSet<>();
 
     protected Applicant() {}
