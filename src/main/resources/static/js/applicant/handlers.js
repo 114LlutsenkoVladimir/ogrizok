@@ -36,3 +36,16 @@ export function handleSpecialtySelection() {
     }
 }
 
+
+export async function handleFindApplicant() {
+    try {
+        checkFindApplicantForm()
+        const params = buildFindApplicantQueryParams()
+        const report = await getApplicantDtosBySpecialtyId(params)
+        renderTable(report)
+        clearFindApplicantForm()
+    } catch (error) {
+        showError(error.message)
+    }
+}
+

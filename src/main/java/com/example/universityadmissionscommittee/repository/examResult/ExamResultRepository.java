@@ -33,7 +33,7 @@ public interface ExamResultRepository extends JpaRepository<ExamResult, Long>, E
             join e.subject s
             join a.specialties spf
             join spf.specialty sp
-            join a.benefits b
+            LEFT join a.benefits b
             WHERE a.id = :applicantId
     """)
     List<ExamRowDto> findExamRowsByApplicantId(@Param("applicantId") Long id);
