@@ -30,3 +30,12 @@ export async function getApplicantInitDto() {
     }
     return await response.json();
 }
+
+export async function findApplicantByKeyAttributes(params) {
+    const response = await fetch("/findApplicant?" + params)
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message);
+    }
+    return await response.json();
+}

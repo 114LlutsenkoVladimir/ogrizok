@@ -45,3 +45,18 @@ export function getSelectedSpecialtiesFromDOM() {
     return selected;
 }
 
+export function buildFindApplicantQueryParams() {
+    const id = document.getElementById("findApplicantId").value
+    const phoneNumber = document.getElementById("findApplicantPhoneNumber").value
+    const email = document.getElementById("findApplicantEmail").value
+
+    const params = new URLSearchParams();
+
+    if (id) params.append("id", id);
+    if (phoneNumber) params.append("phoneNumber", phoneNumber);
+    if (email) params.append("email", email);
+
+    return params.toString();
+}
+
+

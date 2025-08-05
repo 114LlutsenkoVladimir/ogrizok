@@ -1,5 +1,5 @@
 import {setupSpecialtyChecker} from "./listener.js";
-import {handleDelete, handleSpecialtySelection, handleSubmit} from "./handlers.js";
+import {handleDelete, handleFindApplicant, handleSpecialtySelection, handleSubmit} from "./handlers.js";
 
 export async function initialize(initMap) {
     initBenefits(initMap.allBenefits)
@@ -10,6 +10,9 @@ export async function initialize(initMap) {
 
     document.getElementById("deleteApplicantForm")
         .querySelector("button").addEventListener("click", handleDelete);
+
+    document.getElementById("findApplicantForm")
+        .querySelector("button").addEventListener("click", handleFindApplicant);
 
     document.addEventListener("DOMContentLoaded", () => {
         setupSpecialtyChecker();

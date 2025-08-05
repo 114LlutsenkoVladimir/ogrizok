@@ -1,22 +1,20 @@
-<div th:fragment="findApplicantFragment">
-  <form method="get" action="/findApplicant">
+<div id="findApplicantForm">
       <table>
         <tr>
           <th>
-            <input type="number" name="id" placeholder="id"/>
+            <input type="number" id="findApplicantId" placeholder="id"/>
           </th>
         </tr>
         <tr>
           <th>
-            <input type="email" name="email" placeholder="Email"/>
+            <input type="email" id="findApplicantEmail" placeholder="Email"/>
           </th>
         </tr>
         <tr>
           <th>
-            <input type="tel" pattern="^\+380\d{9}$" name="phoneNumber" placeholder= "+380XXXXXXXXX"/>
+            <input type="tel" pattern="^\+380\d{9}$" id="findApplicantPhoneNumber" placeholder= "+380XXXXXXXXX"/>
           </th>
         </tr>
       </table>
-      <button type="submit">find</button>
-    </form>
+      <button type="button" id="findApplicantBtn">find</button>
 </div>

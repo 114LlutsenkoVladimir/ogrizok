@@ -91,7 +91,7 @@ public class ExamRowDto {
 
     public Integer getPriority() { return priority; }
 
-    public String getStatus() {  return status != null ? status.name() : null; }
+    public String getStatus() {  return status != null ? status.toString() : null; }
 
     public Long getBenefitId() {
         return benefitId;

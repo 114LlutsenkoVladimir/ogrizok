@@ -80,12 +80,15 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
                 .stream().map(Specialty::getId).toList());
     }
 
-    public ApplicantReportGrouped findApplicantById(Long applicantId) {
-        List<ExamRowDto> examRows = examResultRepository.findExamRowsByApplicantId(applicantId);
-        ApplicantReportGrouped applicantsGrouped = new ApplicantReportGrouped(examRows);
-        if(applicantsGrouped.getReport().isEmpty())
+    public ApplicantReportGrouped findApplicantByKeyAttributes(Long applicantId,
+                                                               String email,
+                                                               String phoneNumber) {
+        List<ExamRowDto> examRows = examResultRepository
+                .findExamRowsByApplicantKeyAttributes(applicantId, email, phoneNumber);
+        if(examRows.isEmpty())
             throw new ApplicantNotFoundException();
-        return applicantsGrouped;
+
+        return new ApplicantReportGrouped(examRows);
     }
 
     public Applicant createApplicantFromDto(ApplicantCreateDto dto) {

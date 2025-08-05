@@ -15,8 +15,4 @@ public class ExamResultService  extends AbstractCrudService<ExamResult, Long, Ex
 
     public List<ExamRowDto> getExamRowData(List<Long> specialtyIds) {return repository.examRowData(specialtyIds); }
 
-    public List<ExamRowDto> findExamRowsByApplicantId(Long applicantId) {
-
-        return repository.findExamRowsByApplicantId(applicantId);
-    }
 }

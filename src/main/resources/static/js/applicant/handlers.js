@@ -1,9 +1,10 @@
-import {buildDto, getSelectedSpecialtiesFromDOM } from "./buildDto.js";
-import {deleteApplicant, sendApplicant} from "./api.js";
+import {buildDto, buildFindApplicantQueryParams, getSelectedSpecialtiesFromDOM} from "./buildDto.js";
+import {deleteApplicant, findApplicantByKeyAttributes, sendApplicant} from "./api.js";
 import {renderTable} from "./renderApplicantTable.js";
-import {clearDeleteForm, clearSendForm} from "./clearApplicantForm.js";
+import {clearDeleteForm, clearFindForm, clearSendForm} from "./clearApplicantForm.js";
 import {showError} from "../errorPopup/errorPopup.js";
 import {renderPriorities} from "./render.js";
+import {checkFindApplicantForm} from "./ckeckAppicantForm.js";
 
 export async function handleSubmit() {
     try {
@@ -41,9 +42,9 @@ export async function handleFindApplicant() {
     try {
         checkFindApplicantForm()
         const params = buildFindApplicantQueryParams()
-        const report = await getApplicantDtosBySpecialtyId(params)
+        const report = await findApplicantByKeyAttributes(params)
         renderTable(report)
-        clearFindApplicantForm()
+        clearFindForm()
     } catch (error) {
         showError(error.message)
     }

@@ -8,3 +8,7 @@ export function clearSendForm() {
 export function clearDeleteForm() {
     clearForm("deleteApplicantForm");
 }
+
+export function clearFindForm() {
+    clearForm("findApplicantForm");
+}

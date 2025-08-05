@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ExamResultRepository extends JpaRepository<ExamResult, Long>, ExamResultRepositoryCustom {
 
@@ -34,7 +35,11 @@ public interface ExamResultRepository extends JpaRepository<ExamResult, Long>, E
             join a.specialties spf
             join spf.specialty sp
             LEFT join a.benefits b
-            WHERE a.id = :applicantId
+            WHERE (:applicantId is null or a.id = :applicantId)
+            AND (:email IS NULL OR a.email = :email)
+            AND (:phoneNumber IS NULL OR a.phoneNumber = :phoneNumber)
     """)
-    List<ExamRowDto> findExamRowsByApplicantId(@Param("applicantId") Long id);
+    List<ExamRowDto> findExamRowsByApplicantKeyAttributes(@Param("applicantId") Long id,
+                                                              @Param("email") String email,
+                                                              @Param("phoneNumber") String phoneNumber);
 }

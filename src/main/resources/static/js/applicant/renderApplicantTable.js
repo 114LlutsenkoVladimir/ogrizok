@@ -12,7 +12,9 @@ export function renderTable(report) {
         const thead = document.createElement("thead");
         thead.innerHTML = `
       <tr>
-        <th>Имя</th><th>Фамилия</th><th>Телефон</th><th>Email</th>
+        <th>id</th><th>Имя</th><th>Фамилия</th><th>Телефон</th><th>Email</th>        
+        <th>Середній бал</th>
+        <th>Статус</th>
         ${report.subjectIdsBySpecialty[specialtyId].map(id => `
           <th>${report.subjectNames[id]}</th>
         `).join('')}
@@ -25,10 +27,13 @@ export function renderTable(report) {
         applicants.forEach(applicant => {
             const row = document.createElement("tr");
             row.innerHTML = `
+        <td>${applicant.applicantId}</td>
         <td>${applicant.firstName}</td>
         <td>${applicant.lastName}</td>
         <td>${applicant.phoneNumber}</td>
         <td>${applicant.email}</td>
+        <td>${applicant.averageScore}</td>
+        <td>${applicant.status}</td>
         ${report.subjectIdsBySpecialty[specialtyId].map(id => `
           <td>${applicant.subjectAndScore[id] ?? '-'}</td>
         `).join('')}

@@ -39,7 +39,7 @@ public class ApplicantController {
     public ApplicantReportGrouped addApplicant(@RequestBody ApplicantCreateDto dto) {
         Applicant applicant = applicantService.createApplicantFromDto(dto);
         Long id = applicant.getId();
-        return applicantService.findApplicantById(id);
+        return applicantService.findApplicantByKeyAttributes(id, null, null);
     }
 
     @GetMapping("/initializeApplicantPage")
@@ -93,12 +93,11 @@ public class ApplicantController {
 
     @GetMapping("/findApplicant")
     public ApplicantReportGrouped findApplicant(
-            @RequestParam(required = false) Optional<Long> id,
+            @RequestParam(required = false) Long id,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String phoneNumber
     ) {
-        ApplicantReportGrouped report = applicantService.findApplicantById(id.get());
-        return report;
+        return applicantService.findApplicantByKeyAttributes(id, email, phoneNumber);
     }
 
 

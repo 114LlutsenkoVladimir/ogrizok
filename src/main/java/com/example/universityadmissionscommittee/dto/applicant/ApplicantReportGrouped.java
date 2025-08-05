@@ -56,6 +56,10 @@ public class ApplicantReportGrouped {
                                     row.getPriority(),
                                     row.getStatus()
                             );
+
+                            newApplicant.addExamResult(subjectId, row.getScore());
+                            newApplicant.addBenefit(benefitId, benefitName, benefitPoints);
+
                             ApplicantReportDtoWithAverageScore newApplicantWithScore =
                                     new ApplicantReportDtoWithAverageScore(newApplicant,
                                             CalculateAverageScoreService.calculate(newApplicant));

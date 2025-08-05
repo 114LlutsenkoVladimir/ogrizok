@@ -8,8 +8,10 @@ public class CalculateAverageScoreService {
         double res = 0;
         res += applicant.getSubjectAndScore().values().stream().mapToInt(Integer::intValue).sum();
         res /= applicant.getSubjectAndScore().size();
-//        res /= applicant.getPriority();
-        res += applicant.getBenefits().stream().mapToInt(BenefitIdNamePoints::points).sum();
+        res /= applicant.getPriority();
+        if(applicant.getBenefits() != null &&
+                !applicant.getBenefits().isEmpty())
+            res += applicant.getBenefits().stream().mapToInt(BenefitIdNamePoints::points).sum();
         return res;
     }
 }
