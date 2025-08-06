@@ -1,9 +1,11 @@
 package com.example.universityadmissionscommittee.service;
 
 import com.example.universityadmissionscommittee.data.*;
+import com.example.universityadmissionscommittee.data.enums.ApplicantStatus;
 import com.example.universityadmissionscommittee.dto.applicant.ApplicantCreateDto;
 import com.example.universityadmissionscommittee.dto.applicant.ApplicantReportGrouped;
 import com.example.universityadmissionscommittee.dto.ExamRowDto;
+import com.example.universityadmissionscommittee.exception.SpecialtyNotFoundException;
 import com.example.universityadmissionscommittee.exception.applicant.ApplicantCreationException;
 import com.example.universityadmissionscommittee.exception.applicant.ApplicantNotFoundException;
 import com.example.universityadmissionscommittee.repository.ApplicantRepository;
@@ -89,6 +91,15 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
             throw new ApplicantNotFoundException();
 
         return new ApplicantReportGrouped(examRows);
+    }
+
+    public void updateApplicantStatus(Long applicantId, Long specialtyId, ApplicantStatus status) {
+        Applicant applicant = findById(applicantId);
+        SpecialtyForApplicant specialty = applicant.getSpecialties().stream()
+                .filter(s -> Objects.equals(s.getId(), specialtyId)).findFirst().orElseThrow(
+                        SpecialtyNotFoundException::new
+                );
+        specialty.setApplicantStatus(status);
     }
 
     public Applicant createApplicantFromDto(ApplicantCreateDto dto) {

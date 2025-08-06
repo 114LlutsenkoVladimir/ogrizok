@@ -100,6 +100,16 @@ public class ApplicantController {
         return applicantService.findApplicantByKeyAttributes(id, email, phoneNumber);
     }
 
+    @GetMapping("/updateApplicantStatus")
+    public ApplicantReportGrouped updateApplicantStatus(
+            @RequestParam Long applicantId,
+            @RequestParam Long specialtyId,
+            @RequestParam ApplicantStatus status
+    ) {
+        applicantService.updateApplicantStatus(applicantId, specialtyId, status);
+        return applicantService.findApplicantByKeyAttributes(applicantId, null, null);
+    }
+
 
     @GetMapping("/filterApplicantsBySpecialty/{specialtyId}")
     public ApplicantReportGrouped filterApplicants(@PathVariable Long specialtyId) {

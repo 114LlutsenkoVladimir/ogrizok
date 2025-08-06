@@ -46,7 +46,6 @@ public class ExamRowDto {
         this.benefitId = benefitId;
         this.benefitName = benefitName;
         this.benefitPoints = benefitPoints;
-
     }
 
     public Long getApplicantId() {

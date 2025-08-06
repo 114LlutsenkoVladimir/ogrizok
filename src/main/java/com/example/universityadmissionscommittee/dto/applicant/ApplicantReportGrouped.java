@@ -4,6 +4,7 @@ import com.example.universityadmissionscommittee.dto.ExamRowDto;
 import com.example.universityadmissionscommittee.service.CalculateAverageScoreService;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ApplicantReportGrouped {
     private Map<Long, String> specialtyNames = new HashMap<>();
@@ -18,7 +19,7 @@ public class ApplicantReportGrouped {
 
     public void buildFrom(List<ExamRowDto> examRows) {
         Map<Long, Set<Long>> tempSubjectIdsBySpecialty = new LinkedHashMap<>();
-
+        LinkedHashMap<Long, List<ApplicantReportDto>> reportTemp = new LinkedHashMap<>();
         for (ExamRowDto row : examRows) {
             Long specialtyId = row.getSpecialtyId();
             Long subjectId = row.getSubjectId();
@@ -38,12 +39,15 @@ public class ApplicantReportGrouped {
                     .computeIfAbsent(specialtyId, k -> new LinkedHashSet<>())
                     .add(subjectId);
 
+
+
+
             // 4. report rows — добавлять только если есть заявитель
             if (row.getApplicantId() != null) {
-                List<ApplicantReportDtoWithAverageScore> applicants = report.computeIfAbsent(
+                List<ApplicantReportDto> applicants = reportTemp.computeIfAbsent(
                         specialtyId, k -> new ArrayList<>());
 
-                ApplicantReportDtoWithAverageScore applicant = applicants.stream()
+                ApplicantReportDto applicant = applicants.stream()
                         .filter(a -> Objects.equals(a.getApplicantId(), row.getApplicantId()))
                         .findFirst()
                         .orElseGet(() -> {
@@ -58,20 +62,17 @@ public class ApplicantReportGrouped {
                             );
 
                             newApplicant.addExamResult(subjectId, row.getScore());
-                            newApplicant.addBenefit(benefitId, benefitName, benefitPoints);
+                            if(benefitId != null)
+                                newApplicant.addBenefit(benefitId, benefitName, benefitPoints);
 
-                            ApplicantReportDtoWithAverageScore newApplicantWithScore =
-                                    new ApplicantReportDtoWithAverageScore(newApplicant,
-                                            CalculateAverageScoreService.calculate(newApplicant));
-                            applicants.add(newApplicantWithScore);
-                            return newApplicantWithScore;
+                            applicants.add(newApplicant);
+                            return newApplicant;
                         });
-
-                applicant.getBase().addExamResult(subjectId, row.getScore());
-                applicant.getBase().addBenefit(benefitId, benefitName, benefitPoints);
+                applicant.addExamResult(subjectId, row.getScore());
+                if(benefitId != null)
+                    applicant.addBenefit(benefitId, benefitName, benefitPoints);
             } else {
-                // Обеспечить, что даже если нет заявителей, специальность появится в report с пустым списком
-                report.putIfAbsent(specialtyId, new ArrayList<>());
+                reportTemp.putIfAbsent(specialtyId, new ArrayList<>());
             }
         }
 
@@ -79,6 +80,17 @@ public class ApplicantReportGrouped {
         for (Map.Entry<Long, Set<Long>> entry : tempSubjectIdsBySpecialty.entrySet()) {
             subjectIdsBySpecialty.put(entry.getKey(), new ArrayList<>(entry.getValue()));
         }
+
+        report = reportTemp.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().stream()
+                                .map(dto -> new ApplicantReportDtoWithAverageScore(
+                                        dto, CalculateAverageScoreService.calculate(dto)))
+                                .toList(),
+                        (v1, v2) -> v1,
+                        LinkedHashMap::new
+                ));
     }
 
     public Map<Long, String> getSpecialtyNames() {
