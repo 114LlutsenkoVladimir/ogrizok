@@ -47,7 +47,8 @@ public class ApplicantController {
         return new ApplicantInitDto(
                 benefitService.allIdAndName(),
                 subjectService.allIdAndName(),
-                specialtyService.allIdAndName()
+                specialtyService.allIdAndName(),
+                Arrays.stream(ApplicantStatus.values()).toList()
         );
     }
 

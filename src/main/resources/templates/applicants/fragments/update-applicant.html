@@ -26,11 +26,6 @@
             </th>
         </tr>
     </table>
-    <select name="statusType">
-        <option th:each="s : ${session.statusTypes}"
-                th:value="${s.name()}"
-                th:text="${s.toString()}">
-        </option>
-    </select>
+
     <button type="submit">update</button>
 </form>

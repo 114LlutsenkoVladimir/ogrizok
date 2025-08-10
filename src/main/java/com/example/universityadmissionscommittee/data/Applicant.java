@@ -122,4 +122,8 @@ public class Applicant {
         this.specialties.add(specialty);
         specialty.setApplicant(this);
     }
+
+    public Set<SpecialtyForApplicant> getSpecialties() {
+        return specialties;
+    }
 }

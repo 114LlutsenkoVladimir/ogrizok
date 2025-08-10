@@ -60,3 +60,17 @@ export function buildFindApplicantQueryParams() {
 }
 
 
+export function buildUpdateApplicantStatusQueryParams() {
+    const applicantId = document.getElementById("updateApplicantStatusApplicantId").value
+    const specialtyId = document.getElementById("updateApplicantStatusSpecialtyId").value
+    const status = document.getElementById("applicantStatusSelect").value
+
+    const params = new URLSearchParams();
+
+    params.append("applicantId", applicantId);
+    params.append("specialtyId", specialtyId);
+    params.append("status", status);
+
+    return params.toString();
+}
+

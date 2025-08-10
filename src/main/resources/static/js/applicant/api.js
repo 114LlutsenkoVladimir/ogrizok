@@ -39,3 +39,12 @@ export async function findApplicantByKeyAttributes(params) {
     }
     return await response.json();
 }
+
+export async function updateApplicantStatus(params) {
+    const response = await fetch("/updateApplicantStatus?" + params)
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message);
+    }
+    return await response.json();
+}

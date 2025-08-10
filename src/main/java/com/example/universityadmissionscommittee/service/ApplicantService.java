@@ -100,6 +100,7 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
                         SpecialtyNotFoundException::new
                 );
         specialty.setApplicantStatus(status);
+        save(applicant);
     }
 
     public Applicant createApplicantFromDto(ApplicantCreateDto dto) {

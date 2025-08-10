@@ -1,10 +1,17 @@
 import {setupSpecialtyChecker} from "./listener.js";
-import {handleDelete, handleFindApplicant, handleSpecialtySelection, handleSubmit} from "./handlers.js";
+import {
+    handleDelete,
+    handleFindApplicant,
+    handleSpecialtySelection,
+    handleSubmit,
+    handleUpdateStatus
+} from "./handlers.js";
 
 export async function initialize(initMap) {
     initBenefits(initMap.allBenefits)
     await initSubjectScoreInputs(initMap.allSubjects)
     initSpecialtySelect(initMap.allSpecialties)
+    initStatusSelect(initMap.allStatuses)
 
     document.getElementById("submit-btn").addEventListener("click", handleSubmit);
 
@@ -13,6 +20,9 @@ export async function initialize(initMap) {
 
     document.getElementById("findApplicantForm")
         .querySelector("button").addEventListener("click", handleFindApplicant);
+
+    document.getElementById("updateApplicantStatusForm")
+        .querySelector("button").addEventListener("click", handleUpdateStatus);
 
     document.addEventListener("DOMContentLoaded", () => {
         setupSpecialtyChecker();
@@ -67,6 +77,18 @@ function initSpecialtySelect(specialties) {
         const option = document.createElement('option');
         option.value = specialty.id;
         option.textContent = specialty.name;
+        select.appendChild(option);
+    });
+}
+
+
+function initStatusSelect(statuses) {
+    const select = document.getElementById('applicantStatusSelect');
+
+    statuses.forEach(status => {
+        const option = document.createElement('option');
+        option.value = status.code;
+        option.textContent = status.name;
         select.appendChild(option);
     });
 }

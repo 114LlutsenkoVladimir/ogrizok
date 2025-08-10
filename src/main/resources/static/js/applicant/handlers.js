@@ -1,7 +1,12 @@
-import {buildDto, buildFindApplicantQueryParams, getSelectedSpecialtiesFromDOM} from "./buildDto.js";
-import {deleteApplicant, findApplicantByKeyAttributes, sendApplicant} from "./api.js";
+import {
+    buildDto,
+    buildFindApplicantQueryParams,
+    buildUpdateApplicantStatusQueryParams,
+    getSelectedSpecialtiesFromDOM
+} from "./buildDto.js";
+import {deleteApplicant, findApplicantByKeyAttributes, sendApplicant, updateApplicantStatus} from "./api.js";
 import {renderTable} from "./renderApplicantTable.js";
-import {clearDeleteForm, clearFindForm, clearSendForm} from "./clearApplicantForm.js";
+import {clearDeleteForm, clearFindForm, clearSendForm, clearUpdateStatusForm} from "./clearApplicantForm.js";
 import {showError} from "../errorPopup/errorPopup.js";
 import {renderPriorities} from "./render.js";
 import {checkFindApplicantForm} from "./ckeckAppicantForm.js";
@@ -45,6 +50,17 @@ export async function handleFindApplicant() {
         const report = await findApplicantByKeyAttributes(params)
         renderTable(report)
         clearFindForm()
+    } catch (error) {
+        showError(error.message)
+    }
+}
+
+export async function handleUpdateStatus() {
+    try {
+        const params = buildUpdateApplicantStatusQueryParams()
+        const report = await updateApplicantStatus(params)
+        renderTable(report)
+        clearUpdateStatusForm()
     } catch (error) {
         showError(error.message)
     }
