@@ -8,8 +8,8 @@ export function buildDto() {
         benefitIds: getCheckedValues("benefitIds"),
         subjectAndScore: getSubjectsWithScores()
     };
-
 }
+
 function getVal(id) {
     return document.getElementById(id).value.trim();
 }

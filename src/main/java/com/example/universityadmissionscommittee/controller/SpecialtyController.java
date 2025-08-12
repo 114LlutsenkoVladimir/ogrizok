@@ -1,5 +1,7 @@
 package com.example.universityadmissionscommittee.controller;
 
+import com.example.universityadmissionscommittee.data.Specialty;
+import com.example.universityadmissionscommittee.dto.specialty.SpecialtyCreateDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyInitDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportGrouped;
 import com.example.universityadmissionscommittee.service.FacultyService;
@@ -39,7 +41,7 @@ public class SpecialtyController {
 
     @GetMapping("/filterSpecialtiesByFaculty/{facultyId}")
     public SpecialtyReportGrouped selectFaculty(@PathVariable Long facultyId) {
-        return updateTable(facultyId);
+        return specialtyService.getSpecialtiesByOneFaculty(facultyId);
     }
 
     @GetMapping("/findSpecialty")
@@ -50,7 +52,9 @@ public class SpecialtyController {
         return specialtyService.findSpecialtyReportDtoById(id, name, number);
     }
 
-    public SpecialtyReportGrouped updateTable(Long facultyId) {
-        return specialtyService.getSpecialtiesByOneFaculty(facultyId);
+    @GetMapping("/createSpecialty")
+    public SpecialtyReportGrouped createSpecialty(@RequestBody SpecialtyCreateDto dto) {
+        Specialty specialty = specialtyService.createFromDto(dto);
+        return specialtyService.findSpecialtyReportDtoById(specialty.getId(), null, null);
     }
 }

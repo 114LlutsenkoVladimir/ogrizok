@@ -1,0 +1,71 @@
+package com.example.universityadmissionscommittee.dto.specialty;
+
+public class SpecialtyCreateDto {
+
+    private String name;
+
+    private Integer number;
+
+    private Long facultyId;
+
+    private Integer budgetPlaces = 0;
+
+    private Integer contractPlaces = 0;
+
+    public SpecialtyCreateDto(String name,
+                              Integer number,
+                              Long facultyId,
+                              Integer budgetPlaces,
+                              Integer contractPlaces) {
+        this.name = name;
+        this.number = number;
+        this.facultyId = facultyId;
+        this.budgetPlaces = budgetPlaces;
+        this.contractPlaces = contractPlaces;
+    }
+
+    public SpecialtyCreateDto(String name, Integer number) {
+        this.name = name;
+        this.number = number;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public Long getFacultyId() {
+        return facultyId;
+    }
+
+    public Integer getBudgetPlaces() {
+        return budgetPlaces;
+    }
+
+    public Integer getContractPlaces() {
+        return contractPlaces;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public void setFacultyId(Long facultyId) {
+        this.facultyId = facultyId;
+    }
+
+    public void setBudgetPlaces(Integer budgetPlaces) {
+        this.budgetPlaces = budgetPlaces;
+    }
+
+    public void setContractPlaces(Integer contractPlaces) {
+        this.contractPlaces = contractPlaces;
+    }
+}

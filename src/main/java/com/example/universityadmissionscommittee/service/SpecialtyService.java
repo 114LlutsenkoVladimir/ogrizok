@@ -5,6 +5,7 @@ import com.example.universityadmissionscommittee.data.Faculty;
 import com.example.universityadmissionscommittee.data.Specialty;
 import com.example.universityadmissionscommittee.data.Subject;
 import com.example.universityadmissionscommittee.data.enums.SpecialtyType;
+import com.example.universityadmissionscommittee.dto.specialty.SpecialtyCreateDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyIdAndNameDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportGrouped;
@@ -17,8 +18,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class SpecialtyService  extends AbstractCrudService<Specialty, Long, SpecialtyRepository>{
-    protected SpecialtyService(SpecialtyRepository repository) {
+
+    private FacultyService facultyService;
+
+    protected SpecialtyService(SpecialtyRepository repository,
+                               FacultyService facultyService) {
         super(repository);
+        this.facultyService = facultyService;
     }
 
 
@@ -75,5 +81,11 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
 
     public List<SpecialtyIdAndNameDto> allIdAndName() {
         return toIdAndNameDto(findAll());
+    }
+
+    public Specialty createFromDto(SpecialtyCreateDto dto) {
+        return save(new Specialty(dto.getName(), dto.getNumber(),
+                facultyService.findById(dto.getFacultyId()),
+                dto.getBudgetPlaces(), dto.getContractPlaces()));
     }
 }
