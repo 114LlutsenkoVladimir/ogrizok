@@ -1,5 +1,5 @@
 package com.example.universityadmissionscommittee.dto.specialty;
-import com.example.universityadmissionscommittee.exception.SpecialtyNotFoundException;
+import com.example.universityadmissionscommittee.exception.specialty.SpecialtyNotFoundException;
 
 import java.util.HashMap;
 import java.util.List;

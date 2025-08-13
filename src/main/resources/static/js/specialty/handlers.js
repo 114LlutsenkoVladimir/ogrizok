@@ -1,9 +1,23 @@
-import {getFilteredSpecialtyList, getSpecialtyDtosBySpecialtyId, updateSpecialtyPlaces} from "./api.js";
+import {
+    createSpecialtyFromDto,
+    getFilteredSpecialtyList,
+    getSpecialtyDtosBySpecialtyId,
+    updateSpecialtyPlaces
+} from "./api.js";
 import {renderTable} from "./renderSpecialtyTable.js";
 import {showError} from "../errorPopup/errorPopup.js";
-import {clearFindSpecialtyForm, clearUpdateSpecialtyPlacesForm} from "./clearSpecialtyForm.js";
-import {checkFindSpecialtyForm, checkUpdateSpecialtyPlacesForm} from "./formValidation.js";
+import {
+    clearCreateSpecialtyForm,
+    clearFindSpecialtyForm,
+    clearUpdateSpecialtyPlacesForm
+} from "./clearSpecialtyForm.js";
+import {
+    checkCreateSpecialtyFromDtoForm,
+    checkFindSpecialtyForm,
+    checkUpdateSpecialtyPlacesForm
+} from "./formValidation.js";
 import {buildFindSpecialtyQueryParams, buildUpdateSpecialtyPlacesQueryParams} from "./buildSpecialtyQueryParams.js";
+import {buildDto} from "./buildSpecialtyDto.js";
 
 export async function handleFilterSpecialtyTable() {
     try {
@@ -34,6 +48,18 @@ export async function handleUpdateSpecialtyPlaces() {
         const report = await updateSpecialtyPlaces(params)
         renderTable(report)
         clearUpdateSpecialtyPlacesForm()
+    } catch (error) {
+        showError(error.message)
+    }
+}
+
+export async function handleCreateSpecialtyFromDto() {
+    try {
+        checkCreateSpecialtyFromDtoForm()
+        const dto = buildDto()
+        const report = await createSpecialtyFromDto(dto)
+        renderTable(report)
+        clearCreateSpecialtyForm()
     } catch (error) {
         showError(error.message)
     }

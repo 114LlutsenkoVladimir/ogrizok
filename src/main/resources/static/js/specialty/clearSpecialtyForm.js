@@ -7,3 +7,7 @@ export function clearFindSpecialtyForm() {
 export function clearUpdateSpecialtyPlacesForm() {
     clearForm("updateSpecialtyPlaces");
 }
+
+export function clearCreateSpecialtyForm() {
+    clearForm("createSpecialtyForm");
+}

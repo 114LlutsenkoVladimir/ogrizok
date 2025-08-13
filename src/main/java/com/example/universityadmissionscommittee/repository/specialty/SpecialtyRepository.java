@@ -41,4 +41,7 @@ public interface SpecialtyRepository extends JpaRepository<Specialty, Long> {
             @Param("name") String name,
             @Param("number") Integer number
     );
+
+    boolean existsByName(String name);
+    boolean existsByNumber(Integer number);
 }

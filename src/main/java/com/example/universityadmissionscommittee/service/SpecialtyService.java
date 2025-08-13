@@ -1,20 +1,19 @@
 package com.example.universityadmissionscommittee.service;
 
 
-import com.example.universityadmissionscommittee.data.Faculty;
 import com.example.universityadmissionscommittee.data.Specialty;
 import com.example.universityadmissionscommittee.data.Subject;
-import com.example.universityadmissionscommittee.data.enums.SpecialtyType;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyCreateDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyIdAndNameDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportGrouped;
-import com.example.universityadmissionscommittee.exception.SpecialtyNotFoundException;
+import com.example.universityadmissionscommittee.exception.specialty.SpecialtyCreationException;
+import com.example.universityadmissionscommittee.exception.specialty.SpecialtyDeletingException;
+import com.example.universityadmissionscommittee.exception.specialty.SpecialtyNotFoundException;
 import com.example.universityadmissionscommittee.repository.specialty.SpecialtyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class SpecialtyService  extends AbstractCrudService<Specialty, Long, SpecialtyRepository>{
@@ -34,6 +33,13 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
         );
     }
 
+    @Override
+    public void deleteById(Long id) {
+        Specialty specialty = findById(id);
+        if(!specialty.getApplicants().isEmpty())
+            throw new SpecialtyDeletingException("у спеціальності є абітурієнти");
+        super.deleteById(id);
+    }
     public void updateSpecialtyPlaces(Long id,
                                       Optional<Integer> budgetPlaces,
                                       Optional<Integer> contractPlaces) {
@@ -84,6 +90,12 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
     }
 
     public Specialty createFromDto(SpecialtyCreateDto dto) {
+        if(repository.existsByName(dto.getName()))
+            throw new SpecialtyCreationException("Номер спеціальності вже зайнятий");
+
+        if(repository.existsByNumber(dto.getNumber()))
+            throw new SpecialtyCreationException("Назва спеціальності вже зайнята");
+
         return save(new Specialty(dto.getName(), dto.getNumber(),
                 facultyService.findById(dto.getFacultyId()),
                 dto.getBudgetPlaces(), dto.getContractPlaces()));

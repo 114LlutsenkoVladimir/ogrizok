@@ -5,7 +5,7 @@ import com.example.universityadmissionscommittee.data.enums.ApplicantStatus;
 import com.example.universityadmissionscommittee.dto.applicant.ApplicantCreateDto;
 import com.example.universityadmissionscommittee.dto.applicant.ApplicantReportGrouped;
 import com.example.universityadmissionscommittee.dto.ExamRowDto;
-import com.example.universityadmissionscommittee.exception.SpecialtyNotFoundException;
+import com.example.universityadmissionscommittee.exception.specialty.SpecialtyNotFoundException;
 import com.example.universityadmissionscommittee.exception.applicant.ApplicantCreationException;
 import com.example.universityadmissionscommittee.exception.applicant.ApplicantNotFoundException;
 import com.example.universityadmissionscommittee.repository.ApplicantRepository;

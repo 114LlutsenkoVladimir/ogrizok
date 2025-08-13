@@ -12,21 +12,7 @@ public class SpecialtyCreateDto {
 
     private Integer contractPlaces = 0;
 
-    public SpecialtyCreateDto(String name,
-                              Integer number,
-                              Long facultyId,
-                              Integer budgetPlaces,
-                              Integer contractPlaces) {
-        this.name = name;
-        this.number = number;
-        this.facultyId = facultyId;
-        this.budgetPlaces = budgetPlaces;
-        this.contractPlaces = contractPlaces;
-    }
-
-    public SpecialtyCreateDto(String name, Integer number) {
-        this.name = name;
-        this.number = number;
+    protected SpecialtyCreateDto() {
     }
 
     public String getName() {

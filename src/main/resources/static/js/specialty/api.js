@@ -38,3 +38,18 @@ export async function getSpecialtyInitDto() {
     return await response.json()
 }
 
+export async function createSpecialtyFromDto(dto) {
+    const response = await fetch("/specialties/createSpecialty", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dto)
+    });
+
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message);
+    }
+
+    return await response.json();
+}
+

@@ -1,4 +1,4 @@
-import {checkEmptyInputs} from "../utils/checkEmptyInputs.js";
+import {checkEmptyInputs, checkNegativeInputs} from "../utils/checkEmptyInputs.js";
 
 export function checkFindSpecialtyForm() {
     checkEmptyInputs("find-specialty")
@@ -18,4 +18,13 @@ export function checkUpdateSpecialtyPlacesForm() {
         if (budgetPlacesValue < 0)
             throw new Error("Кіль-ть бюджетних місць не может бути < 0")
     }
+}
+
+export function checkCreateSpecialtyFromDtoForm() {
+    checkEmptyInputs("createSpecialtyForm")
+    checkNegativeInputs([
+        "createSpecialtyBudgetPlaces",
+        "createSpecialtyContractPlaces",
+        "createSpecialtyNumber"
+    ])
 }

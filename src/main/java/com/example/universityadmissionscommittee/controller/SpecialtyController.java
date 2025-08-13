@@ -6,6 +6,7 @@ import com.example.universityadmissionscommittee.dto.specialty.SpecialtyInitDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportGrouped;
 import com.example.universityadmissionscommittee.service.FacultyService;
 import com.example.universityadmissionscommittee.service.SpecialtyService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -52,9 +53,15 @@ public class SpecialtyController {
         return specialtyService.findSpecialtyReportDtoById(id, name, number);
     }
 
-    @GetMapping("/createSpecialty")
+    @PostMapping("/createSpecialty")
     public SpecialtyReportGrouped createSpecialty(@RequestBody SpecialtyCreateDto dto) {
         Specialty specialty = specialtyService.createFromDto(dto);
         return specialtyService.findSpecialtyReportDtoById(specialty.getId(), null, null);
+    }
+
+    @DeleteMapping("/deleteSpecialty/{id}")
+    public ResponseEntity<Void> deleteSpecialtyById(@PathVariable Long id) {
+        specialtyService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
