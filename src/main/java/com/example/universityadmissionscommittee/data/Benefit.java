@@ -22,14 +22,10 @@ public class Benefit {
     @Column(name = "additional_points")
     private Integer additionalPoints;
 
-    @Enumerated(EnumType.STRING)
-    @Column(unique = true)
-    private BenefitType benefitType;
 
-    public Benefit(BenefitType benefitType) {
-        this.name = benefitType.toString();
-        this.additionalPoints = benefitType.getAdditionalPoints();
-        this.benefitType = benefitType;
+    public Benefit(String name, Integer additionalPoints) {
+        this.name = name;
+        this.additionalPoints = additionalPoints;
     }
 
     protected Benefit() {}
@@ -44,11 +40,6 @@ public class Benefit {
 
     public int getAdditionalPoints() {
         return additionalPoints;
-    }
-
-
-    public BenefitType getBenefitType() {
-        return benefitType;
     }
 
 }

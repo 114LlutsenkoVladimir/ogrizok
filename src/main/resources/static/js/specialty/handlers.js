@@ -1,5 +1,5 @@
 import {
-    createSpecialtyFromDto,
+    createSpecialtyFromDto, deleteSpecialty,
     getFilteredSpecialtyList,
     getSpecialtyDtosBySpecialtyId,
     updateSpecialtyPlaces
@@ -7,7 +7,7 @@ import {
 import {renderTable} from "./renderSpecialtyTable.js";
 import {showError} from "../errorPopup/errorPopup.js";
 import {
-    clearCreateSpecialtyForm,
+    clearCreateSpecialtyForm, clearDeleteSpecialtyForm,
     clearFindSpecialtyForm,
     clearUpdateSpecialtyPlacesForm
 } from "./clearSpecialtyForm.js";
@@ -60,6 +60,16 @@ export async function handleCreateSpecialtyFromDto() {
         const report = await createSpecialtyFromDto(dto)
         renderTable(report)
         clearCreateSpecialtyForm()
+    } catch (error) {
+        showError(error.message)
+    }
+}
+
+export async function handleDeleteSpecialtyById() {
+    try {
+        const id = document.getElementById("deleteSpecialtyId").value
+        await deleteSpecialty(id)
+        clearDeleteSpecialtyForm()
     } catch (error) {
         showError(error.message)
     }

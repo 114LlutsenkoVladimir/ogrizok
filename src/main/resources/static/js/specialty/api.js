@@ -53,3 +53,13 @@ export async function createSpecialtyFromDto(dto) {
     return await response.json();
 }
 
+export async function deleteSpecialty(id) {
+    const response = await fetch(`/specialties/deleteSpecialty/${id}`, {
+        method: "DELETE"
+    })
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message);
+    }
+}
+

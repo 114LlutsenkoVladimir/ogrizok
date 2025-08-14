@@ -119,9 +119,13 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
         );
 
         save(applicant);
-        
+
+        System.out.println("===============================================================");
         dto.getBenefitIds().forEach(
-                id -> applicant.addBenefit(benefitService.findById(id))
+                (id) ->  {
+                    applicant.addBenefit(benefitService.findById(id));
+                    System.out.println(id);
+                }
         );
 
         dto.getSpecialtyAndPriority().forEach((id, priority) -> {

@@ -1,5 +1,5 @@
 import {
-    handleCreateSpecialtyFromDto,
+    handleCreateSpecialtyFromDto, handleDeleteSpecialtyById,
     handleFilterSpecialtyTable,
     handleFindSpecialty,
     handleUpdateSpecialtyPlaces
@@ -13,6 +13,7 @@ export async function initialize(initMap) {
     document.getElementById("findSpecialtyBtn").addEventListener("click", handleFindSpecialty)
     document.getElementById("updateSpecialtyBtn").addEventListener("click", handleUpdateSpecialtyPlaces)
     document.getElementById("addSpecialtyBtn").addEventListener("click", handleCreateSpecialtyFromDto)
+    document.getElementById("deleteSpecialtyBtn").addEventListener("click", handleDeleteSpecialtyById)
 }
 
 function initFacultySelector(faculties, selectorName) {

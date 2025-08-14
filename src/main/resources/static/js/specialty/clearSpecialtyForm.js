@@ -11,3 +11,7 @@ export function clearUpdateSpecialtyPlacesForm() {
 export function clearCreateSpecialtyForm() {
     clearForm("createSpecialtyForm");
 }
+
+export function clearDeleteSpecialtyForm() {
+    clearForm("deleteSpecialtyForm");
+}
