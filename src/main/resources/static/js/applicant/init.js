@@ -36,6 +36,7 @@ function initBenefits(benefits) {
         const wrapper = document.createElement('div');
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
+        checkbox.name = "benefitIds";
         checkbox.value = benefit.id;
 
         const label = document.createElement('span');

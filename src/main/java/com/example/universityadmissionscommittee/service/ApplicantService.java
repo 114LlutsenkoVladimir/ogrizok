@@ -120,11 +120,9 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
 
         save(applicant);
 
-        System.out.println("===============================================================");
         dto.getBenefitIds().forEach(
                 (id) ->  {
                     applicant.addBenefit(benefitService.findById(id));
-                    System.out.println(id);
                 }
         );
 
@@ -140,7 +138,7 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
                 .forEach((entry) -> {
                     ExamResult examResult =
                             new ExamResult(applicant, subjectService.findById(entry.getKey()), entry.getValue());
-                    applicant.linkExamResult(examResult);
+                    applicant.addExamResult(examResult);
                 });
         return save(applicant);
     }

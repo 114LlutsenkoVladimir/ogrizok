@@ -1,69 +1,102 @@
 package com.example.universityadmissionscommittee.data;
 
 
-import com.example.universityadmissionscommittee.data.enums.SpecialtyType;
-import com.example.universityadmissionscommittee.data.enums.SubjectType;
+
 import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import java.util.*;
+
 @Entity
-@Table(name = "subject")
+@Table(
+        name = "subject",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_subject_name", columnNames = "name")
+        },
+        indexes = {
+                @Index(name = "idx_subject_name", columnList = "name")
+        }
+)
 public class Subject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    @Column(name = "name")
-    String name;
+    @NotBlank
+    @Size(max = 255)
+    @Column(name = "name", nullable = false, length = 255)
+    private String name;
 
-    @ManyToMany(mappedBy = "neededSubjects")
-    Set<Specialty> specialties = new HashSet<>();
+    /** Обратная сторона M:N. Владелец — Specialty (там @JoinTable). */
+    @ManyToMany(mappedBy = "neededSubjects", fetch = FetchType.LAZY)
+    private final Set<Specialty> specialties = new HashSet<>();
 
-    @OneToMany(mappedBy = "subject")
-    Set<ExamResult> examResults = new HashSet<>();
-    @Enumerated(EnumType.STRING)
-    @Column(unique = true)
-    SubjectType subjectType;
+    /** Обратная сторона 1:N. Владелец FK — ExamResult. */
+    @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY)
+    private final Set<ExamResult> examResults = new HashSet<>();
 
+    protected Subject() { /* JPA */ }
 
-
-    protected Subject() {}
-    public Subject(SubjectType subjectType) {
-        this.subjectType = subjectType;
-        name = subjectType.toString();
+    public Subject(String name) {
+        this.name = Objects.requireNonNull(name, "name");
     }
 
-    public void addExamResult(ExamResult examResult) {
-        examResults.add(examResult);
+    /* ===== Хелперы для поддержания двусторонних связей (package-private) =====
+       Вызываются из Specialty.add/removeSubject и ExamResult.linkSubject.
+       Не делаем их public, чтобы не нарушать инварианты с «владельческой» стороны.
+     */
+
+    void _addSpecialty(Specialty specialty) {
+        specialties.add(Objects.requireNonNull(specialty, "specialty"));
     }
 
-    public void addSpecialty(Specialty specialty) {
-        specialties.add(specialty);
+    void _removeSpecialty(Specialty specialty) {
+        specialties.remove(Objects.requireNonNull(specialty, "specialty"));
     }
 
-    public Long getId() {
-        return id;
+    void _addExamResult(ExamResult examResult) {
+        examResults.add(Objects.requireNonNull(examResult, "examResult"));
     }
 
-    public String getName() {
-        return name;
+    void _removeExamResult(ExamResult examResult) {
+        examResults.remove(Objects.requireNonNull(examResult, "examResult"));
     }
+
+    /* ===== Getters / Setters ===== */
+
+    public Long getId() { return id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = Objects.requireNonNull(name, "name"); }
 
     public Set<Specialty> getSpecialties() {
-        return specialties;
+        return Collections.unmodifiableSet(specialties);
     }
 
     public Set<ExamResult> getExamResults() {
-        return examResults;
+        return Collections.unmodifiableSet(examResults);
     }
 
-    public SubjectType getSubjectType() {
-        return subjectType;
+    /* ===== equals/hashCode/toString ===== */
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Subject other)) return false;
+        return id != null && id.equals(other.id);
     }
 
+    @Override
+    public int hashCode() { return getClass().hashCode(); }
 
-
+    @Override
+    public String toString() {
+        return "Subject{id=" + id + ", name='" + name + "'}";
+    }
 }
+
