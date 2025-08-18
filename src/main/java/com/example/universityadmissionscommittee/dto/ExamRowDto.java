@@ -72,7 +72,7 @@ public class ExamRowDto {
         return subjectName;
     }
 
-    public int getScore() {
+    public Integer getScore() {
         return score;
     }
 

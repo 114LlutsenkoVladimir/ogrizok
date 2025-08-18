@@ -11,6 +11,7 @@ import com.example.universityadmissionscommittee.exception.applicant.ApplicantNo
 import com.example.universityadmissionscommittee.repository.ApplicantRepository;
 import com.example.universityadmissionscommittee.repository.examResult.ExamResultRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -39,11 +40,7 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
 
     @Override
     public Applicant findById(Long id) {
-        try {
-            return super.findById(id);
-        } catch (NoSuchElementException ex) {
-            throw new ApplicantNotFoundException();
-        }
+        return repository.findById(id).orElseThrow(ApplicantNotFoundException::new);
     }
 
     @Override
@@ -54,34 +51,37 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
         repository.deleteById(id);
     }
 
-
-
+    @Transactional(readOnly = true)
     public Applicant findByEmail(String email) {
         return repository.findByEmail(email).orElseThrow(
-                NoSuchElementException::new
+                ApplicantNotFoundException::new
         );
     }
 
+    @Transactional(readOnly = true)
     public Applicant findByPhoneNumber(String phoneNumber) {
         return  repository.findByPhoneNumber(phoneNumber).orElseThrow(
-                NoSuchElementException::new
+                ApplicantNotFoundException::new
         );
     }
-
+    @Transactional(readOnly = true)
     public ApplicantReportGrouped getApplicantsBySpecialties(List<Long> specialtyIds) {
         List<ExamRowDto> examRows = examResultRepository.examRowData(specialtyIds);
         return new ApplicantReportGrouped(examRows);
     }
 
+    @Transactional(readOnly = true)
     public ApplicantReportGrouped getApplicantsByOneSpecialty(Long specialtyId) {
         return getApplicantsBySpecialties(new ArrayList<>(List.of(specialtyId)));
     }
 
+    @Transactional(readOnly = true)
     public ApplicantReportGrouped getApplicantsBySpecialtiesReport() {
         return getApplicantsBySpecialties(specialtyService.findAll()
                 .stream().map(Specialty::getId).toList());
     }
 
+    @Transactional(readOnly = true)
     public ApplicantReportGrouped findApplicantByKeyAttributes(Long applicantId,
                                                                String email,
                                                                String phoneNumber) {
@@ -93,16 +93,18 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
         return new ApplicantReportGrouped(examRows);
     }
 
+    @Transactional
     public void updateApplicantStatus(Long applicantId, Long specialtyId, ApplicantStatus status) {
         Applicant applicant = findById(applicantId);
         SpecialtyForApplicant specialty = applicant.getSpecialties().stream()
-                .filter(s -> Objects.equals(s.getId(), specialtyId)).findFirst().orElseThrow(
+                .filter(s -> Objects.equals(s.getSpecialty().getId(), specialtyId)).findFirst().orElseThrow(
                         SpecialtyNotFoundException::new
                 );
         specialty.setApplicantStatus(status);
         save(applicant);
     }
 
+    @Transactional
     public Applicant createApplicantFromDto(ApplicantCreateDto dto) {
 
         if (repository.existsByPhoneNumber(dto.getPhoneNumber()))
@@ -114,11 +116,11 @@ public class ApplicantService extends AbstractCrudService<Applicant, Long, Appli
         if (dto.getSpecialtyAndPriority().isEmpty())
             throw new ApplicantCreationException("Оберіть хоча б 1 спеціальність");
 
+
+
         Applicant applicant = new Applicant(
                 dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPhoneNumber()
         );
-
-        save(applicant);
 
         dto.getBenefitIds().forEach(
                 (id) ->  {

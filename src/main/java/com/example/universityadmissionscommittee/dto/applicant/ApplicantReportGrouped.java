@@ -18,79 +18,101 @@ public class ApplicantReportGrouped {
     }
 
     public void buildFrom(List<ExamRowDto> examRows) {
-        Map<Long, Set<Long>> tempSubjectIdsBySpecialty = new LinkedHashMap<>();
-        LinkedHashMap<Long, List<ApplicantReportDto>> reportTemp = new LinkedHashMap<>();
+
+        if (examRows == null || examRows.isEmpty()) {
+            return;
+        }
+
+        // Временные структуры:
+        // предметы по специальности (для сохранения порядка используем LinkedHashSet)
+        Map<Long, Set<Long>> subjectsPerSpecSet = new LinkedHashMap<>();
+        // спец → (абитуриент → DTO) — O(1) доступ, без stream().findFirst()
+        Map<Long, LinkedHashMap<Long, ApplicantReportDto>> perSpecApplicants = new LinkedHashMap<>();
+
         for (ExamRowDto row : examRows) {
-            Long specialtyId = row.getSpecialtyId();
-            Long subjectId = row.getSubjectId();
+            final Long specId = row.getSpecialtyId();
+            final Long subjId = row.getSubjectId();
 
-            Long benefitId = row.getBenefitId();
-            String benefitName = row.getBenefitName();
-            Integer benefitPoints = row.getBenefitPoints();
+            // 1) Имена спец/предметов (NULL пропускаем — это норм при LEFT JOIN’ах)
+            if (specId != null) {
+                specialtyNames.putIfAbsent(specId, row.getSpecialtyName());
+            }
+            if (subjId != null) {
+                subjectNames.putIfAbsent(subjId, row.getSubjectName());
+            }
 
-            // 1. specialty name
-            specialtyNames.putIfAbsent(specialtyId, row.getSpecialtyName());
+            // 2) Множество предметов на специальность (фиксируем даже пустые специ)
+            if (specId != null) {
+                subjectsPerSpecSet.computeIfAbsent(specId, k -> new LinkedHashSet<>());
+                if (subjId != null) {
+                    subjectsPerSpecSet.get(specId).add(subjId);
+                }
+            }
 
-            // 2. subject name
-            subjectNames.putIfAbsent(subjectId, row.getSubjectName());
+            // 3) Строки отчёта — только если есть заявитель (LEFT JOIN допускает null)
+            final Long applicantId = row.getApplicantId();
+            if (specId == null) continue;                    // без специальности — пропускаем
+            if (applicantId == null) {                       // пустая спец без заявителей — но «создадим» ключ
+                perSpecApplicants.computeIfAbsent(specId, k -> new LinkedHashMap<>());
+                continue;
+            }
 
-            // 3. subject IDs per specialty
-            tempSubjectIdsBySpecialty
-                    .computeIfAbsent(specialtyId, k -> new LinkedHashSet<>())
-                    .add(subjectId);
+            // 3.1 достаём/создаём DTO абитуриента внутри конкретной специальности
+            var byApplicant = perSpecApplicants
+                    .computeIfAbsent(specId, k -> new LinkedHashMap<>());
 
+            var dto = byApplicant.computeIfAbsent(applicantId, id ->
+                    new ApplicantReportDto(
+                            row.getApplicantId(),
+                            row.getFirstName(),
+                            row.getLastName(),
+                            row.getPhoneNumber(),
+                            row.getEmail(),
+                            row.getPriority(),
+                            row.getStatus()
+                    )
+            );
 
+            // 3.2 оценки (могут быть null при LEFT JOIN)
+            if (subjId != null && row.getScore() != null) {
+                dto.addExamResult(subjId, row.getScore());   // перезапись последним значением — предсказуемо
+            }
 
-
-            // 4. report rows — добавлять только если есть заявитель
-            if (row.getApplicantId() != null) {
-                List<ApplicantReportDto> applicants = reportTemp.computeIfAbsent(
-                        specialtyId, k -> new ArrayList<>());
-
-                ApplicantReportDto applicant = applicants.stream()
-                        .filter(a -> Objects.equals(a.getApplicantId(), row.getApplicantId()))
-                        .findFirst()
-                        .orElseGet(() -> {
-                            ApplicantReportDto newApplicant = new ApplicantReportDto(
-                                    row.getApplicantId(),
-                                    row.getFirstName(),
-                                    row.getLastName(),
-                                    row.getPhoneNumber(),
-                                    row.getEmail(),
-                                    row.getPriority(),
-                                    row.getStatus()
-                            );
-
-                            newApplicant.addExamResult(subjectId, row.getScore());
-                            if(benefitId != null)
-                                newApplicant.addBenefit(benefitId, benefitName, benefitPoints);
-
-                            applicants.add(newApplicant);
-                            return newApplicant;
-                        });
-                applicant.addExamResult(subjectId, row.getScore());
-                if(benefitId != null)
-                    applicant.addBenefit(benefitId, benefitName, benefitPoints);
-            } else {
-                reportTemp.putIfAbsent(specialtyId, new ArrayList<>());
+            // 3.3 льготы (могут дублироваться из-за LEFT JOIN) — защитимся от дублей на лету
+            if (row.getBenefitId() != null) {
+                boolean alreadyAdded = dto.getBenefits().stream()
+                        .anyMatch(b -> Objects.equals(b.id(), row.getBenefitId()));
+                if (!alreadyAdded) {
+                    dto.addBenefit(row.getBenefitId(), row.getBenefitName(), row.getBenefitPoints());
+                }
             }
         }
 
-        // 5. finalize subjectIdsBySpecialty
-        for (Map.Entry<Long, Set<Long>> entry : tempSubjectIdsBySpecialty.entrySet()) {
-            subjectIdsBySpecialty.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+        // 4) финализируем список предметов по специальности (сохраняя порядок)
+        for (var e : subjectsPerSpecSet.entrySet()) {
+            subjectIdsBySpecialty.put(e.getKey(), new ArrayList<>(e.getValue()));
         }
 
-        report = reportTemp.entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> entry.getValue().stream()
-                                .map(dto -> new ApplicantReportDtoWithAverageScore(
-                                        dto, CalculateAverageScoreService.calculate(dto)))
-                                .toList(),
-                        (v1, v2) -> v1,
-                        LinkedHashMap::new
-                ));
+        // 5) собираем финальный отчёт и сразу считаем средний балл;
+        //    при желании — сортируем внутри каждой специальности по среднему (убыв.)
+        LinkedHashMap<Long, List<ApplicantReportDtoWithAverageScore>> result = new LinkedHashMap<>();
+        for (var e : perSpecApplicants.entrySet()) {
+            Long specId = e.getKey();
+            Collection<ApplicantReportDto> applicants = e.getValue().values(); // в порядке добавления
+
+            List<ApplicantReportDtoWithAverageScore> rows = applicants.stream()
+                    .map(dto -> new ApplicantReportDtoWithAverageScore(
+                            dto, CalculateAverageScoreService.calculate(dto)))
+                    // сортировка по среднему (убыв.), потом по приоритету, потом по id — опционально
+                    .sorted(Comparator
+                            .comparingDouble(ApplicantReportDtoWithAverageScore::getAverageScore).reversed()
+                            .thenComparing(a -> a.getBase().getPriority(), Comparator.nullsLast(Comparator.naturalOrder()))
+                            .thenComparing(a -> a.getBase().getApplicantId()))
+                    .toList();
+
+            result.put(specId, rows);
+        }
+        report = result;
     }
 
     public Map<Long, String> getSpecialtyNames() {

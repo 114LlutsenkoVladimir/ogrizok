@@ -14,11 +14,6 @@ public class SubjectService  extends AbstractCrudService<Subject, Long, SubjectR
         super(repository);
     }
 
-    public Subject findBySubjectType(SubjectType subjectType) {
-        return repository.findBySubjectType(subjectType).orElseThrow(
-                () -> new IllegalStateException("subject not found")
-        );
-    }
 
     public List<SubjectIdAndNameDto> toIdAndNameDto(List<Subject> subjects) {
         return subjects.stream()
