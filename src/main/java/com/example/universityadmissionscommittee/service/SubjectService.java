@@ -1,7 +1,6 @@
 package com.example.universityadmissionscommittee.service;
 
 import com.example.universityadmissionscommittee.data.Subject;
-import com.example.universityadmissionscommittee.data.enums.SubjectType;
 import com.example.universityadmissionscommittee.dto.SubjectIdAndNameDto;
 import com.example.universityadmissionscommittee.repository.SubjectRepository;
 import org.springframework.stereotype.Service;

@@ -8,10 +8,19 @@ import {
 } from "./handlers.js";
 
 export async function initialize(initMap) {
+
+    await initCommon(initMap);
+    await initCommittee(initMap);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        setupSpecialtyChecker();
+    });
+}
+
+export async function initCommon(initMap) {
     initBenefits(initMap.allBenefits)
     await initSubjectScoreInputs(initMap.allSubjects)
     initSpecialtySelect(initMap.allSpecialties)
-    initStatusSelect(initMap.allStatuses)
 
     document.getElementById("submit-btn").addEventListener("click", handleSubmit);
 
@@ -20,14 +29,15 @@ export async function initialize(initMap) {
 
     document.getElementById("findApplicantForm")
         .querySelector("button").addEventListener("click", handleFindApplicant);
+}
+
+export async function initCommittee(initMap) {
+    initStatusSelect(initMap.allStatuses)
 
     document.getElementById("updateApplicantStatusForm")
         .querySelector("button").addEventListener("click", handleUpdateStatus);
-
-    document.addEventListener("DOMContentLoaded", () => {
-        setupSpecialtyChecker();
-    });
 }
+
 
 function initBenefits(benefits) {
     const container = document.getElementById('benefitIds');

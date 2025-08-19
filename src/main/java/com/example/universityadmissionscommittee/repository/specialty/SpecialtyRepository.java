@@ -1,6 +1,7 @@
 package com.example.universityadmissionscommittee.repository.specialty;
 
 import com.example.universityadmissionscommittee.data.Specialty;
+import com.example.universityadmissionscommittee.dto.specialty.SpecialtyIdAndNameDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -41,6 +42,18 @@ public interface SpecialtyRepository extends JpaRepository<Specialty, Long> {
             @Param("name") String name,
             @Param("number") Integer number
     );
+
+    @Query("""
+        SELECT new com.example.universityadmissionscommittee.dto.specialty.SpecialtyIdAndNameDto(sp.id, sp.name)
+        FROM Specialty sp
+        WHERE NOT EXISTS (
+          SELECT s
+          FROM Subject s
+          WHERE s MEMBER OF sp.neededSubjects
+            AND s.id NOT IN :subjectIds
+        )
+        """)
+    List<SpecialtyIdAndNameDto> findAllCoveredBySubjectsNative(@Param("subjectIds") List<Long> subjectIds);
 
     boolean existsByName(String name);
     boolean existsByNumber(Integer number);

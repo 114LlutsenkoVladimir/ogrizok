@@ -7,6 +7,7 @@ import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportGr
 import com.example.universityadmissionscommittee.service.FacultyService;
 import com.example.universityadmissionscommittee.service.SpecialtyService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -30,6 +31,8 @@ public class SpecialtyController {
         return new SpecialtyInitDto(facultyService.allIdAndName());
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN','COMMITTEE')")
     @GetMapping("/updateSpecialtyPlaces")
     public SpecialtyReportGrouped updateSpecialty(
             @RequestParam Long id,
@@ -53,12 +56,15 @@ public class SpecialtyController {
         return specialtyService.findSpecialtyReportDtoById(id, name, number);
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/createSpecialty")
     public SpecialtyReportGrouped createSpecialty(@RequestBody SpecialtyCreateDto dto) {
         Specialty specialty = specialtyService.createFromDto(dto);
         return specialtyService.findSpecialtyReportDtoById(specialty.getId(), null, null);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/deleteSpecialty/{id}")
     public ResponseEntity<Void> deleteSpecialtyById(@PathVariable Long id) {
         specialtyService.deleteById(id);
