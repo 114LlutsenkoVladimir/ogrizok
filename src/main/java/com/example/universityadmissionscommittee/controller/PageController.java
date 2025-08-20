@@ -31,21 +31,42 @@ public class PageController {
     }
 
     @GetMapping("/")
-    public String showForm(HttpSession session, Model model) {
-
-        session.setAttribute("specialties", specialtyService.findAll());
-        session.setAttribute("allSubjects", subjectService.findAll());
-        session.setAttribute("allBenefits", benefitService.findAll());
-        session.setAttribute("selectedBenefitsIds", new ArrayList<>());
-        session.setAttribute("selectedSpecialtyId", 1L);
-
-        model.addAttribute("report",
-                applicantService.getApplicantsByOneSpecialty(1L));
+    public String initial(HttpSession session) {
+        session.setAttribute("role", "user");
         return "applicants/page-for-applicant";
     }
 
-    @GetMapping("/specialties/")
-    public String specialtyPage() {
-        return "specialties/committee-page";
+    @GetMapping("/applicants/")
+    public String applicantPage(HttpSession session) {
+        switch ((String) session.getAttribute("role")) {
+            case "admin" -> {
+                return "applicants/admin-page";
+            }
+            case "committee" -> {
+                return "applicants/committee-page";
+            }
+            default -> {
+                return "applicants/page-for-applicant";
+            }
+        }
+
     }
+
+    @GetMapping("/specialties/")
+    public String specialtyPage(HttpSession session) {
+        switch ((String) session.getAttribute("role")) {
+            case "admin" -> {
+                return "specialties/admin-page";
+            }
+            case "committee" -> {
+                return "specialties/committee-page";
+            }
+            default -> {
+                return "applicants/page-for-applicant";
+            }
+        }
+
+    }
+
+
 }

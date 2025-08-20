@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <div th:replace="common/fragments/error-popup"></div>
+  <div th:replace="common/fragments/header"></div>
+  <div th:replace="specialties/fragments/add-specialty"></div>
+  <div th:replace="specialties/fragments/select-faculty"></div>
+  <div th:replace="specialties/fragments/update-specialty"></div>
+  <div th:replace="specialties/fragments/find-specialty"></div>
+  <div th:replace="specialties/fragments/delete-specialty"></div>
+  <div th:replace="specialties/fragments/table"></div>
+
+  <script type="module" src="/js/errorPopup/errorPopup.js"></script>
+  <script type="module" src="/js/specialty/app.js"></script>
+</body>
+
+</html>

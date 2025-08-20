@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-//@RequestMapping("/applicants")
+@RequestMapping("/applicants")
 public class ApplicantController {
     private ApplicantService applicantService;
     private SpecialtyService specialtyService;
