@@ -14,21 +14,9 @@ import java.util.ArrayList;
 @Controller
 public class PageController {
 
-    private ApplicantService applicantService;
-    private SpecialtyService specialtyService;
-    private SubjectService subjectService;
-    private BenefitService benefitService;
 
 
-    public PageController(ApplicantService applicantService,
-                          SpecialtyService specialtyService,
-                          SubjectService subjectService,
-                          BenefitService benefitService) {
-        this.applicantService = applicantService;
-        this.specialtyService = specialtyService;
-        this.subjectService = subjectService;
-        this.benefitService = benefitService;
-    }
+    public PageController() {}
 
     @GetMapping("/")
     public String initial(HttpSession session) {

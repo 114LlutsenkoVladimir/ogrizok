@@ -14,7 +14,7 @@ export async function sendApplicant(dto) {
 }
 
 export async function deleteApplicant(id) {
-    const response = await fetch(`/deleteApplicant/${id}`, {
+    const response = await fetch(`applicants/deleteApplicant/${id}`, {
         method: "DELETE"
     })
     if (!response.ok) {
@@ -24,7 +24,7 @@ export async function deleteApplicant(id) {
 }
 
 export async function getApplicantInitDto() {
-    const response = await fetch("/initializeApplicantPage")
+    const response = await fetch("applicants/initializeApplicantPage")
     if (!response.ok) {
         const err = await response.json();
         throw new Error(err.message);
@@ -33,7 +33,7 @@ export async function getApplicantInitDto() {
 }
 
 export async function findApplicantByKeyAttributes(params) {
-    const response = await fetch("/findApplicant?" + params)
+    const response = await fetch("applicants/findApplicant?" + params)
     if (!response.ok) {
         const err = await response.json();
         throw new Error(err.message);
@@ -42,7 +42,7 @@ export async function findApplicantByKeyAttributes(params) {
 }
 
 export async function updateApplicantStatus(params) {
-    const response = await fetch("/updateApplicantStatus?" + params)
+    const response = await fetch("applicants/updateApplicantStatus?" + params)
     if (!response.ok) {
         const err = await response.json();
         throw new Error(err.message);

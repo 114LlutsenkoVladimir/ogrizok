@@ -37,22 +37,6 @@ public class ApplicantReportController {
         return "applicantsReport";
     }
 
-    @RequestMapping("/test")
-    public String applicantsReport(Model model) {
-        model.addAttribute("report",
-                applicantService.getApplicantsBySpecialtiesReport());
-
-        Map<String, List<String>> subjectBySpecialties = new HashMap<>();
-        List<Specialty> specialties = specialtyService.findAll();
-
-        for (Specialty s : specialties) {
-            subjectBySpecialties.put(s.getName(),
-                    s.getNeededSubjects().stream().map(Subject::getName).collect(Collectors.toList()));
-        }
-        model.addAttribute("subjectBySpecialties", subjectBySpecialties);
-        return "test";
-    }
-
 
 
 }
