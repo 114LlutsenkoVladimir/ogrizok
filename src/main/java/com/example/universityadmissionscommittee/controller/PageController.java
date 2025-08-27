@@ -1,15 +1,10 @@
 package com.example.universityadmissionscommittee.controller;
 
-import com.example.universityadmissionscommittee.service.ApplicantService;
-import com.example.universityadmissionscommittee.service.BenefitService;
-import com.example.universityadmissionscommittee.service.SpecialtyService;
-import com.example.universityadmissionscommittee.service.SubjectService;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
 
 @Controller
 public class PageController {
@@ -21,7 +16,7 @@ public class PageController {
     @GetMapping("/")
     public String initial(HttpSession session) {
         session.setAttribute("role", "user");
-        return "applicants/page-for-applicant";
+        return "redirect:applicants/";
     }
 
     @GetMapping("/applicants/")
@@ -54,6 +49,11 @@ public class PageController {
             }
         }
 
+    }
+
+    @GetMapping("/users/")
+    public String usersPage() {
+        return "autorization";
     }
 
 

@@ -7,7 +7,6 @@ import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportGr
 import com.example.universityadmissionscommittee.service.FacultyService;
 import com.example.universityadmissionscommittee.service.SpecialtyService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;

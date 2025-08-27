@@ -6,11 +6,16 @@ import {
     handleSubmit,
     handleUpdateStatus
 } from "./handlers.js";
+import {getUser} from "../user/api.js";
 
 export async function initialize(initMap) {
 
     await initCommon(initMap);
     await initCommittee(initMap);
+
+    const user = await getUser();
+    if(user === "committee" || user === "admin")
+        await initCommittee()
 
     document.addEventListener("DOMContentLoaded", () => {
         setupSpecialtyChecker();

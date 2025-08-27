@@ -1,5 +1,5 @@
 export async function sendApplicant(dto) {
-    const response = await fetch("applicants/addApplicant", {
+    const response = await fetch("addApplicant", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dto)
@@ -14,7 +14,7 @@ export async function sendApplicant(dto) {
 }
 
 export async function deleteApplicant(id) {
-    const response = await fetch(`applicants/deleteApplicant/${id}`, {
+    const response = await fetch(`deleteApplicant/${id}`, {
         method: "DELETE"
     })
     if (!response.ok) {
@@ -24,7 +24,7 @@ export async function deleteApplicant(id) {
 }
 
 export async function getApplicantInitDto() {
-    const response = await fetch("applicants/initializeApplicantPage")
+    const response = await fetch("initializeApplicantPage")
     if (!response.ok) {
         const err = await response.json();
         throw new Error(err.message);
@@ -33,7 +33,7 @@ export async function getApplicantInitDto() {
 }
 
 export async function findApplicantByKeyAttributes(params) {
-    const response = await fetch("applicants/findApplicant?" + params)
+    const response = await fetch("findApplicant?" + params)
     if (!response.ok) {
         const err = await response.json();
         throw new Error(err.message);
@@ -42,7 +42,7 @@ export async function findApplicantByKeyAttributes(params) {
 }
 
 export async function updateApplicantStatus(params) {
-    const response = await fetch("applicants/updateApplicantStatus?" + params)
+    const response = await fetch("updateApplicantStatus?" + params)
     if (!response.ok) {
         const err = await response.json();
         throw new Error(err.message);

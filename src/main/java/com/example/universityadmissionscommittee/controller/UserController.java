@@ -4,9 +4,6 @@ package com.example.universityadmissionscommittee.controller;
 
 import com.example.universityadmissionscommittee.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,14 +17,14 @@ public class UserController {
 
     @GetMapping("/getUser")
     public String getUser(HttpSession session) {
-       return (String) session.getAttribute("role");
+       return (String) session.getAttribute("user");
     }
 
-    @GetMapping("/authorization/{password}")
-    public String authorization(@PathVariable String password,
+    @GetMapping("/setUserOnPassword/{password}")
+    public String setUserOnPassword(@PathVariable String password,
                                 HttpSession session) {
         String user = service.getUser(password);
-        session.setAttribute("role", user);
+        session.setAttribute("user", user);
         return user;
     }
 
