@@ -5,6 +5,7 @@ import com.example.universityadmissionscommittee.exception.specialty.SpecialtyCr
 import com.example.universityadmissionscommittee.exception.specialty.SpecialtyNotFoundException;
 import com.example.universityadmissionscommittee.exception.applicant.ApplicantCreationException;
 import com.example.universityadmissionscommittee.exception.applicant.ApplicantNotFoundException;
+import com.example.universityadmissionscommittee.exception.user.IncorrectPasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -43,6 +44,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SpecialtyCreationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleSpecialtyCreationException(SpecialtyCreationException ex) {
+        return Map.of("message", ex.getMessage());
+    }
+
+    @ExceptionHandler(IncorrectPasswordException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleIncorrectPasswordException(IncorrectPasswordException ex) {
         return Map.of("message", ex.getMessage());
     }
 

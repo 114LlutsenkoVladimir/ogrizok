@@ -8,15 +8,15 @@ import {getUser} from "../user/api.js";
 
 export async function initialize(initMap) {
 
-    await initCommon();
+    await initCommon(initMap);
     const user = await getUser();
 
     if(user === "admin")
-        await initAdmin();
+        await initAdmin(initMap);
 
 }
 
-export async function initCommon() {
+export async function initCommon(initMap) {
     initFacultySelector(initMap.allFaculties, "facultySelect")
     initFacultySelector(initMap.allFaculties, "createSpecialtyFacultySelector")
 
@@ -26,7 +26,7 @@ export async function initCommon() {
 
 }
 
-export async function initAdmin() {
+export async function initAdmin(initMap) {
     document.getElementById("addSpecialtyBtn").addEventListener("click", handleCreateSpecialtyFromDto)
     document.getElementById("deleteSpecialtyBtn").addEventListener("click", handleDeleteSpecialtyById)
 }

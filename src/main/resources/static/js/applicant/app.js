@@ -6,6 +6,7 @@ import {setupSpecialtyChecker} from "./listener.js";
 document.addEventListener('DOMContentLoaded', async () => {
     const initMap = await getApplicantInitDto();
     await initialize(initMap);
+    setupSpecialtyChecker();
 });
 
 

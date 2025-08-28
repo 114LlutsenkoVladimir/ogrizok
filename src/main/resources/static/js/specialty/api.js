@@ -1,5 +1,5 @@
 export async function getFilteredSpecialtyList(facultyId) {
-    const response = await fetch(`/specialties/filterSpecialtiesByFaculty/${facultyId}`)
+    const response = await fetch(`filterSpecialtiesByFaculty/${facultyId}`)
     if(!response.ok) {
         const err = await response.json();
         throw new Error(err.message)
@@ -9,7 +9,7 @@ export async function getFilteredSpecialtyList(facultyId) {
 }
 
 export async function getSpecialtyDtosBySpecialtyId(paramsToStr) {
-    const url = "/specialties/findSpecialty?" + paramsToStr
+    const url = "findSpecialty?" + paramsToStr
     const response = await fetch(url)
     if(!response.ok) {
         const err = await response.json();
@@ -19,7 +19,7 @@ export async function getSpecialtyDtosBySpecialtyId(paramsToStr) {
 }
 
 export async function updateSpecialtyPlaces(paramsToStr) {
-    const url = "/specialties/updateSpecialtyPlaces?" + paramsToStr
+    const url = "updateSpecialtyPlaces?" + paramsToStr
     const response = await fetch(url)
     if(!response.ok) {
         const err = await response.json();
@@ -30,7 +30,7 @@ export async function updateSpecialtyPlaces(paramsToStr) {
 
 export async function getSpecialtyInitDto() {
 
-    const response = await fetch(`/specialties/initializeSpecialtyPage`)
+    const response = await fetch(`initializeSpecialtyPage`)
     if(!response.ok) {
         const err = await response.json();
         throw new Error(err.message)
@@ -39,7 +39,7 @@ export async function getSpecialtyInitDto() {
 }
 
 export async function createSpecialtyFromDto(dto) {
-    const response = await fetch("/specialties/createSpecialty", {
+    const response = await fetch("createSpecialty", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dto)
@@ -54,7 +54,7 @@ export async function createSpecialtyFromDto(dto) {
 }
 
 export async function deleteSpecialty(id) {
-    const response = await fetch(`/specialties/deleteSpecialty/${id}`, {
+    const response = await fetch(`deleteSpecialty/${id}`, {
         method: "DELETE"
     })
     if (!response.ok) {

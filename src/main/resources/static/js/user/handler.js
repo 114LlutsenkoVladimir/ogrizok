@@ -1,14 +1,12 @@
-import {showError} from "../errorPopup/errorPopup";
-import {setUserOnPassword} from "./api";
+import {showError} from "../errorPopup/errorPopup.js";
+import {setUserOnPassword} from "./api.js";
+import {clearForm} from "../utils/clearForm.js";
 
 export async function handleSetUserOnPassword() {
     try {
         const password = document.getElementById("passwordField").value
-        const response = await setUserOnPassword(password)
-        if (!response.ok) {
-            const err = await response.json();
-            throw new Error(err.message);
-        }
+        await setUserOnPassword(password)
+        clearForm("authorizationForm")
     } catch (error) {
         showError(error.message)
     }

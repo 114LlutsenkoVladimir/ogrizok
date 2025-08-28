@@ -5,6 +5,8 @@
     <title>Title</title>
 </head>
 <body>
+<div th:replace="common/fragments/error-popup"></div>
+<div th:replace="common/fragments/header"></div>
 <div id="authorizationForm">
     <label id="authorizationLabel" for="passwordField">authorization</label>
     <input type="password" id="passwordField" placeholder="password">
@@ -21,6 +23,8 @@
         <li><span>user: [empty]</span></li>
     </ul>
 </div>
+
+<script type="module" src="/js/user/app.js"></script>
 
 </body>
 </html>

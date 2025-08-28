@@ -1,5 +1,9 @@
 package com.example.universityadmissionscommittee.service;
 
+import com.example.universityadmissionscommittee.exception.user.IncorrectPasswordException;
+import org.springframework.stereotype.Service;
+
+@Service
 public class UserService {
 
     public String getUser(String password) {
@@ -13,7 +17,7 @@ public class UserService {
             case "" -> {
                 return "user";
             }
-            default -> throw new RuntimeException("Невірний пароль");
+            default -> throw new IncorrectPasswordException();
         }
     }
 }

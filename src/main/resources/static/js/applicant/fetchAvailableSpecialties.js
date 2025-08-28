@@ -1,5 +1,5 @@
 export async function fetchAvailableSpecialties(subjectIds) {
-    const response = await fetch("/availableSpecialties", {
+    const response = await fetch("availableSpecialties", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
