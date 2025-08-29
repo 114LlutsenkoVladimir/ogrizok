@@ -16,7 +16,7 @@ public class PageController {
     @GetMapping("/")
     public String initial(HttpSession session) {
         session.setAttribute("user", "user");
-        return "redirect:applicants";
+        return "redirect:/applicants/";
     }
 
     @GetMapping("/applicants/")
@@ -44,4 +44,11 @@ public class PageController {
     }
 
 
+    @GetMapping("/reports/")
+    public String reportPage(HttpSession session) {
+        return switch ((String) session.getAttribute("user")) {
+            case "admin", "committee" -> "reports/report";
+            default -> "redirect:/applicants/";
+        };
+    }
 }

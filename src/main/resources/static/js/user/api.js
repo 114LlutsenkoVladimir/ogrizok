@@ -23,3 +23,12 @@ export async function setUserOnPassword(password) {
 
     return await response.text();
 }
+
+export async function setDefaultUser() {
+    const response = await fetch(`/users/logout`)
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message);
+    }
+    return await response.text();
+}

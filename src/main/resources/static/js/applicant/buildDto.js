@@ -14,7 +14,7 @@ function getVal(id) {
     return document.getElementById(id).value.trim();
 }
 
-function getCheckedValues(name) {
+export function getCheckedValues(name) {
     return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`))
         .map(cb => parseInt(cb.value));
 }

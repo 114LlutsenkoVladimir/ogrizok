@@ -6,8 +6,20 @@
 </head>
 
 <body>
-    <div th:replace="fragments/header"></div>
-    <a href="/report/applicantsReport">Звіт абітурієнтів</a>
-    <a href="/report/specialtiesReport">Звіт спеціальностей</a>
+    <div th:replace="common/fragments/error-popup"></div>
+    <div th:replace="common/fragments/header"></div>
+
+    <button id="applicantsReportBtn">абітурієнти</button>
+    <div id="applicantsReportWrap" style="display:none">
+        <div th:replace="applicants/fragments/table"></div>
+    </div>
+
+    <button id="specialtiesReportBtn">спеціальності</button>
+    <div id="specialtiesReportWrap" style="display:none">
+        <div th:replace="specialties/fragments/table"></div>
+    </div>
+
+    <script type="module" src="/js/report/app.js"></script>
+
 </body>
 </html>

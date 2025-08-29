@@ -7,6 +7,7 @@ import com.example.universityadmissionscommittee.dto.SubjectIdAndNameDto;
 import java.util.List;
 
 public record SpecialtyInitDto (
-        List<FacultyIdAndNameDto> allFaculties
+        List<FacultyIdAndNameDto> allFaculties,
+        List<SubjectIdAndNameDto> allSubjects
 ) {}
 

@@ -6,6 +6,7 @@ import com.example.universityadmissionscommittee.dto.specialty.SpecialtyInitDto;
 import com.example.universityadmissionscommittee.dto.specialty.SpecialtyReportGrouped;
 import com.example.universityadmissionscommittee.service.FacultyService;
 import com.example.universityadmissionscommittee.service.SpecialtyService;
+import com.example.universityadmissionscommittee.service.SubjectService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,18 +20,21 @@ public class SpecialtyController {
 
     private FacultyService facultyService;
 
+    private SubjectService subjectService;
+
     public SpecialtyController(SpecialtyService specialtyService,
-                               FacultyService facultyService) {
+                               FacultyService facultyService,
+                               SubjectService subjectService) {
         this.specialtyService = specialtyService;
         this.facultyService = facultyService;
+        this.subjectService = subjectService;
     }
 
     @GetMapping("/initializeSpecialtyPage")
     public SpecialtyInitDto initialize() {
-        return new SpecialtyInitDto(facultyService.allIdAndName());
+        return new SpecialtyInitDto(facultyService.allIdAndName(),
+                subjectService.allIdAndName());
     }
-
-
 
     @GetMapping("/updateSpecialtyPlaces")
     public SpecialtyReportGrouped updateSpecialty(

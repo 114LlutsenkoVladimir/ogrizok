@@ -1,4 +1,4 @@
-export function renderTable(report) {
+export function renderApplicantTable(report) {
     const container = document.getElementById("table-container");
     container.innerHTML = "";
     for (const [specialtyId, applicants] of Object.entries(report.report)) {

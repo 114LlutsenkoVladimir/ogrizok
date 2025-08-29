@@ -1,5 +1,8 @@
 package com.example.universityadmissionscommittee.dto.specialty;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class SpecialtyCreateDto {
 
     private String name;
@@ -12,7 +15,13 @@ public class SpecialtyCreateDto {
 
     private Integer contractPlaces = 0;
 
+    private Set<Long> subjectIds = new HashSet<>();
+
     protected SpecialtyCreateDto() {
+    }
+
+    public void addSubjectId(Long id) {
+        subjectIds.add(id);
     }
 
     public String getName() {
@@ -35,6 +44,10 @@ public class SpecialtyCreateDto {
         return contractPlaces;
     }
 
+    public Set<Long> getSubjectIds() {
+        return subjectIds;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -53,5 +66,9 @@ public class SpecialtyCreateDto {
 
     public void setContractPlaces(Integer contractPlaces) {
         this.contractPlaces = contractPlaces;
+    }
+
+    public void setSubjectIds(Set<Long> subjectIds) {
+        this.subjectIds = subjectIds;
     }
 }

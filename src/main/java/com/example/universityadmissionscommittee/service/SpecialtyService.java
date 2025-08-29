@@ -20,12 +20,14 @@ import java.util.*;
 @Service
 public class SpecialtyService  extends AbstractCrudService<Specialty, Long, SpecialtyRepository>{
 
+    private final SubjectService subjectService;
     private FacultyService facultyService;
 
     protected SpecialtyService(SpecialtyRepository repository,
-                               FacultyService facultyService) {
+                               FacultyService facultyService, SubjectService subjectService) {
         super(repository);
         this.facultyService = facultyService;
+        this.subjectService = subjectService;
     }
 
 
@@ -103,8 +105,11 @@ public class SpecialtyService  extends AbstractCrudService<Specialty, Long, Spec
         if(repository.existsByNumber(dto.getNumber()))
             throw new SpecialtyCreationException("Номер спеціальності вже зайнятий");
 
-        return save(new Specialty(dto.getName(), dto.getNumber(),
+        Specialty specialty = new Specialty(dto.getName(), dto.getNumber(),
                 facultyService.findById(dto.getFacultyId()),
-                dto.getBudgetPlaces(), dto.getContractPlaces()));
+                dto.getBudgetPlaces(), dto.getContractPlaces());
+
+        dto.getSubjectIds().forEach(id -> specialty.addSubject(subjectService.findById(id)));
+        return save(specialty);
     }
 }

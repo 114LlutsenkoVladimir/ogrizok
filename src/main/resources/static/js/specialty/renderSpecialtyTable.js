@@ -1,4 +1,4 @@
-export function renderTable(report) {
+export function renderSpecialtyTable(report) {
     const container = document.getElementById("specialtiesTable");
     container.innerHTML = ""; // Очистка контейнера перед рендерингом
 

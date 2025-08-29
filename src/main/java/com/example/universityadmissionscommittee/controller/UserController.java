@@ -27,4 +27,10 @@ public class UserController {
         session.setAttribute("user", role);
         return role;
     }
+
+    @GetMapping("/logout")
+    public String setDefaultUser(HttpSession session) {
+        session.setAttribute("user", "user");
+        return "user";
+    }
 }
