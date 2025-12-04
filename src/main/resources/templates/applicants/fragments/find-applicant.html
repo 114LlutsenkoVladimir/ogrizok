@@ -1,20 +1,23 @@
-<div id="findApplicantForm">
-      <table>
-        <tr>
-          <th>
+<div id="findApplicantForm" class="form-section">
+    <div class="form-stack">
+        <div class="form-field">
+            <label for="findApplicantId">ID</label>
             <input type="number" id="findApplicantId" placeholder="id"/>
-          </th>
-        </tr>
-        <tr>
-          <th>
+        </div>
+        <div class="form-field">
+            <label for="findApplicantEmail">Email</label>
             <input type="email" id="findApplicantEmail" placeholder="Email"/>
-          </th>
-        </tr>
-        <tr>
-          <th>
-            <input type="tel" pattern="^\+380\d{9}$" id="findApplicantPhoneNumber" placeholder= "+380XXXXXXXXX"/>
-          </th>
-        </tr>
-      </table>
-      <button type="button" id="findApplicantBtn">find</button>
+        </div>
+        <div class="form-field">
+            <label for="findApplicantPhoneNumber">Телефон</label>
+            <input type="tel"
+                   pattern="^\+380\d{9}$"
+                   id="findApplicantPhoneNumber"
+                   placeholder="+380XXXXXXXXX"/>
+        </div>
+    </div>
+    <button type="button" id="findApplicantBtn" class="btn-outline">
+        <i class="bi bi-search"></i>
+        Знайти
+    </button>
 </div>

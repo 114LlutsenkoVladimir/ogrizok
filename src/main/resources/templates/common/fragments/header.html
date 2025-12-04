@@ -1,23 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Абітурієнти</title>
+
+    <!-- основной стиль -->
     <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-    <nav>
-        <ul class="header-bar">
-
-            <li><a href="/applicants/">Абітурієнти</a></li>
-            <li><a href="/users/">Увійти</a></li>
-            <li><a th:if="${session.user == 'committee' or session.user == 'admin'}"
-                   href="/specialties/">Спеціальності</a></li>
-            <li><a th:if="${session.user == 'committee' or session.user == 'admin'}"
-                   href="/reports/">Звіти</a></li>
+<nav class="app-header">
+    <div class="app-header-inner">
+        <div class="logo">
+            <i class="bi bi-mortarboard"></i>
+            <span>Приймальна комісія</span>
+        </div>
+        <ul class="nav-links header-bar">
+            <li>
+                <a href="/applicants/">
+                    <i class="bi bi-people"></i>
+                    Абітурієнти
+                </a>
+            </li>
+            <li>
+                <a href="/users/">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Увійти
+                </a>
+            </li>
+            <li th:if="${session.user == 'committee' or session.user == 'admin'}">
+                <a href="/specialties/">
+                    <i class="bi bi-list-check"></i>
+                    Спеціальності
+                </a>
+            </li>
+            <li th:if="${session.user == 'committee' or session.user == 'admin'}">
+                <a href="/reports/">
+                    <i class="bi bi-graph-up"></i>
+                    Звіти
+                </a>
+            </li>
         </ul>
-    </nav>
-
-
+    </div>
+</nav>
 </body>
 </html>

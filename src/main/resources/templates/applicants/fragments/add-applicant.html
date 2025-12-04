@@ -1,24 +1,37 @@
-<div id="addApplicantForm">
-    <div class="table-wrapper">
-        <table>
-            <tr>
-                <td> <input type="text" id="firstName" placeholder="First name" required/> </td>
-            </tr>
-            <tr>
-                <td> <input type="text" id ="lastName" placeholder="Second name" required/> </td>
-            </tr>
-            <tr>
-                <td> <input type="email" id ="email" placeholder="Email" required/> </td>
-            </tr>
-            <tr>
-                <td> <input type="tel" pattern="^\+380\d{9}$" id ="phoneNumber" placeholder= "+380XXXXXXXXX" required/> </td>
-            </tr>
-        </table>
+<div id="addApplicantForm" class="form-section">
+    <div class="form-grid">
+        <div class="form-field">
+            <label for="firstName">Ім'я</label>
+            <input type="text" id="firstName" placeholder="First name" required/>
+        </div>
+        <div class="form-field">
+            <label for="lastName">Прізвище</label>
+            <input type="text" id="lastName" placeholder="Second name" required/>
+        </div>
+        <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Email" required/>
+        </div>
+        <div class="form-field">
+            <label for="phoneNumber">Телефон</label>
+            <input type="tel"
+                   pattern="^\+380\d{9}$"
+                   id="phoneNumber"
+                   placeholder="+380XXXXXXXXX"
+                   required/>
+        </div>
     </div>
 
-    <div th:replace="applicants/fragments/enter-exam-results"></div>
-    <div th:replace="applicants/fragments/select-benefits"></div>
-    <div th:replace="applicants/fragments/select-specialty"></div>
+    <div class="form-subsection">
+        <div th:replace="applicants/fragments/enter-exam-results"></div>
+        <div th:replace="applicants/fragments/select-benefits"></div>
+        <div th:replace="applicants/fragments/select-specialty"></div>
+    </div>
 
-    <button type="submit" id="submit-btn">Add Applicant</button>
+    <div class="form-actions">
+        <button type="submit" id="submit-btn" class="btn-primary">
+            <i class="bi bi-person-check"></i>
+            Додати абітурієнта
+        </button>
+    </div>
 </div>

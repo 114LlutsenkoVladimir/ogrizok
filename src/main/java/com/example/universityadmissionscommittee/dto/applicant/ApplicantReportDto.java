@@ -51,7 +51,6 @@ public class ApplicantReportDto {
         return email;
     }
 
-
     public HashMap<Long, Integer> getSubjectAndScore() {
         return subjectAndScore;
     }

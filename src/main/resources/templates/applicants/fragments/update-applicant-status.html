@@ -1,6 +1,18 @@
-<div id="updateApplicantStatusForm">
-    <input type="number" id="updateApplicantStatusApplicantId" required>
-    <input type="number" id="updateApplicantStatusSpecialtyId" required>
-    <select  id="applicantStatusSelect"></select>
-    <button type="button" id="updateApplicantStatusBtn">update</button>
+<div id="updateApplicantStatusForm" class="form-inline">
+    <div class="form-field">
+        <label for="updateApplicantStatusApplicantId">ID абітурієнта</label>
+        <input type="number" id="updateApplicantStatusApplicantId" required>
+    </div>
+    <div class="form-field">
+        <label for="updateApplicantStatusSpecialtyId">ID спеціальності</label>
+        <input type="number" id="updateApplicantStatusSpecialtyId" required>
+    </div>
+    <div class="form-field">
+        <label for="applicantStatusSelect">Статус</label>
+        <select id="applicantStatusSelect"></select>
+    </div>
+    <button type="button" id="updateApplicantStatusBtn" class="btn-outline">
+        <i class="bi bi-arrow-repeat"></i>
+        Оновити
+    </button>
 </div>

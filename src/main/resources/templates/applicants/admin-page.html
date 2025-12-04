@@ -1,22 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <div th:replace="common/fragments/error-popup"></div>
-    <div th:replace="common/fragments/header"></div>
-    <div th:replace="applicants/fragments/add-applicant"></div>
-    <div th:replace="applicants/fragments/find-applicant"></div>
-    <div th:replace="applicants/fragments/select-specialty-for-table"></div>
-    <div th:replace="applicants/fragments/delete-applicant"></div>
-    <div th:replace="applicants/fragments/update-applicant-status"></div>
-    <div th:replace="applicants/fragments/table"></div>
+<body class="app-body">
+<!-- модалка ошибок -->
+<div th:replace="common/fragments/error-popup"></div>
 
+<!-- шапка -->
+<header th:replace="common/fragments/header"></header>
 
-    <script type="module" src="/js/applicant/app.js"></script>
-    <script type="module" src="/js/errorPopup/errorPopup.js"></script>
-    <script type="module" src="/js/applicant/filterTable.js"></script>
+<main class="app-main">
+
+    <!-- блок добавления абітурієнта -->
+    <section class="card card-main" id="add-applicant-section">
+        <h2 class="card-title">
+            <i class="bi bi-person-plus"></i>
+            Додати абітурієнта
+        </h2>
+        <div th:replace="applicants/fragments/add-applicant"></div>
+    </section>
+
+    <!-- несколько форм в строку -->
+    <section class="card-row">
+        <div class="card card-sm">
+            <h3 class="card-title">
+                <i class="bi bi-search"></i>
+                Знайти абітурієнта
+            </h3>
+            <div th:replace="applicants/fragments/find-applicant"></div>
+        </div>
+
+        <div class="card card-sm">
+            <h3 class="card-title">
+                <i class="bi bi-trash"></i>
+                Видалити
+            </h3>
+            <div th:replace="applicants/fragments/delete-applicant"></div>
+        </div>
+
+        <div class="card card-sm">
+            <h3 class="card-title">
+                <i class="bi bi-arrow-repeat"></i>
+                Оновити статус
+            </h3>
+            <div th:replace="applicants/fragments/update-applicant-status"></div>
+        </div>
+    </section>
+
+    <!-- фильтр + таблица -->
+    <section class="card">
+        <div class="card-header-inline">
+            <h2 class="card-title">
+                <i class="bi bi-table"></i>
+                Таблиця абітурієнтів
+            </h2>
+            <div th:replace="applicants/fragments/select-specialty-for-table"></div>
+        </div>
+
+        <div th:replace="applicants/fragments/table"></div>
+    </section>
+
+</main>
+
+<script type="module" src="/js/applicant/app.js"></script>
+<script type="module" src="/js/errorPopup/errorPopup.js"></script>
+<script type="module" src="/js/applicant/filterTable.js"></script>
+<link rel="stylesheet" th:href="@{/css/style.css}">
 </body>
-</html>
