@@ -1,16 +1,22 @@
 export function renderSpecialtyTable(report) {
     const container = document.getElementById("specialtiesTable");
-    container.innerHTML = ""; // Очистка контейнера перед рендерингом
+    container.innerHTML = ""; // очистка контейнера
 
     for (const [facultyId, specialties] of Object.entries(report.report)) {
+        // обёртка для конкретного факультету
+        const block = document.createElement("div");
+        block.className = "table-wrapper card-table mb-4";
+
         const title = document.createElement("h2");
         title.textContent = report.facultyNames[facultyId] || "Невідомий факультет";
-        container.appendChild(title);
+        block.appendChild(title);
 
+        // таблица с бутстраповскими классами
         const table = document.createElement("table");
-        table.border = "1";
+        table.className = "table table-striped table-hover align-middle";
 
         const thead = document.createElement("thead");
+        thead.className = "table-light";
         thead.innerHTML = `
             <tr>
                 <th>ID</th>
@@ -38,7 +44,7 @@ export function renderSpecialtyTable(report) {
         });
 
         table.appendChild(tbody);
-        container.appendChild(table);
-        container.appendChild(document.createElement("br"));
+        block.appendChild(table);
+        container.appendChild(block);
     }
 }

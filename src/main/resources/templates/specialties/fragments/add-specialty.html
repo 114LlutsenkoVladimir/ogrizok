@@ -1,9 +1,39 @@
-<div id="createSpecialtyForm">
-    <input type="number" id="createSpecialtyNumber" placeholder="Specialty number" required />
-    <input type="text" id="createSpecialtyName" placeholder="Specialty name" required />
-    <select id="createSpecialtyFacultySelector"></select>
-    <input type="number" id="createSpecialtyBudgetPlaces" placeholder="Budget Places" required />
-    <input type="number" id="createSpecialtyContractPlaces" placeholder="Contract Places" required />
-    <div id="createSpecialtyRequiredSubjectsSelect"></div>
-    <button id="addSpecialtyBtn">Add</button>
+<div id="createSpecialtyForm" class="form-section">
+    <div class="form-grid">
+        <div class="form-field">
+            <label for="createSpecialtyNumber">Код спеціальності</label>
+            <input type="number" id="createSpecialtyNumber" placeholder="Specialty number" required />
+        </div>
+
+        <div class="form-field">
+            <label for="createSpecialtyName">Назва спеціальності</label>
+            <input type="text" id="createSpecialtyName" placeholder="Specialty name" required />
+        </div>
+
+        <div class="form-field">
+            <label for="createSpecialtyFacultySelector">Факультет</label>
+            <select id="createSpecialtyFacultySelector"></select>
+        </div>
+
+        <div class="form-field">
+            <label for="createSpecialtyBudgetPlaces">Бюджетні місця</label>
+            <input type="number" id="createSpecialtyBudgetPlaces" placeholder="Budget places" required />
+        </div>
+
+        <div class="form-field">
+            <label for="createSpecialtyContractPlaces">Контрактні місця</label>
+            <input type="number" id="createSpecialtyContractPlaces" placeholder="Contract places" required />
+        </div>
+    </div>
+
+    <div class="form-subsection" id="createSpecialtyRequiredSubjectsSelect">
+        <!-- сюда ты как раньше рендеришь предметы через JS -->
+    </div>
+
+    <div class="form-actions">
+        <button id="addSpecialtyBtn" class="btn-primary">
+            <i class="bi bi-plus-circle"></i>
+            Add
+        </button>
+    </div>
 </div>

@@ -1,30 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Авторизація</title>
+
+    <!-- общий стиль проекта (если он у тебя уже есть) -->
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <!-- отдельный стиль ТОЛЬКО для этой страницы -->
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
+
+    <!-- иконки Bootstrap (если ещё не подключены в header-фрагменте) -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
-<body>
+<body class="app-body auth-body">
+
 <div th:replace="common/fragments/error-popup"></div>
 <div th:replace="common/fragments/header"></div>
-<div id="authorizationForm">
-    <label id="authorizationLabel" for="passwordField">authorization</label>
-    <input type="password" id="passwordField" placeholder="password">
-    <br>
-    <button type="button" id="loginBtn">login</button>
-    <button type="button" id="logoutBtn">logout</button>
-</div>
 
+<main class="app-main auth-main">
 
-<div>
-    <ul>
-        <li><span>admin: admin</span></li>
-        <li><span>committee: committee</span></li>
-        <li><span>user: [empty]</span></li>
-    </ul>
-</div>
+    <!-- карточка авторизации -->
+    <section class="card auth-card">
+        <h1 class="auth-title">
+            <i class="bi bi-box-arrow-in-right"></i>
+            Авторизація
+        </h1>
+
+        <div id="authorizationForm" class="auth-form">
+            <label id="authorizationLabel"
+                   for="passwordField"
+                   class="auth-label">
+                Введіть пароль
+            </label>
+
+            <input type="password"
+                   id="passwordField"
+                   class="auth-input"
+                   placeholder="password">
+
+            <div class="auth-actions">
+                <button type="button" id="loginBtn" class="btn-primary auth-btn">
+                    <i class="bi bi-door-open"></i>
+                    login
+                </button>
+                <button type="button" id="logoutBtn" class="btn-outline auth-btn">
+                    <i class="bi bi-box-arrow-right"></i>
+                    logout
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- карточка с тестовыми пользователями -->
+    <section class="card auth-card auth-card-hints">
+        <h2 class="auth-hints-title">
+            <i class="bi bi-info-circle"></i>
+            Тестові облікові записи
+        </h2>
+
+        <ul class="auth-hints-list">
+            <li><span><strong>admin</strong>: admin</span></li>
+            <li><span><strong>committee</strong>: committee</span></li>
+            <li><span><strong>user</strong>: [empty]</span></li>
+        </ul>
+    </section>
+
+</main>
 
 <script type="module" src="/js/user/app.js"></script>
-
+<link rel="stylesheet" th:href="@{/css/login.css}">
 </body>
 </html>

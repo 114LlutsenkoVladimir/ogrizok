@@ -1,6 +1,21 @@
-<div id="updateSpecialtyPlaces">
-    <input type="number" id="updatePlacesSpecialtyId" placeholder="id" required />
-    <input type="number" id="updatePlacesBudgetPlaces" placeholder="budget places" min="0" />
-    <input type="number" id="updatePlacesContractPlaces" placeholder="contract places" min="0"/>
-    <button id="updateSpecialtyBtn">Update</button>
+<div id="updateSpecialtyPlaces" class="form-inline">
+    <div class="form-field">
+        <label for="updatePlacesSpecialtyId">ID спеціальності</label>
+        <input type="number" id="updatePlacesSpecialtyId" placeholder="id" required />
+    </div>
+
+    <div class="form-field">
+        <label for="updatePlacesBudgetPlaces">Бюджетні місця</label>
+        <input type="number" id="updatePlacesBudgetPlaces" placeholder="budget places" min="0" />
+    </div>
+
+    <div class="form-field">
+        <label for="updatePlacesContractPlaces">Контрактні місця</label>
+        <input type="number" id="updatePlacesContractPlaces" placeholder="contract places" min="0"/>
+    </div>
+
+    <button id="updateSpecialtyBtn" class="btn-outline">
+        <i class="bi bi-arrow-repeat"></i>
+        Update
+    </button>
 </div>

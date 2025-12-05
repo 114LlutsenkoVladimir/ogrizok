@@ -185,16 +185,16 @@ public class Applicant {
 
     /** Возвращаю немодифицируемое представление, чтобы не ломали инварианты. */
     public Set<ExamResult> getExamResults() {
-        return Collections.unmodifiableSet(examResults);
+        return examResults;
     }
 
     /** Управляй льготами через add/remove, чтобы исключить null и дубли. */
     public Set<Benefit> getBenefits() {
-        return Collections.unmodifiableSet(benefits);
+        return benefits;
     }
 
     public Set<SpecialtyForApplicant> getSpecialties() {
-        return Collections.unmodifiableSet(specialties);
+        return specialties;
     }
 
     /* ==========================

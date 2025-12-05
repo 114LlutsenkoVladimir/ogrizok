@@ -65,15 +65,20 @@ function initBenefits(benefits) {
 function initSubjectScoreInputs(subjects) {
     const container = document.getElementById('subject-scores-container');
 
+    // очищаем и добавляем класс сетки
+    container.innerHTML = "";
+    container.className = "form-grid";
+
     subjects.forEach(subject => {
         const wrapper = document.createElement('div');
+        wrapper.className = "form-field"; // уже есть в стилях
 
-        const label = document.createElement('span');
-        label.textContent = subject.name + ': ';
+        const label = document.createElement('label');
+        label.textContent = subject.name;
 
         const input = document.createElement('input');
         input.type = 'number';
-        input.className = 'exam-result';
+        input.className = 'form-control exam-result';
         input.name = `subjectAndScore[${subject.id}]`;
         input.setAttribute('data-subject-id', subject.id);
 
@@ -83,7 +88,6 @@ function initSubjectScoreInputs(subjects) {
         container.appendChild(wrapper);
     });
 }
-
 
 function initSpecialtySelect(specialties) {
     const select = document.getElementById('specialty-select');

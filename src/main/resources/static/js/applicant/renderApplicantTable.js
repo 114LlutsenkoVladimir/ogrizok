@@ -1,10 +1,9 @@
 export function renderApplicantTable(report) {
     const container = document.getElementById("table-container");
-    container.innerHTML = ""; // очищаем, но потом всё строим с нужными классами
+    container.innerHTML = "";
 
     for (const [specialtyId, applicants] of Object.entries(report.report)) {
 
-        // обёртка для каждой таблицы (чтобы сохранить стили)
         const block = document.createElement("div");
         block.className = "table-wrapper card-table mb-4";
 
@@ -12,12 +11,10 @@ export function renderApplicantTable(report) {
         title.textContent = report.specialtyNames[specialtyId];
         block.appendChild(title);
 
-        // сама таблица с bootstrap-классами
         const table = document.createElement("table");
-        table.id = "applicants-table-" + specialtyId; // уникальный id, если нужно
+        table.id = "applicants-table-" + specialtyId;
         table.className = "table table-striped table-hover align-middle";
 
-        // шапка таблицы
         const thead = document.createElement("thead");
         thead.className = "table-light";
         thead.innerHTML = `
@@ -36,7 +33,6 @@ export function renderApplicantTable(report) {
         `;
         table.appendChild(thead);
 
-        // тело таблицы
         const tbody = document.createElement("tbody");
 
         applicants.forEach(applicant => {
@@ -47,10 +43,10 @@ export function renderApplicantTable(report) {
                 <td>${applicant.lastName}</td>
                 <td>${applicant.phoneNumber}</td>
                 <td>${applicant.email}</td>
-                <td>${applicant.averageScore}</td>
+                <td>${formatScore(applicant.averageScore)}</td>
                 <td>${applicant.status}</td>
                 ${report.subjectIdsBySpecialty[specialtyId].map(id => `
-                    <td>${applicant.subjectAndScore[id] ?? '-'}</td>
+                    <td>${formatScore(applicant.subjectAndScore[id] ?? '-')}</td>
                 `).join('')}
             `;
             tbody.appendChild(row);
@@ -61,3 +57,11 @@ export function renderApplicantTable(report) {
         container.appendChild(block);
     }
 }
+
+function formatScore(value) {
+    if (value === null || value === undefined || value === '-') return '-';
+    const num = Number(value);
+    if (isNaN(num)) return value;
+    return num.toFixed(2);
+}
+

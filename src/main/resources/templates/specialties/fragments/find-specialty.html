@@ -1,6 +1,25 @@
-<div id="find-specialty">
-    <input type="number" id="findSpecialtyId" placeholder="id" />
-    <input type="text" id="findSpecialtyName" placeholder="name" />
-    <input type="number" id="findSpecialtyNumber" placeholder="number" />
-    <button id="findSpecialtyBtn">Find</button>
+<div id="find-specialty" class="form-section">
+    <div class="form-grid">
+        <div class="form-field">
+            <label for="findSpecialtyId">ID</label>
+            <input type="number" id="findSpecialtyId" placeholder="id" />
+        </div>
+
+        <div class="form-field">
+            <label for="findSpecialtyName">Назва</label>
+            <input type="text" id="findSpecialtyName" placeholder="name" />
+        </div>
+
+        <div class="form-field">
+            <label for="findSpecialtyNumber">Код</label>
+            <input type="number" id="findSpecialtyNumber" placeholder="number" />
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button id="findSpecialtyBtn" class="btn-outline">
+            <i class="bi bi-search"></i>
+            Find
+        </button>
+    </div>
 </div>
